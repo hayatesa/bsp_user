@@ -3,10 +3,11 @@ package com.bsp.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
@@ -16,7 +17,8 @@ import com.bsp.service.IRegisterService;
 import com.bsp.service.IUserService;
 import com.bsp.utils.Result;
 
-@Controller
+@RestController
+@Scope(value="prototype")
 @RequestMapping("sign_up")
 public class RegisterController extends BaseController {
 	@Autowired
