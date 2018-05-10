@@ -21,4 +21,12 @@ public interface IUserService {
 	 */
 	UserInfor getUserInforByUser(User user);
 	
+	/**
+	 * 修改密码
+	 * @param user 用户
+	 * @param currentPassword 原密码
+	 * @param newPassword 新密码
+	 * @param confirmPassword 确认密码
+	 */
+	void changePassword(User user, String currentPassword, String newPassword, String confirmPassword);
 }
