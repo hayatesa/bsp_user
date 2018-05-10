@@ -77,7 +77,7 @@
 		<war-name.version>atm</war-name.version>
 		<jdk.version>1.8</jdk.version>
 
-		<tomcat-port.version>8080</tomcat-port.version>
+		<tomcat-port.version>8081</tomcat-port.version>
 		<tomcat-uri-encoding.version>UTF-8</tomcat-uri-encoding.version>
 		<tomcat-path.version>/</tomcat-path.version>
 		<!--其他变量 end -->

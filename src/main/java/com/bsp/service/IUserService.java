@@ -13,7 +13,7 @@ public interface IUserService {
 	 * @param user
 	 * @throws UserDefinedException
 	 */
-	User getUserByMail(User user);
+	User getUserByMail(String email);
 	
 	/**
 	 * 根据用户获取用户信息

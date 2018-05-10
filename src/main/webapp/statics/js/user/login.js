@@ -1,6 +1,6 @@
 function _change() {//重新获取验证码
     var ele = document.getElementById("codeImg");
-    ele.src = "/getVerifyCode.do?xxx=" + new Date().getTime();
+    ele.src = "/verifyCode?xxx=" + new Date().getTime();
 }
 
 var doLogin = function () {
@@ -21,7 +21,7 @@ var doLogin = function () {
         app.msg='';
     }
     $.ajax({
-        url: '/admin/login',
+        url: '/login',
         type: 'post',
         data: {
             username: uname,
@@ -31,7 +31,7 @@ var doLogin = function () {
         success: function (data) {
             if (data.code==0) {
                 app.msg='<span class="pull-left text-success">登录成功，正在跳转...</span>';
-                window.location.href='/module/admin/index';
+                window.location.href='/';
             } else {
                 _change();//重新获取验证码
                 app.msg='<span class="pull-left text-danger">'+data.msg+'</span>';
@@ -43,8 +43,8 @@ var doLogin = function () {
 var login_app = new  Vue({
     el: '#login-page',
     data: {
-        username: 'admin',
-        password: 'admin',
+        username: '358739303@qq.com',
+        password: '12345678',
         vcode: '',// 验证码
         msg: '', //提示信息
         email: ''

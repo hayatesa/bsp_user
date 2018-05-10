@@ -13,11 +13,9 @@ import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
-import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IUserService;
 import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Cryptography;
-import com.bsp.utils.md5.MD5Utils;
 
 @Service
 @Transactional
@@ -57,18 +55,15 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User getUserByMail(User user) {
-		List<User> users = userMapper.selectByMail(user.getMail());
-		if (users.size() == 0) {
-			throw new UserDefinedException("用户名不存在！");
-		} else {
-			String MD5password = MD5Utils.encodeByMD5(user.getPassword());
-			if (MD5password.equals(users.get(0).getPassword())) {
-				return users.get(0);// 登录成功
-			} else {
-				throw new UserDefinedException("密码错误！");
-			}
+	public User getUserByMail(String email) {
+		List<User> users = null;
+		try {
+			users = userMapper.selectByMail(email);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("请求出错，系统异常");
 		}
+		return users.size() > 0 ? users.get(0) : null;
 	}
 
 	@Override

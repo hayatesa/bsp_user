@@ -1,44 +1,23 @@
 package com.bsp.shiro.realms;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.bsp.entity.User;
-import com.bsp.exceptions.UserDefinedException;
+import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IUserService;
 
-/**
- * shiro认证权限处理
- * @author chenyihui
-   2018年3月22日
- */
-@Service
-@Transactional
-public class UserRealm  extends AuthorizingRealm {
-	
-	private static final Logger logger=Logger.getLogger(UserRealm.class);
-	
-	/**
-	 * 获得角色和权限处理
-	* @Title: selectRole   
-	* @Description: TODO(这里用一句话描述这个方法的作用)   
-	* @param @param username
-	* @param @param info    设定文件   
-	* @return void    返回类型   
-	* @throws
-	 */
+@Component
+public class UserRealm  extends AuthorizingRealm  {
 	
 	@Autowired
 	private IUserService userService;
@@ -47,69 +26,32 @@ public class UserRealm  extends AuthorizingRealm {
 		this.userService = userService;
 	}
 
-	private void selectRole(String username, SimpleAuthorizationInfo info)
-	{
-		
-	}
-
-    /**
-     * 获取授权信息
-     */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(
-			PrincipalCollection principals) {
-		// TODO Auto-generated method stub
-		User user=(User) principals.getPrimaryPrincipal();
-		String username=user.getMail();
-		if(!org.apache.commons.lang3.StringUtils.isEmpty(username))
-		{
-			SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-            selectRole(username, authorizationInfo);
-            return authorizationInfo;
-		}
-		return null;
-	}
-
-
-	/**
-	 * 登录认证
-	 */
-	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(
-			AuthenticationToken authenticationToken) throws AuthenticationException {
-		// TODO Auto-generated method stub
-		SimpleAuthenticationInfo authenticationInfo = null;
-		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        String username = token.getPrincipal().toString();  
-		User user =new User();
-		user.setMail(username);
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		System.err.println("doGetAuthenticationInfo");
+		String username = (String) token.getPrincipal();
+		User user  = null;
 		try {
-			if(userService.getUserByMail(user)!=null)
-			{
-						Object principal = user.getMail();
-						Object credentials = user.getPassword();
-						String realmName = this.getName();
-						ByteSource credentialsSalt = ByteSource.Util.bytes(principal);
-						authenticationInfo = new SimpleAuthenticationInfo(principal,
-								credentials, credentialsSalt, realmName);
-						logger.info("[用户:" + username + "|系统权限认证完成]");
-						return authenticationInfo;
-			}
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
+			user = userService.getUserByMail(username);
+		} catch (SystemErrorException e) {
 			e.printStackTrace();
-		} catch (UserDefinedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new SystemErrorException("系统异常，登录失败");
 		}
-		
-		
- 
-		
+		// 不存在
+		if (user == null) {
+			throw new UnknownAccountException("用户不存在或不可用");
+		}
+		// 是否可用
+		if (!user.isAvailible()) {
+			throw new LockedAccountException("用户不存在或不可用");
+		}
+		// 参数分别是对象，凭证(会拿去和登陆逻辑参数比较)
+		return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+	}
+
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		return null;
 	}
 	
-
 }
-	
-

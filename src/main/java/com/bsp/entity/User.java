@@ -18,6 +18,10 @@ public class User extends BaseEntity {
     // 0没有禁用，1被禁用，默认为0
     private Byte isDelete;
     
+    public boolean isAvailible() {
+		return this.isDelete == 0 ? true : false;
+	}
+    
     public void lockOrDelete() {
     	this.isDelete = 1;
     }
