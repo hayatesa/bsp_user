@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 03/05/2018 14:41:50
+ Date: 10/05/2018 22:56:07
 */
 
 SET NAMES utf8mb4;
@@ -25,10 +25,11 @@ CREATE TABLE `administrator`  (
   `a_uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '管理员唯一标识',
   `a_id` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '管理员登录账号',
   `a_password` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
-  `a_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '运营方名称',
+  `a_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
   `a_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '联系电话',
   `a_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '运营方地址',
   `a_comments` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '运营者描述',
+  `a_level` int(20) NOT NULL DEFAULT 2 COMMENT '管理员权限等级，1为系统管理员，2为普通管理员',
   `is_delete` tinyint(4) NOT NULL COMMENT '是否可用，登录时需要判断，0没有禁用，1被禁用',
   PRIMARY KEY (`a_uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
@@ -36,7 +37,7 @@ CREATE TABLE `administrator`  (
 -- ----------------------------
 -- Records of administrator
 -- ----------------------------
-INSERT INTO `administrator` VALUES ('e55b4494e04146aca17c3c59ca760bcc', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '溶酶菌', '13824865025', '中国广东', '菌です、よろしくお願いします。', 0);
+INSERT INTO `administrator` VALUES ('e55b4494e04146aca17c3c59ca760bcc', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '溶酶菌', '13824865025', '中国广东', '菌です、よろしくお願いします。', 1, 0);
 
 -- ----------------------------
 -- Table structure for check_demand_book
@@ -105,7 +106,7 @@ CREATE TABLE `demand_book`  (
   `image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '需求图书照片路径',
   `db_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `phone` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT ' 需求者的联系电话',
-  `open_demand_time` datetime(0) NULL DEFAULT NULL COMMENT ' 开启图书需求的时间',
+  `open_demand_time` datetime NULL DEFAULT NULL COMMENT ' 开启图书需求的时间',
   `db_status` tinyint(4) NOT NULL COMMENT '开启需求状态：0停止需求，1开始需求',
   `is_delete` tinyint(4) NOT NULL COMMENT '删除图书：0没有删除，1表示删除，默认为0',
   `sc_id` int(11) NOT NULL COMMENT ' 需求图书所属的二级分类',
@@ -141,13 +142,13 @@ CREATE TABLE `donated_book`  (
 DROP TABLE IF EXISTS `lending_history`;
 CREATE TABLE `lending_history`  (
   `lh_id` int(11) NOT NULL COMMENT '借出记录历史标识，来源于LendingRecord表的主键',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人申请时间，创建订单',
-  `agree_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人同意申请时间',
-  `send_to_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人送达运营商服务点时间',
-  `take_away_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人取走图书时间',
-  `expected_return_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人预期还书时间',
-  `actual_return_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人实际还书时间',
-  `take_back_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人取回图书时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '借阅人申请时间，创建订单',
+  `agree_time` datetime NULL DEFAULT NULL COMMENT '借出人同意申请时间',
+  `send_to_time` datetime NULL DEFAULT NULL COMMENT '借出人送达运营商服务点时间',
+  `take_away_time` datetime NULL DEFAULT NULL COMMENT '借阅人取走图书时间',
+  `expected_return_time` datetime NULL DEFAULT NULL COMMENT '借阅人预期还书时间',
+  `actual_return_time` datetime NULL DEFAULT NULL COMMENT '借阅人实际还书时间',
+  `take_back_time` datetime NULL DEFAULT NULL COMMENT '借出人取回图书时间',
   `lh_struts` tinyint(4) NOT NULL COMMENT '1借阅人取消，2借出人拒绝申请，3申请超时借出人未同意，5借出人逾期未送达运营方，12借出人取回归还的图书，13借出人捐赠图书',
   `loan_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '借阅人电话号码',
   `lb_id` int(11) NOT NULL COMMENT '借阅的图书',
@@ -171,13 +172,13 @@ CREATE TABLE `lending_history`  (
 DROP TABLE IF EXISTS `lending_record`;
 CREATE TABLE `lending_record`  (
   `lr_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '借出记录标识，数字自增长',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人申请时间，创建订单',
-  `agree_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人同意申请时间',
-  `send_to_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人送达运营商服务点时间',
-  `take_away_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人取走图书时间',
-  `expected_return_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人预期还书时间',
-  `actual_return_time` datetime(0) NULL DEFAULT NULL COMMENT '借阅人实际还书时间',
-  `take_back_time` datetime(0) NULL DEFAULT NULL COMMENT '借出人取回图书时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '借阅人申请时间，创建订单',
+  `agree_time` datetime NULL DEFAULT NULL COMMENT '借出人同意申请时间',
+  `send_to_time` datetime NULL DEFAULT NULL COMMENT '借出人送达运营商服务点时间',
+  `take_away_time` datetime NULL DEFAULT NULL COMMENT '借阅人取走图书时间',
+  `expected_return_time` datetime NULL DEFAULT NULL COMMENT '借阅人预期还书时间',
+  `actual_return_time` datetime NULL DEFAULT NULL COMMENT '借阅人实际还书时间',
+  `take_back_time` datetime NULL DEFAULT NULL COMMENT '借出人取回图书时间',
   `lr_struts` tinyint(4) NOT NULL COMMENT '借出记录状态 0发布申请，4借出人同意借书申请，6借出人送达运营商，7借阅人逾期未取书，8借阅人拿到图书，9借阅人逾期未还，10借出方已经还书，11借出方逾期没有取回图书',
   `loan_phone` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '借阅人电话号码',
   `lb_id` int(11) NOT NULL COMMENT '借阅的图书',
@@ -210,7 +211,7 @@ CREATE TABLE `loanable_book`  (
   `image_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '共享图书照片路径',
   `lb_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
   `phone` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '共享者的联系电话',
-  `open_loan_time` datetime(0) NULL DEFAULT NULL COMMENT '开启图书共享的时间',
+  `open_loan_time` datetime NULL DEFAULT NULL COMMENT '开启图书共享的时间',
   `total_lending` int(11) NULL DEFAULT NULL COMMENT '共享累计借出总数,初始为0',
   `lb_status` tinyint(4) NOT NULL COMMENT '开启借阅状态：0停止共享，1开始共享，默认为1',
   `is_delete` tinyint(4) NOT NULL COMMENT '删除图书：0没有删除，1表示删除，默认为0',
@@ -234,6 +235,23 @@ CREATE TABLE `mapping`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of mapping
+-- ----------------------------
+INSERT INTO `mapping` VALUES ('contact_emails', 'bsp@163.com</>bsp@126.com');
+INSERT INTO `mapping` VALUES ('contact_phones', '[{\"name\":\"邬同学\",\"phone\":\"13800138000\"},{\"name\":\"陈同学\",\"phone\":\"13800138001\"},{\"name\":\"赖同学\",\"phone\":\"13800138002\"},{\"name\":\"梁同学\",\"phone\":\"13800138003\"}]');
+INSERT INTO `mapping` VALUES ('msg_email_from', 'books_sharing@126.com');
+INSERT INTO `mapping` VALUES ('msg_email_host', 'smtp.126.com');
+INSERT INTO `mapping` VALUES ('msg_email_password', '123456bsp');
+INSERT INTO `mapping` VALUES ('msg_email_username', 'books_sharing');
+INSERT INTO `mapping` VALUES ('msg_template', '待定s%');
+INSERT INTO `mapping` VALUES ('overtime_agree_apply', '7');
+INSERT INTO `mapping` VALUES ('overtime_book_apply_check', '7');
+INSERT INTO `mapping` VALUES ('overtime_bring_to_transfer_station', '3');
+INSERT INTO `mapping` VALUES ('overtime_take_from_transfer_station', '7');
+INSERT INTO `mapping` VALUES ('qq_group', '7895426416</>1891578894');
+INSERT INTO `mapping` VALUES ('transfer_station', '肇庆学院图书馆102室');
+
+-- ----------------------------
 -- Table structure for news
 -- ----------------------------
 DROP TABLE IF EXISTS `news`;
@@ -241,7 +259,7 @@ CREATE TABLE `news`  (
   `n_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '通知消息记录ID，数字自增长	',
   `n_subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '通知消息标题',
   `n_content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '通知消息内容',
-  `news_time` datetime(0) NOT NULL COMMENT '产生消息的时间',
+  `news_time` datetime NOT NULL COMMENT '产生消息的时间',
   `uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知消息所属的用户 ',
   PRIMARY KEY (`n_id`) USING BTREE,
   INDEX `FKf96u6pu7bsv28mi8kwql3ubb7`(`uuid`) USING BTREE,
@@ -256,7 +274,7 @@ CREATE TABLE `outdated_news`  (
   `n_id` int(11) NOT NULL COMMENT '通知消息记录ID，来源news表主键	',
   `n_subject` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '通知消息标题',
   `n_content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '通知消息内容',
-  `news_time` datetime(0) NOT NULL COMMENT '产生消息的时间',
+  `news_time` datetime NOT NULL COMMENT '产生消息的时间',
   `uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '通知消息所属的用户 ',
   PRIMARY KEY (`n_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
@@ -304,12 +322,12 @@ INSERT INTO `primary_classification` VALUES (22, 'Z综合性图书', 0);
 DROP TABLE IF EXISTS `respond_history`;
 CREATE TABLE `respond_history`  (
   `rh_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '响应记录标识，来源RespondRecord表主键',
-  `respond_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者响应时间',
-  `send_to_time` datetime(0) NULL DEFAULT NULL COMMENT '响应者送达运营商服务点时间',
-  `take_away_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者取走图书时间',
-  `expected_return_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者预期还书时间',
-  `actual_return_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者实际还书时间',
-  `take_back_time` datetime(0) NULL DEFAULT NULL COMMENT '响应者取回图书时间',
+  `respond_time` datetime NULL DEFAULT NULL COMMENT '需求者响应时间',
+  `send_to_time` datetime NULL DEFAULT NULL COMMENT '响应者送达运营商服务点时间',
+  `take_away_time` datetime NULL DEFAULT NULL COMMENT '需求者取走图书时间',
+  `expected_return_time` datetime NULL DEFAULT NULL COMMENT '需求者预期还书时间',
+  `actual_return_time` datetime NULL DEFAULT NULL COMMENT '需求者实际还书时间',
+  `take_back_time` datetime NULL DEFAULT NULL COMMENT '响应者取回图书时间',
   `rh_struts` tinyint(4) NOT NULL COMMENT '1需求者取消需求，2响应者取消响应，3响应者逾期未送达运营方，10响应者取回图书，11响应者捐赠图书',
   `respond_phone` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '响应者电话号码',
   `db_id` int(11) NOT NULL COMMENT '需求的图书',
@@ -333,12 +351,12 @@ CREATE TABLE `respond_history`  (
 DROP TABLE IF EXISTS `respond_record`;
 CREATE TABLE `respond_record`  (
   `rr_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '响应记录标识，数字自增长',
-  `respond_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者响应时间',
-  `send_to_time` datetime(0) NULL DEFAULT NULL COMMENT '响应者送达运营商服务点时间',
-  `take_away_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者取走图书时间',
-  `expected_return_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者预期还书时间',
-  `actual_return_time` datetime(0) NULL DEFAULT NULL COMMENT '需求者实际还书时间',
-  `take_back_time` datetime(0) NULL DEFAULT NULL COMMENT '响应者取回图书时间',
+  `respond_time` datetime NULL DEFAULT NULL COMMENT '需求者响应时间',
+  `send_to_time` datetime NULL DEFAULT NULL COMMENT '响应者送达运营商服务点时间',
+  `take_away_time` datetime NULL DEFAULT NULL COMMENT '需求者取走图书时间',
+  `expected_return_time` datetime NULL DEFAULT NULL COMMENT '需求者预期还书时间',
+  `actual_return_time` datetime NULL DEFAULT NULL COMMENT '需求者实际还书时间',
+  `take_back_time` datetime NULL DEFAULT NULL COMMENT '响应者取回图书时间',
   `rr_struts` tinyint(4) NOT NULL COMMENT '0需求被响应，4响应者送达图书到运营方，5需求者逾期未取书，6需求者取走图书，7需求者逾期未还，8需求者还书，9响应者逾期未取回',
   `respond_phone` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '响应者电话号码',
   `db_id` int(11) NOT NULL COMMENT '需求的图书',
@@ -630,9 +648,14 @@ CREATE TABLE `user`  (
   `uuid` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户唯一标识符号',
   `mail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户邮箱，作为用户登录账号',
   `password` varchar(33) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户登录账号密码',
-  `is_delete` tinyint(4) NOT NULL COMMENT '0没有禁用，1被禁用，默认为0',
+  `is_delete` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0没有禁用，1被禁用，默认为0',
   PRIMARY KEY (`uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('f01c3b8acd114a689e237564d925789b', '358739303@qq.com', 'b8cd35019d332fc19bb4a06e3e2e1998', 0);
 
 -- ----------------------------
 -- Table structure for user_infor
