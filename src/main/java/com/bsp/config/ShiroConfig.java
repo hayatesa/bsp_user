@@ -71,7 +71,7 @@ public class ShiroConfig {
 		filterMap.put("/statics/**", "anon");
 		filterMap.put("/verifyCode", "anon");
 		filterMap.put("/login", "anon");
-		filterMap.put("/**", "login");// 拦截所有请求
+		filterMap.put("/**", "anon");// 拦截所有请求
 		shiroFilter.setFilterChainDefinitionMap(filterMap);
 		return shiroFilter;
 	}

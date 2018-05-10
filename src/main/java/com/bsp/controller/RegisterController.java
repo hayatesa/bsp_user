@@ -17,6 +17,7 @@ import com.bsp.service.IUserService;
 import com.bsp.utils.Result;
 
 @Controller
+@RequestMapping("sign_up")
 public class RegisterController extends BaseController {
 	@Autowired
 	private IUserService userService;
