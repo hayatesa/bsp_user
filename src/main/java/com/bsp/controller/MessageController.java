@@ -46,7 +46,7 @@ public class MessageController extends BaseController {
 	 * 打开一条未读消息
 	 * @param nId 消息id
 	 */
-	@RequestMapping("read")
+	@RequestMapping("unread")
 	public Result getUnreadMsg(@RequestParam("nId") Integer nId) {
 		return Result.success();
 	}
@@ -55,7 +55,7 @@ public class MessageController extends BaseController {
 	 * 打开一条已读消息
 	 * @param nId 消息id
 	 */
-	@RequestMapping("READ")
+	@RequestMapping("read")
 	public Result getReadMsg(@RequestParam("nId") Integer nId) {
 		return Result.success();
 	}
