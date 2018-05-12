@@ -28,7 +28,7 @@ public class BorrowController extends BaseController {
 	
 	/**
 	 * 同意借书
-	 * @param lrId 结束记录id
+	 * @param lrId 借书记录id
 	 */
 	@RequestMapping("agree")
 	public Result agree(Integer lrId) {

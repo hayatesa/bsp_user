@@ -32,7 +32,7 @@ public class ShareController {
 	
 	/**
 	 * 取消分享申请
-	 * @param clbId 待审核的书的id
+	 * @param clbId 待审核图书的id
 	 */
 	@RequestMapping("cancel")
 	public Result cancel(Integer clbId) {

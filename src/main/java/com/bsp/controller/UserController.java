@@ -13,6 +13,11 @@ import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Result;
 import com.bsp.vo.UserVO;
 
+/**
+ * 用户账号相关操作
+ * @author hayate
+ *
+ */
 @RestController
 @Scope(value="prototype")
 @RequestMapping("/user")
