@@ -10,7 +10,7 @@ import com.bsp.utils.Result;
 @RestController
 @Scope(value="prototype")
 @RequestMapping("share")
-public class ShareController {
+public class ShareApplyController extends BaseController {
 	
 	/**
 	 * 共享图书，生成待管理员审核的订单，图片上传还需定义接口

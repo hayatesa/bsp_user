@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Scope(value="prototype")
-public class IndexController {
+public class IndexController extends BaseController {
 
 }

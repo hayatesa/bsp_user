@@ -16,7 +16,7 @@ import com.bsp.utils.Result;
 @RestController
 @Scope(value="prototype")
 @RequestMapping("msg")
-public class MessageController {
+public class MessageController extends BaseController {
 	
 	/**
 	 * 获取未读消息列表
