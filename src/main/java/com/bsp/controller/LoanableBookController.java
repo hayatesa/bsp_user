@@ -16,7 +16,7 @@ import com.bsp.utils.Result;
 @RestController
 @Scope(value="prototype")
 @RequestMapping("/loanble_book")
-public class LoanableBookDetialController extends BaseController {
+public class LoanableBookController extends BaseController {
 	
 	/**
 	 * 分页查询
