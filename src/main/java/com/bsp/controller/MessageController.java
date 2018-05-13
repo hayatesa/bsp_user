@@ -22,7 +22,7 @@ public class MessageController extends BaseController {
 	 * 获取未读消息列表
 	 */
 	@RequestMapping("unread_list")
-	public Result getNewMsgList(QueryObject pageParams) {
+	public Result getNewMsgList(QueryObject queryObject) {
 		return Result.success();
 	}
 	
