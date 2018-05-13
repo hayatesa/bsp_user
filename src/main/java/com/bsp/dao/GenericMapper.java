@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.BaseEntity;
-import com.bsp.entity.LoanableBook;
 
 /**
  * 泛型Mapper，所有Mapper的父接口，封装基本的CRUD操作
@@ -66,5 +65,5 @@ public interface GenericMapper <T extends BaseEntity, K> {
 	 * 分页高级查询
 	 * @param queryObject 查询对象
 	 */
-	List<LoanableBook> selectByQueryObject(QueryObject queryObject);
+	List<T> selectByQueryObject(QueryObject queryObject);
 }
