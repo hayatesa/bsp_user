@@ -3,12 +3,12 @@ package com.bsp.dto;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
 
-public class LoanbleBookQueryObject extends QueryObject{
+public class LoanableBookQueryObject extends QueryObject{
 	
 	private PrimaryClassification primaryClassification; // 一级分类设置二级分类后无效
 	private SecondaryClassification secondaryClassification; // 二级分类Id
 	
-	public LoanbleBookQueryObject() {
+	public LoanableBookQueryObject() {
 		super();
 	}
 	
@@ -21,7 +21,7 @@ public class LoanbleBookQueryObject extends QueryObject{
 	 * @param search 搜索关键字
 	 * @param primaryClassification
 	 */
-	public LoanbleBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search,
+	public LoanableBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search,
 			PrimaryClassification primaryClassification) {
 		super(limit, pageNumber, order, sort, search);
 		this.primaryClassification = primaryClassification;
@@ -37,7 +37,7 @@ public class LoanbleBookQueryObject extends QueryObject{
 	 * @param search 搜索关键字
 	 * @param secondaryClassification 二级分类
 	 */
-	public LoanbleBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search,
+	public LoanableBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search,
 			SecondaryClassification secondaryClassification) {
 		super(limit, pageNumber, order, sort, search);
 		this.secondaryClassification = secondaryClassification;
@@ -52,7 +52,7 @@ public class LoanbleBookQueryObject extends QueryObject{
 	 * @param sort 排序字段
 	 * @param search 搜索关键字
 	 */
-	public LoanbleBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search) {
+	public LoanableBookQueryObject(Integer limit, Integer pageNumber, String order, String sort, String search) {
 		super(limit, pageNumber, order, sort, search);
 	}
 
