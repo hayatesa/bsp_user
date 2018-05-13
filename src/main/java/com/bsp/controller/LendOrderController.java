@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bsp.dto.PageParams;
 import com.bsp.utils.Result;
 
+/**
+ * 借出订单的管理，包括申请,借出方为当前用户，查表lending_record、lending_history
+ * @author hayate
+ *
+ */
 @RestController
 @Scope(value="prototype")
 @RequestMapping("lend")
@@ -32,29 +37,38 @@ public class LendOrderController extends BaseController {
 	}
 	
 	/**
-	 * 获取申请详情
+	 * 获取申请详情，查表lending_record
 	 * @param lrId 借书记录id
 	 */
-	@RequestMapping("apply_detials")
-	public Result getDetails(@RequestParam("lrId") Integer lrId) {
+	@RequestMapping("detial/lending")
+	public Result getLendingDetails(@RequestParam("lrId") Integer lrId) {
 		return Result.success();
 	}
 	
 	/**
-	 * 获取未处理的借书申请列表（分页）
-	 * @param pageParams 分页参数
+	 * 获取申请详情
+	 * @param lhId 借书记录id
 	 */
-	@RequestMapping("apply_list")
-	public Result queryApply(PageParams pageParams) {
+	@RequestMapping("detial/history")
+	public Result getHistortyDetails(@RequestParam("lhId") Integer lhId) {
 		return Result.success();
 	}
 	
 	/**
-	 * 获取借出历史（分页）
+	 * 获取借出列表，包括申请中的话正在借出中的订单，查表lending_record（分页）
 	 * @param pageParams 分页参数
 	 */
-	@RequestMapping("record_list")
-	public Result queryRecord(PageParams pageParams) {
+	@RequestMapping("list/lending")
+	public Result queryLending(PageParams pageParams) {
+		return Result.success();
+	}
+	
+	/**
+	 * 获取借出历史列表，查表lending_history（分页）
+	 * @param pageParams 分页参数
+	 */
+	@RequestMapping("list/history")
+	public Result queryHistory(PageParams pageParams) {
 		return Result.success();
 	}
 
