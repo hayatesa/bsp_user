@@ -14,6 +14,9 @@ public class QueryObject {
 	private String sort; // 排序字段
 	private String search; // 搜索关键字
 	
+	public QueryObject() {
+	}
+	
 	/**
 	 * 封装分页请求参数
 	 * @param limit 页大小
