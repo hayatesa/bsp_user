@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.utils.Result;
 
 /**
@@ -57,10 +57,10 @@ public class BorrowController extends BaseController {
 	
 	/**
 	 * 获取进行中的订单列表（分页），查表lending_history
-	 * @param pageParams 分页参数
+	 * @param queryObject 查询对象
 	 */
 	@RequestMapping("borrowing/list")
-	public Result getBorrowingList(PageParams pageParams) {
+	public Result getBorrowingList(QueryObject queryObject) {
 		return Result.success();
 	}
 	
@@ -75,11 +75,11 @@ public class BorrowController extends BaseController {
 	
 	/**
 	 * 获取历史列表
-	 * @param pageParams 分页参数
+	 * @param queryObject 查询对象
 	 * @return
 	 */
 	@RequestMapping("history/list")
-	public Result getHistoryList(PageParams pageParams) {
+	public Result getHistoryList(QueryObject queryObject) {
 		return Result.success();
 	}
 }

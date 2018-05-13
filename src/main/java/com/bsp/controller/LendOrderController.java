@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.utils.Result;
 
 /**
@@ -56,19 +56,19 @@ public class LendOrderController extends BaseController {
 	
 	/**
 	 * 获取借出列表，包括申请中的话正在借出中的订单，查表lending_record（分页）
-	 * @param pageParams 分页参数
+	 * @param queryObject 查询对象
 	 */
 	@RequestMapping("list/lending")
-	public Result queryLending(PageParams pageParams) {
+	public Result queryLending(QueryObject queryObject) {
 		return Result.success();
 	}
 	
 	/**
 	 * 获取借出历史列表，查表lending_history（分页）
-	 * @param pageParams 分页参数
+	 * @param queryObject 查询对象
 	 */
 	@RequestMapping("list/history")
-	public Result queryHistory(PageParams pageParams) {
+	public Result queryHistory(QueryObject queryObject) {
 		return Result.success();
 	}
 

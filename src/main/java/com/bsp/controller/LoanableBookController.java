@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.utils.Result;
 
 /**
@@ -20,10 +20,10 @@ public class LoanableBookController extends BaseController {
 	
 	/**
 	 * 分页查询
-	 * @param pageParams
+	 * @param queryObject
 	 */
 	@RequestMapping("query")
-	public Result query(PageParams pageParams) {
+	public Result query(QueryObject queryObject) {
 		return Result.success();
 	}
 	

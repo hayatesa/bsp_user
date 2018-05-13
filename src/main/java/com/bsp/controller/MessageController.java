@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.PageParams;
+import com.bsp.dto.QueryObject;
 import com.bsp.utils.Result;
 
 /**
@@ -22,7 +22,7 @@ public class MessageController extends BaseController {
 	 * 获取未读消息列表
 	 */
 	@RequestMapping("unread_list")
-	public Result getNewMsgList(PageParams pageParams) {
+	public Result getNewMsgList(QueryObject pageParams) {
 		return Result.success();
 	}
 	
@@ -30,7 +30,7 @@ public class MessageController extends BaseController {
 	 * 获取已读消息列表
 	 */
 	@RequestMapping("read_list")
-	public Result getHistoryMsgList(PageParams pageRequestParams) {
+	public Result getHistoryMsgList(QueryObject queryObject) {
 		return Result.success();
 	}
 	
@@ -38,7 +38,7 @@ public class MessageController extends BaseController {
 	 * 获取所有消息列表
 	 */
 	@RequestMapping("all")
-	public Result getAllyMsgList(PageParams pageRequestParams) {
+	public Result getAllyMsgList(QueryObject queryObject) {
 		return Result.success();
 	}
 	
