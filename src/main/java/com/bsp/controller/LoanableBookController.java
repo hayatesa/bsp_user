@@ -1,11 +1,14 @@
 package com.bsp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.QueryObject;
+import com.bsp.entity.LoanableBook;
+import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Result;
 
 /**
@@ -17,6 +20,13 @@ import com.bsp.utils.Result;
 @Scope(value="prototype")
 @RequestMapping("/loanble_book")
 public class LoanableBookController extends BaseController {
+	
+	@Autowired
+	private ILoanableBookService loanableBookService;
+	
+	public void setLoanableBookService(ILoanableBookService loanableBookService) {
+		this.loanableBookService = loanableBookService;
+	}
 	
 	/**
 	 * 分页查询
@@ -34,7 +44,16 @@ public class LoanableBookController extends BaseController {
 	 */
 	@RequestMapping("/detail")
 	public Result detail(@RequestParam("lbId")Integer idInteger) {
-		return Result.success();
+		LoanableBook book = null;
+		try {
+			book = loanableBookService.getLoanableBookInforByid(idInteger);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取书本信息失败");
+		}
+		Result result = new Result();
+		result.put("detail", book);
+		return result;
 	}
 	
 }
