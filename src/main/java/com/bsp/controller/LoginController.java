@@ -103,6 +103,7 @@ public class LoginController extends BaseController {
 	 */
 	@RequestMapping(value="logout",method =RequestMethod.GET)
 	@ResponseBody
+	@RequiresUser
 	public Result logout(){
 		try {
 			ShiroUtils.logout();

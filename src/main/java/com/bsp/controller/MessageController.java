@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,11 +36,12 @@ public class MessageController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("amount")
+	@RequiresUser
 	public Result getAmount() {
 		User user = ShiroUtils.getToken();
-		
+		Integer amount = messageService.getNewMsgAmount(user.getUuid());
 		Result rs = Result.success();
-		rs.put("msgNum", 0);
+		rs.put("msgNum", amount);
 		return rs;
 	}
 	

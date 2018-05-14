@@ -24,12 +24,30 @@ var init = function () {
     });
 }
 
+var logout = function () {
+    confirm("退出登录？", function () {
+        $.ajax({
+            url: "/logout",
+            success: function (data) {
+                if (data.code==0) {
+                    window.location.href="/";
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
 var header_app=new Vue({
     el: "#header-app",
     data: {
         token: {},
         msgNum: 0,
         login: false,
+    },
+    methods: {
+      logout: logout
     },
     created: init
 })

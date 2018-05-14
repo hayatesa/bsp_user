@@ -73,9 +73,9 @@
 							<li class="currencies-block-top">
 								<!--<div class="current"><b>My Account</b></div>-->
 								<ul>
-									<li v-show="login"><a href="#">账户信息</a></li>
-									<li v-show="login"><a href="#">退出登录</a></li>
-									<li v-show="!login"><a href="#">登录</a></li>
+									<li v-show="login"><a href="/p/user_center">账户信息</a></li>
+									<li @click="logout"  v-show="login"><a href="javascript:;">退出登录</a></li>
+									<li v-show="!login"><a href="/login">登录</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -3118,6 +3118,8 @@
     <!-- jquery latest version -->
 <script src="../../statics/assets/js/vendor/jquery-1.12.0.min.js"></script>
 <script src="../../statics/js/vue.js"></script>
+<script src="../../statics/js/plugins/layer/layer.js"></script>
+<script src="../../statics/js/commons/common.js"></script>
 <script src="../../statics/js/user/header.js"></script>
 <!-- Bootstrap framework js -->
 <script src="../../statics/assets/js/bootstrap.min.js"></script>
