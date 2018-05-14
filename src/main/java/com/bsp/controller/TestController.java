@@ -37,13 +37,19 @@ public class TestController {
 	}
 
 	@RequestMapping("sc")
-	public SecondaryClassification testSecondaryClassificationMapper() {
-		return secondaryClassificationMapper.selectByPrimaryKey(248);
+	public Result testSecondaryClassificationMapper() {
+		Result rs = Result.success();
+		List<SecondaryClassification> list = secondaryClassificationMapper.selectAll();
+		rs.put("list", list);
+		return rs;
 	}
 	
 	@RequestMapping("pc")
-	public PrimaryClassification testPrimaryClassificationMapper() {
-		return primaryClassificationMapper.selectByPrimaryKey(1);
+	public Result testPrimaryClassificationMapper() {
+		Result rs = Result.success();
+		List<PrimaryClassification> list = primaryClassificationMapper.selectAll();
+		rs.put("list", list);
+		return rs;
 	}
 	
 	@RequestMapping("lb")
