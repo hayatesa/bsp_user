@@ -11,4 +11,10 @@ public interface NewsMapper extends GenericMapper<News, Integer> {
 	 */
 	int updateByPrimaryKeyWithBLOBs(News record);
 	
+	/**
+	 * 未读消息数
+	 * @param uuid 用户id
+	 */
+	Integer getNewMsgAmount(String uuid);
+	
 }

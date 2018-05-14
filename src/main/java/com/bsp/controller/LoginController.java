@@ -7,6 +7,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +47,13 @@ public class LoginController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("/token")
+	@RequiresUser
 	public Result getToken() {
 		User user = null;
 		UserVO vo;
 		UserInfor userInfor;
+		user = ShiroUtils.getToken();
 		try {
-			user = ShiroUtils.getToken();
 			userInfor = userService.getUserInforByUser(user);
 			vo = new UserVO(user, userInfor);
 		} catch (Exception e) {
