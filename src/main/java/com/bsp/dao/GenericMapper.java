@@ -66,4 +66,9 @@ public interface GenericMapper <T extends BaseEntity, K> {
 	 * @param queryObject 查询对象
 	 */
 	List<T> selectByQueryObject(QueryObject queryObject);
+	
+	/**
+	 * 查询所有
+	 */
+	List<T> selectAll();
 }
