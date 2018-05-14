@@ -30,6 +30,12 @@
     text-align: center;
 
 }
+/*重写layer按钮颜色*/
+.layui-layer-btn .layui-layer-btn0 {
+    border-color: #000 !important;
+    background-color: #252525 !important;
+    color: #fff !important;
+}
 /*重写模板颜色*/
 .cart-content h3 a:hover{color:#f25d8e}
 .checkout a:hover{border-color:#f25d8e;color:#f25d8e}
