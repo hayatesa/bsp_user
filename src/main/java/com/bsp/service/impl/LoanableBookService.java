@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bsp.dao.LoanableBookMapper;
+import com.bsp.dao.PrimaryClassificationMapper;
+import com.bsp.dao.SecondaryClassificationMapper;
 import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
+import com.bsp.entity.PrimaryClassification;
+import com.bsp.entity.SecondaryClassification;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Page;
 
@@ -18,6 +22,8 @@ import com.bsp.utils.Page;
 public class LoanableBookService implements ILoanableBookService{
 	@Autowired
 	private LoanableBookMapper loanableBookMapper;
+	@Autowired private SecondaryClassificationMapper secondaryClassificationMapper;
+	@Autowired private PrimaryClassificationMapper primaryClassificationMapper;
 	
 	public void setLoanableBookMapper(LoanableBookMapper loanableBookMapper) {
 		this.loanableBookMapper = loanableBookMapper;
@@ -40,6 +46,17 @@ public class LoanableBookService implements ILoanableBookService{
 		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 		return page;
 	}
+
+	@Override
+	public List<PrimaryClassification> getAllPrimary() {
+		return primaryClassificationMapper.selectAll();
+	}
+
+	@Override
+	public List<SecondaryClassification> getAllSecondary() {
+		return secondaryClassificationMapper.selectAll();
+	}
+
 
 
 }

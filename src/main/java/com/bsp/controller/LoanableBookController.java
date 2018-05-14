@@ -1,5 +1,7 @@
 package com.bsp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
+import com.bsp.entity.PrimaryClassification;
+import com.bsp.entity.SecondaryClassification;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
@@ -66,4 +70,24 @@ public class LoanableBookController extends BaseController {
 		return result;
 	}
 	
+	/**
+	 * 获取所有一级分类和二级分类
+	 * @return
+	 */
+	@RequestMapping("/classify")
+	public Result classify() {
+		List<PrimaryClassification> primarylist = null;
+		List<SecondaryClassification> secondarylist = null;
+		try {
+			primarylist = loanableBookService.getAllPrimary();
+			secondarylist = loanableBookService.getAllSecondary();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取图书分类信息失败");
+		}
+		Result result = new Result();
+		result.put("primarylist", primarylist);
+		result.put("secondarylist", secondarylist);
+		return result;
+	}
 }
