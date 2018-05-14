@@ -273,8 +273,8 @@
 							<div class="shop-bar">
 								<!-- Nav tabs -->
 								<ul class="shop-tab f-left" role="tablist">
-									<li role="presentation" class="active"><a href="#home" data-toggle="tab"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
-									<li role="presentation"><a href="#profile" data-toggle="tab"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
+									<li role="presentation"><a href="#home" data-toggle="tab"><i class="fa fa-th-large" aria-hidden="true"></i></a></li>
+									<li role="presentation" class="active"><a href="#profile" data-toggle="tab"><i class="fa fa-th-list" aria-hidden="true"></i></a></li>
 								</ul>
 								<div class="selector-field f-left ml-20 hidden-xs">
 									<form action="#">
@@ -309,15 +309,14 @@
 							</div>	
 							<!-- Tab panes -->
 							<div class="tab-content">
-								<div role="tabpanel" class="tab-pane active" id="home">
+								<div role="tabpanel" class="tab-pane" id="home">
 									<div class="row" >
 									
 									
 										<div class="col-md-4 col-sm-6" v-for="r in datas"> 
 											<div class="product-wrapper mb-40">
 												<div class="product-img">
-													<a href="#"><img :src="r.imagePath" alt="" /></a>
-													<span class="new-label">New</span>
+													<a :href="'details?lbId='+r.lbId"><img :src="r.imagePath" alt="" /></a>
 													<div class="product-action">
 														<a href="#"><i class="pe-7s-cart"></i></a>
 														<a href="#"><i class="pe-7s-like"></i></a>
@@ -327,7 +326,7 @@
 												</div>
 												<div class="product-content">
 													<div class="pro-title">
-														<h3><a href="../../statics/assets/product-details.html">{{r.lbName}}</a></h3>
+														<h3><a :href="'details?lbId='+r.lbId">{{r.lbName}}</a></h3>
 													</div>													
 												</div>
 											</div>
@@ -338,7 +337,7 @@
 															
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane" id="profile">
+								<div role="tabpanel" class="tab-pane active" id="profile">
 									
 									<ul>
 									<li v-for="r in datas">
@@ -346,17 +345,23 @@
 											<div class="col-xs-5 col-sm-5 col-md-4">
 												<div class="product-wrapper">
 													<div class="product-img">
-														<a href="#"><img :src="r.imagePath" alt="" /></a>
-														<span class="new-label">New</span>
+														<a :href="'details?lbId='+r.lbId"><img :src="r.imagePath" alt="" /></a>
 													</div>
 												</div>											
 											</div>
 											<div class="col-xs-7 col-sm-7 col-md-8">
 												<div class="product-content product-list">
 													<div class="pro-title">
-														<h3><a href="product-details.html">{{r.lbName}}</a></h3>
+														<h3 style="float: left;width: 50%"><a :href="'details?lbId='+r.lbId">{{r.lbName}}</a></h3>	
+														<h6 style="float: left;width: 50%" align="right">累计借出总数：{{r.totalLending}}</h6>		
 													</div>												
-													<p>{{r.lbComment}}</p>
+													<p>
+														描述：{{r.lbComment=maxSlice(r.lbComment)}}<br/>
+														出版社：{{r.lbPublishing}}<br/>
+														ISBN：{{r.isbn}}<br/>
+														图书所有者： {{r.user.mail}}
+														<br/>
+													</p>
 													<div class="product-action">
 														<a class="cart" :href="r.lbId"><span>借阅</span></a>
 													</div>
@@ -369,11 +374,14 @@
 									
 								</div>
 								<div class="content-sortpagibar">
-									<div class="product-count display-inline">Showing 1 - 12 of {{total}} items</div>
+									<div class="product-count display-inline" v-if="pageNumber!=page">Showing {{(pageNumber-1)*limit+1}} - {{pageNumber*limit}} of {{total}} items</div>
+									<div class="product-count display-inline" v-if="pageNumber==page&&total!=(pageNumber-1)*limit+1">Showing {{(pageNumber-1)*limit+1}} - {{total}} of {{total}} items</div>
+									<div class="product-count display-inline" v-if="pageNumber==page">Showing {{total}} item</div>
+									
 									<ul class="shop-pagi display-inline">
-										<li><a href="#"><i class="fa fa-angle-left"></i></a></li>
-										<li v-for="item in 10"><a href="#">{{item}}</a></li>
-										<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+										<li><a href="javascript:pageto(1)"><i class="fa fa-angle-left"></i></a></li>
+										<li v-for="n in page" :id="'page'+n" class="12"><a :href="'javascript:pageto('+n+')'">{{n}}</a></li>
+										<li><a :href="'javascript:pageto('+page+')'"><i class="fa fa-angle-right"></i></a></li>
 									</ul>
 									<div class="selector-field f-right">
 										<form action="#">
@@ -645,29 +653,7 @@
 	<script src="../../statics/js/jquery-3.3.1.js"></script>
 	<script src="../../statics/js/vue.js"></script>
 	
-	<script>
-		new Vue({
-			el: '#app',
-			data: {
-				total: [],
-				page: [],
-				datas: []
-			},
-			created: function () {
-	　　　　　　//为了在内部函数能使用外部函数的this对象，要给它赋值了一个名叫self的变量。
-				var self = this;
-				$.ajax({
-                type: "POST",//请求方式
-                url: "../../statics/data/BookData.json",//地址，就是json文件的请求路径
-                dataType: "json",//数据类型可以为 text xml json  script  jsonp
-　　　　　　　　　 success: function(result){//返回的参数就是 action里面所有的有get和set方法的参数
-                    self.datas = result.rows;
-                    self.total = result.total;                   
-                }
-				});
-			}
-		}) 
-	</script>
+	<script src="../../statics/js/user/repository.js"></script>
 	
 </body>
 

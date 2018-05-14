@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.service.ILoanableBookService;
+import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
 /**
@@ -34,7 +35,16 @@ public class LoanableBookController extends BaseController {
 	 */
 	@RequestMapping("query")
 	public Result query(QueryObject queryObject) {
-		return Result.success();
+		Page page = null;
+		try {
+			page = loanableBookService.getListBook(queryObject);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取图书列表失败");
+		}
+		Result result = new Result();
+		result.put("booklist", page);
+		return result;
 	}
 	
 	/**
@@ -49,7 +59,7 @@ public class LoanableBookController extends BaseController {
 			book = loanableBookService.getLoanableBookInforByid(idInteger);
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取书本信息失败");
+			return Result.error("系统错误，获取图书信息失败");
 		}
 		Result result = new Result();
 		result.put("detail", book);
