@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50521
 File Encoding         : 65001
 
-Date: 2018-05-13 14:57:04
+Date: 2018-05-15 18:39:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -251,11 +251,16 @@ CREATE TABLE `loanable_book` (
 -- ----------------------------
 INSERT INTO `loanable_book` VALUES ('1', '马克思思想', 'tom', '清华大学出版社', '12345678', '168', '1', '../../statics/assets/img/product/1.jpg', '介绍马克思思想', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '8', 'f01c3b8acd114a689e237564d925789b');
 INSERT INTO `loanable_book` VALUES ('2', '毛泽东自传', '毛泽东', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/2.jpg', '毛泽东生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
-INSERT INTO `loanable_book` VALUES ('3', '哲学先驱', 'tom', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/1.jpg', '哲学思想指导', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '9', 'f01c3b8acd114a689e237564d925789b');
-INSERT INTO `loanable_book` VALUES ('4', '世界哲学理论', 'Alce', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/4.jpg', '世界哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '11', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('3', '哲学先驱', 'tom', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/3.jpg', '哲学思想指导', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '9', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('4', '世界哲学理论', 'Alice', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/4.jpg', '世界哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '11', 'f01c3b8acd114a689e237564d925789b');
 INSERT INTO `loanable_book` VALUES ('6', '中国哲学理论', 'Alice', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/5.jpg', '中国哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '12', 'f01c3b8acd114a689e237564d925789b');
 INSERT INTO `loanable_book` VALUES ('7', '亚洲哲学理论', 'Alice', '清华大学出版社', '45415742', '168', '1', '../../statics/assets/img/product/6.jpg', '亚洲哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '13', 'f01c3b8acd114a689e237564d925789b');
-INSERT INTO `loanable_book` VALUES ('8', '非洲哲学理论', 'Alice', '清华大学出版社', '5646545', '188', '1', '../../statics/assets/img/product/7.jpg', '非洲哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '14', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('8', '非洲哲学理论', 'Alice', '清华大学出版社', '5646545', '178', '1', '../../statics/assets/img/product/7.jpg', '非洲哲学著作', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '14', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('9', '马克思自传', '马克思', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/8.jpg', '马克思生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('10', '恩格斯自传', '恩格斯', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/9.jpg', '恩格斯生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('11', '列宁自传', '列宁', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/10.jpg', '列宁生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('12', '斯大林自传', '斯大林', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/11.jpg', '斯大林生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
+INSERT INTO `loanable_book` VALUES ('13', '邓小平自传', '邓小平', '清华大学出版社', '4546545', '168', '1', '../../statics/assets/img/product/12.jpg', '邓小平生平事迹', '17876253475', '2018-05-12 22:58:55', '10', '1', '0', '7', 'f01c3b8acd114a689e237564d925789b');
 
 -- ----------------------------
 -- Table structure for `mapping`
