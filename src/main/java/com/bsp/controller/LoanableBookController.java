@@ -34,20 +34,60 @@ public class LoanableBookController extends BaseController {
 	}
 	
 	/**
-	 * 分页查询
+	 * 分页查询所有图书
 	 * @param queryObject
 	 */
 	@RequestMapping("query")
 	public Result query(QueryObject queryObject) {
 		Page page = null;
 		try {
-			page = loanableBookService.getListBook(queryObject);
+			page = loanableBookService.getAllListBook(queryObject);
 		}catch (Exception e) {
 			e.printStackTrace();
 			return Result.error("系统错误，获取图书列表失败");
 		}
 		Result result = new Result();
 		result.put("booklist", page);
+		return result;
+	}
+	
+	/**
+	 * 分页查询一级分类图书
+	 * @param queryObject
+	 */
+	@RequestMapping("queryprimary")
+	public Result queryprimary(QueryObject queryObject,@RequestParam("pcId")Integer pcId) {
+		//System.out.println("一级分类的id："+pcId);
+		Page page = null;
+		try {
+			page = loanableBookService.getPrimaryListBook(queryObject,pcId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取图书列表失败");
+		}
+		Result result = new Result();
+		result.put("booklist", page);
+		result.put("primary", pcId);
+		return result;
+	}
+	
+	/**
+	 * 分页查询二级分类图书
+	 * @param queryObject
+	 */
+	@RequestMapping("querySecondary")
+	public Result querySecondary(QueryObject queryObject,@RequestParam("scId")Integer scId) {
+		System.out.println("二级分类的id："+scId);
+		Page page = null;
+		try {
+			page = loanableBookService.getSecondaryListBook(queryObject,scId);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取图书列表失败");
+		}
+		Result result = new Result();
+		result.put("booklist", page);
+		result.put("secondary", scId);
 		return result;
 	}
 	

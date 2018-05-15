@@ -188,20 +188,20 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-4">
-					<div id="classify_app">
+					<div id="classify_app" v-cloak>
 						<h2 class="title-block">图书分类</h2>
 						<div class="panel panel-default" v-for="t in primary_datas">
 							<div class="panel-heading">
 								<h4 class="panel-title">
 									<a data-toggle="collapse" data-parent="#accordion"
-										:href="'#collapse'+t.pcId"> {{t.pcName}} </a>
+										:data-target="'#collapse'+t.pcId" :onclick="'findByPrimary('+t.pcId+')'"> {{t.pcName}} </a>
 								</h4>
 							</div>
 							<div :id="'collapse'+t.pcId" class="panel-collapse collapse">
 								<div class="panel-body">
 									<ul>
 										<li v-for="r in secondary_datas"
-											v-if="r.primaryClassification.pcId==t.pcId"><a>{{r.scName}}</a>
+											v-if="r.primaryClassification.pcId==t.pcId"><a :onclick="'findBySecondary('+r.scId+')'">{{r.scName}}</a>
 										</li>
 									</ul>
 								</div>
@@ -323,25 +323,44 @@
 
 
 								</div>
-								<div class="content-sortpagibar">
+								<div class="content-sortpagibar" v-if="total!=0">
 									<div class="product-count display-inline"
 										v-if="pageNumber!=page">Showing
 										{{(pageNumber-1)*limit+1}} - {{pageNumber*limit}} of {{total}}
 										items</div>
 									<div class="product-count display-inline"
+										v-if="pageNumber==page&&total==(pageNumber-1)*limit+1">Showing {{total}} item</div>
+									<div class="product-count display-inline"
 										v-if="pageNumber==page&&total!=(pageNumber-1)*limit+1">Showing
 										{{(pageNumber-1)*limit+1}} - {{total}} of {{total}} items</div>
-									<div class="product-count display-inline"
-										v-if="pageNumber==page">Showing {{total}} item</div>
+									
 
-									<ul class="shop-pagi display-inline">
-										<li><a href="javascript:pageto(1)"><i
+									<ul class="shop-pagi display-inline" v-if="primary!=null">
+										<li @click="active(1)"><a :href="'javascript:primary_pageto(1,'+primary+')'"><i
 												class="fa fa-angle-left"></i></a></li>
-										<li v-for="n in page" :id="'page'+n" class="12"><a
-											:href="'javascript:pageto('+n+')'">{{n}}</a></li>
-										<li><a :href="'javascript:pageto('+page+')'"><i
+										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
+											:href="'javascript:primary_pageto('+n+','+primary+')'">{{n}}</a></li>
+										<li @click="active(page)"><a :href="'javascript:primary_pageto('+page+','+primary+')'"><i
 												class="fa fa-angle-right"></i></a></li>
 									</ul>
+									<ul class="shop-pagi display-inline" v-else-if="secondary!=null">
+										<li @click="active(1)"><a :href="'javascript:secondary_pageto(1,'+secondary+')'"><i
+												class="fa fa-angle-left"></i></a></li>
+										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
+											:href="'javascript:secondary_pageto('+n+','+secondary+')'">{{n}}</a></li>
+										<li @click="active(page)"><a :href="'javascript:secondary_pageto('+page+','+secondary+')'"><i
+												class="fa fa-angle-right"></i></a></li>
+									</ul>
+									<ul class="shop-pagi display-inline" v-else>
+										<li @click="active(1)"><a href="javascript:pageto(1)"><i
+												class="fa fa-angle-left"></i></a></li>
+										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
+											:href="'javascript:pageto('+n+')'">{{n}}</a></li>
+										<li @click="active(page)"><a :href="'javascript:pageto('+page+')'"><i
+												class="fa fa-angle-right"></i></a></li>
+									</ul>
+									
+									
 									<div class="selector-field f-right">
 										<form action="#">
 											<button class="compare">Compare (1)</button>

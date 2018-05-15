@@ -7,6 +7,9 @@ var d_order="asc";//排序顺序
 var d_sort;//排序字段
 var d_search;//搜索关键字
 
+/**
+ * 首次加载页面时查询所有图书列表
+ */
 var repository_vue = new Vue({
 	el: '#list_app',
 	data: {
@@ -16,11 +19,15 @@ var repository_vue = new Vue({
 		pageNumber: [],//当前页码
 		limit:[],//每页显示总数
 		maxlength: 138,//最大描述字段长度
+		primary:[],//一级分类id
+		secondary:[],//二级分类id
+		ins: 1,
+		test:[]
 		},
 		created: function () {
 			d_limit = 3;
 			d_pageNumber = 1;
-　　　　　	pagination();
+　　　　　	pagination("/loanble_book/query");
 	},
 	methods:{
 		maxSlice(str){
@@ -28,18 +35,21 @@ var repository_vue = new Vue({
 				return str.slice(0,this.maxlength) + "...";
 			else
 				return str;
+		},
+		active(num) {
+			this.ins=num
 		}
 	}
 }) 
 
 /**
- * 从后台获取分页数据
+ * 从后台获取所有商品分页数据
  */
-function pagination(){
+function pagination(to_url){
 	$.ajax({
     type: "GET",//请求方式
     data: {"limit": d_limit, "pageNumber": d_pageNumber, "order": d_order, "sort": d_sort},
-    url: "/loanble_book/query",//地址，就是json文件的请求路径
+    url: to_url,//地址，就是json文件的请求路径
     dataType: "json",//数据类型可以为 text xml json  script  jsonp
 　　 success: function(result){
 		if(result.code == 0){
@@ -48,6 +58,8 @@ function pagination(){
 			repository_vue.page = result.booklist.totalPage;
 			repository_vue.pageNumber = d_pageNumber;
 			repository_vue.limit = result.booklist.pageSize;
+			repository_vue.secondary = result.secondary;
+			repository_vue.primary = result.primary;
 		}
 		else{
 			alert(result.msg);
@@ -57,26 +69,39 @@ function pagination(){
 }
 
 /**
- * 分页查询
+ * 所有图书的页面跳转
  * @param pageNumber 页码
  */
 function pageto(pageNumber){
-	$("li.active").removeClass('active');
-	document.getElementById("page"+pageNumber).className = "active";
 	d_pageNumber = pageNumber;
 	d_limit = 3;
-	pagination();
+	pagination("/loanble_book/query");
 }
 
 /**
- * 初始化
+ * 一级分类图书的分页跳转
+ * @param pageNumber 页码
+ * @param pcId 一级分类Id
  */
-$(function (){
-	document.getElementById("page1").className = "active";
-})
+function primary_pageto(pageNumber,pcId){
+	d_pageNumber = pageNumber;
+	d_limit = 3;
+	pagination("/loanble_book/queryprimary?pcId="+pcId);
+}
 
 /**
-*获取一级分类和二级分类
+ * 二级分类图书的分页跳转
+ * @param pageNumber 页码
+ * @param scId 二级分类Id
+ */
+function secondary_pageto(pageNumber,scId){
+	d_pageNumber = pageNumber;
+	d_limit = 3;
+	pagination("/loanble_book/querySecondary?scId="+scId);
+}
+
+/**
+*获取左侧一级分类和二级分类
 */
 var classify = new Vue({
 	el: '#classify_app',
@@ -102,3 +127,19 @@ var classify = new Vue({
 		});
 	}
 })
+/**
+ * 一级分类查询
+ */
+function findByPrimary(pcId){
+	d_limit = 3;
+	d_pageNumber = 1;
+	pagination("/loanble_book/queryprimary?pcId="+pcId);
+}
+/**
+ * 二级分类查询
+ */
+function findBySecondary(scId){
+	d_limit = 3;
+	d_pageNumber = 1;
+	pagination("/loanble_book/querySecondary?scId="+scId);
+}

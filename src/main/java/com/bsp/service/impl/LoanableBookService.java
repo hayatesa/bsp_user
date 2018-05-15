@@ -35,7 +35,7 @@ public class LoanableBookService implements ILoanableBookService{
 	}
 
 	@Override
-	public Page getListBook(QueryObject queryObject) {
+	public Page getAllListBook(QueryObject queryObject) {
 		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
 		bookQueryObject.setLimit(queryObject.getLimit());
 		bookQueryObject.setOrder(queryObject.getOrder());
@@ -55,6 +55,35 @@ public class LoanableBookService implements ILoanableBookService{
 	@Override
 	public List<SecondaryClassification> getAllSecondary() {
 		return secondaryClassificationMapper.selectAll();
+	}
+
+
+	@Override
+	public Page getPrimaryListBook(QueryObject queryObject, Integer pcId) {
+		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
+		bookQueryObject.setLimit(queryObject.getLimit());
+		bookQueryObject.setOrder(queryObject.getOrder());
+		bookQueryObject.setPageNumber(queryObject.getPageNumber());
+		bookQueryObject.setSort(queryObject.getSort());
+		bookQueryObject.setPrimaryClassification(primaryClassificationMapper.selectByPrimaryKey(pcId));
+		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
+		return page;
+	}
+
+	@Override
+	public Page getSecondaryListBook(QueryObject queryObject, Integer scId) {
+		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
+		bookQueryObject.setLimit(queryObject.getLimit());
+		bookQueryObject.setOrder(queryObject.getOrder());
+		bookQueryObject.setPageNumber(queryObject.getPageNumber());
+		bookQueryObject.setSort(queryObject.getSort());
+		bookQueryObject.setSecondaryClassification(secondaryClassificationMapper.selectByPrimaryKey(scId));
+		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
+		return page;
 	}
 
 

@@ -17,10 +17,10 @@ public interface ILoanableBookService {
 	LoanableBook getLoanableBookInforByid(Integer id);
 	
 	/**
-	 * 返回分页查询的结果
+	 * 返回所有图书分页查询的结果
 	 * @param queryObject 封装分页请求中的参数
 	 */
-	Page getListBook(QueryObject queryObject);
+	Page getAllListBook(QueryObject queryObject);
 	
 	/**
 	 * 返回一级分类的所有结果
@@ -31,5 +31,19 @@ public interface ILoanableBookService {
 	 * 返回二级分类的所有结果
 	 */
 	List<SecondaryClassification> getAllSecondary();
+
+	/**
+	 * 返回一级分类图书分页查询的结果
+	 * @param queryObject 封装分页请求中的参数
+	 * @param pcId 一级分类id
+	 */
+	Page getPrimaryListBook(QueryObject queryObject, Integer pcId);
+
+	/**
+	 * 返回二级分类图书分页查询的结果
+	 * @param queryObject 封装分页请求中的参数
+	 * @param scId 二级分类id
+	 */
+	Page getSecondaryListBook(QueryObject queryObject, Integer scId);
 	
 }
