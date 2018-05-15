@@ -69,7 +69,7 @@
 							<div class="icon-search"></div>
 							<div class="toogle-content">
 								<form action="#" id="searchbox">
-									<input type="text" placeholder="Search" />
+									<input type="text" placeholder="Search"/>
 									<button class="button-search"></button>
 								</form>
 							</div> 
@@ -248,8 +248,9 @@
 									</form>
 								</div>
 								<div class="selector-field f-right ml-30">
-									<form action="#">
-										<button class="compare">Compare (1)</button>
+									<form action="#" id="searchbox">
+										<input type="text" placeholder="Search" id="bookName" />
+										<button class="button-search" onclick="findByBookName()"></button>
 									</form>
 								</div>
 							</div>
@@ -349,6 +350,14 @@
 										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
 											:href="'javascript:secondary_pageto('+n+','+secondary+')'">{{n}}</a></li>
 										<li @click="active(page)"><a :href="'javascript:secondary_pageto('+page+','+secondary+')'"><i
+												class="fa fa-angle-right"></i></a></li>
+									</ul>
+									<ul class="shop-pagi display-inline" v-else-if="search!=null">
+										<li @click="active(1)"><a href="javascript:search_pageto(1)"><i
+												class="fa fa-angle-left"></i></a></li>
+										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
+											:href="'javascript:search_pageto('+n+')'">{{n}}</a></li>
+										<li @click="active(page)"><a :href="'javascript:search_pageto('+page+')'"><i
 												class="fa fa-angle-right"></i></a></li>
 									</ul>
 									<ul class="shop-pagi display-inline" v-else>

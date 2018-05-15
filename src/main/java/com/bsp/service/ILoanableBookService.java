@@ -45,5 +45,13 @@ public interface ILoanableBookService {
 	 * @param scId 二级分类id
 	 */
 	Page getSecondaryListBook(QueryObject queryObject, Integer scId);
+
+	/**
+	 * 返回二级分类图书分页查询的结果
+	 * @param queryObject 封装分页请求中的参数
+	 * @param bookName 搜索的书名
+	 * @return
+	 */
+	Page getSearchListBook(QueryObject queryObject, String bookName);
 	
 }

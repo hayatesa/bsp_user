@@ -86,6 +86,20 @@ public class LoanableBookService implements ILoanableBookService{
 		return page;
 	}
 
+	@Override
+	public Page getSearchListBook(QueryObject queryObject, String bookName) {
+		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
+		bookQueryObject.setLimit(queryObject.getLimit());
+		bookQueryObject.setOrder(queryObject.getOrder());
+		bookQueryObject.setPageNumber(queryObject.getPageNumber());
+		bookQueryObject.setSort(queryObject.getSort());
+		bookQueryObject.setSearch(bookName);
+		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
+		return page;
+	}
+
 
 
 }

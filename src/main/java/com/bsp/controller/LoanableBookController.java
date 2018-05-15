@@ -77,7 +77,6 @@ public class LoanableBookController extends BaseController {
 	 */
 	@RequestMapping("querySecondary")
 	public Result querySecondary(QueryObject queryObject,@RequestParam("scId")Integer scId) {
-		System.out.println("二级分类的id："+scId);
 		Page page = null;
 		try {
 			page = loanableBookService.getSecondaryListBook(queryObject,scId);
@@ -88,6 +87,25 @@ public class LoanableBookController extends BaseController {
 		Result result = new Result();
 		result.put("booklist", page);
 		result.put("secondary", scId);
+		return result;
+	}
+	
+	/**
+	 * 分页查询搜索的图书
+	 * @param queryObject
+	 */
+	@RequestMapping("querySearch")
+	public Result querySearch(QueryObject queryObject,@RequestParam("bookName")String bookName) {
+		Page page = null;
+		try {
+			page = loanableBookService.getSearchListBook(queryObject,bookName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("系统错误，获取图书列表失败");
+		}
+		Result result = new Result();
+		result.put("booklist", page);
+		result.put("search", bookName);
 		return result;
 	}
 	
