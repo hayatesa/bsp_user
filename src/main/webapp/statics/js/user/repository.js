@@ -1,7 +1,7 @@
 /**
  * 获取图书列表
  */
-var d_limit;// 页大小
+var d_limit=9;// 页大小
 var d_pageNumber;// 页码
 var d_order="asc";//排序顺序
 var d_sort;//排序字段
@@ -26,7 +26,6 @@ var repository_vue = new Vue({
 		test:[]
 		},
 		created: function () {
-			d_limit = 3;
 			d_pageNumber = 1;
 　　　　　	pagination("/loanble_book/query");
 	},
@@ -76,7 +75,7 @@ function pagination(to_url){
  */
 function pageto(pageNumber){
 	d_pageNumber = pageNumber;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	pagination("/loanble_book/query");
 }
 
@@ -87,7 +86,7 @@ function pageto(pageNumber){
  */
 function primary_pageto(pageNumber,pcId){
 	d_pageNumber = pageNumber;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	pagination("/loanble_book/queryprimary?pcId="+pcId);
 }
 
@@ -98,7 +97,7 @@ function primary_pageto(pageNumber,pcId){
  */
 function secondary_pageto(pageNumber,scId){
 	d_pageNumber = pageNumber;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	pagination("/loanble_book/querySecondary?scId="+scId);
 }
 /**
@@ -108,7 +107,7 @@ function secondary_pageto(pageNumber,scId){
  */
 function search_pageto(pageNumber){
 	d_pageNumber = pageNumber;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	pagination("/loanble_book/querySearch?bookName="+repository_vue.search);
 }
 
@@ -144,7 +143,7 @@ var classify = new Vue({
  */
 function findByPrimary(pcId){
 	repository_vue.ins = 1;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/queryprimary?pcId="+pcId);
 }
@@ -153,7 +152,7 @@ function findByPrimary(pcId){
  */
 function findBySecondary(scId){
 	repository_vue.ins = 1;
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/querySecondary?scId="+scId);
 }
@@ -163,7 +162,23 @@ function findBySecondary(scId){
 function findByBookName(){
 	repository_vue.ins = 1;
 	var bookName = $("#bookName").val();
-	d_limit = 3;
+	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/querySearch?bookName="+bookName);
 }
+/**
+ * 设置每页显示条数
+ * @returns
+ */
+$("select#limit").change(function(){
+	repository_vue.ins = 1;
+	if(repository_vue.primary!=null){
+		primary_pageto(1,repository_vue.primary);
+	}else if(repository_vue.secondary!=null){
+		secondary_pageto(1,repository_vue.secondary);
+	}else if(repository_vue.search!=null){
+		search_pageto(1);
+	}else{
+		pageto(1);
+	}
+});
