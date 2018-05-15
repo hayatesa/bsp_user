@@ -14,6 +14,7 @@
     z-index: 30;
     text-align: center;
 }
+
 /*角标 */
 .superscript{
     font-family: sans-serif;
@@ -37,6 +38,9 @@
     color: #fff !important;
 }
 /*重写模板颜色*/
+ul.sidebar-menu li a:hover {
+    color: #f25d8e;
+}
 .cart-content h3 a:hover{color:#f25d8e}
 .checkout a:hover{border-color:#f25d8e;color:#f25d8e}
 .buttons-cart input:hover,

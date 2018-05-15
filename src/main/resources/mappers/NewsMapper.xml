@@ -33,6 +33,7 @@
     <include refid="Blob_Column_List" />
     from news
     where uuid = #{search,jdbcType=VARCHAR}
+    ORDER BY news_time desc
     <if test="startIndex>-1">
 		LIMIT #{startIndex},#{limit}
 	</if>
