@@ -207,43 +207,45 @@
 												<div class="caption">
 													<h3>{{item.nSubject}}</h3>
 													<p>{{millisecondsToDateTime(item.newsTime)}}</p>
-													<p style="text-align: right"><a data-toggle="modal" data-target="#msgModal" href="#" class="btn btn-primary" role="button">查看</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
+													<p style="text-align: right"><a data-toggle="modal" :data-target="'#msgModal'+item.nId" href="#" class="btn btn-primary" role="button">查看</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
 												</div>
 											</div>
+											<!-- Modal start -->
+											<div class="modal fade" :id="'msgModal'+item.nId" tabindex="-1" role="dialog">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+															<h4 class="modal-title">{{item.nSubject}}</h4>
+														</div>
+														<div class="modal-body">
+															<p v-html="item.nContent"></p>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+														</div>
+													</div><!-- /.modal-content -->
+												</div><!-- /.modal-dialog -->
+											</div>
+											<!-- Modal end -->
 										</div>
 									</div>
-									<!-- Modal start -->
-									<div class="modal fade" id="msgModal" tabindex="-1" role="dialog">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-													<h4 class="modal-title">Modal title</h4>
-												</div>
-												<div class="modal-body">
-													<p>One fine body&hellip;</p>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-												</div>
-											</div><!-- /.modal-content -->
-										</div><!-- /.modal-dialog -->
-									</div>
-									<!-- Modal end -->
 								</div>
 
 								<div class="content-sortpagibar">
-									<div class="product-count display-inline">Showing 1 - 12 of 13 items</div>
+									<div class="product-count display-inline">当前第{{page.currPage}} / {{page.totalPage}}页</div>
 									<ul class="shop-pagi display-inline">
+										<li><a @click="goPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
 										<li><a @click="goPage(page.currPage>1?page.currPage-1:page.currPage)" href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
 										<li v-for="n in (pageBar.endPageIndex-pageBar.startPageIndex+1)" :class="{active:(pageBar.startPageIndex+n-1)==page.currPage}">
 											<a @click="goPage(pageBar.startPageIndex+n-1)" href="javascript:;">{{pageBar.startPageIndex+n-1}}</a>
 										</li>
 										<li><a @click="goPage(page.currPage<page.totalPage?page.currPage+1:page.totalPage)" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+										<li><a  @click="goPage(page.totalPage)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 									</ul>
 								</div>
 							</div><!--未读消息 end-->
-							<div v-show="showPage==1"><!--已消息 start-->
+							<div v-show="showPage==1"><!--已读消息 start-->
 								<div v-show="showPage==0" role="tabpanel" class="tab-pane active" id="home">
 									<div v-for="item in page.list" class="row">
 										<div class="col-sm-12 col-md-12">
@@ -251,39 +253,41 @@
 												<div class="caption">
 													<h3>{{item.nSubject}}</h3>
 													<p>{{millisecondsToDateTime(item.newsTime)}}</p>
-													<p style="text-align: right"><a data-toggle="modal" data-target="#msgModal" href="#" class="btn btn-primary" role="button">查看</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
+													<p style="text-align: right"><a data-toggle="modal" :data-target="'#msgModal'+item.nId" href="javascript:;" class="btn btn-primary" role="button">查看</a> <a href="#" class="btn btn-default" role="button">删除</a></p>
 												</div>
 											</div>
 										</div>
+										<!-- Modal start -->
+										<div class="modal fade" :id="'msgModal'+item.nId" tabindex="-1" role="dialog">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														<h4 class="modal-title">{{item.nSubject}}</h4>
+													</div>
+													<div class="modal-body">
+														<p>{{item.nContent}}</p>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+													</div>
+												</div><!-- /.modal-content -->
+											</div><!-- /.modal-dialog -->
+										</div>
+										<!-- Modal end -->
 									</div>
-									<!-- Modal start -->
-									<div class="modal fade" id="msgModal" tabindex="-1" role="dialog">
-										<div class="modal-dialog" role="document">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-													<h4 class="modal-title">Modal title</h4>
-												</div>
-												<div class="modal-body">
-													<p>One fine body&hellip;</p>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-												</div>
-											</div><!-- /.modal-content -->
-										</div><!-- /.modal-dialog -->
-									</div>
-									<!-- Modal end -->
 								</div>
 
 								<div class="content-sortpagibar">
 									<div class="product-count display-inline">Showing 1 - 12 of 13 items</div>
 									<ul class="shop-pagi display-inline">
+										<li><a href="#"><i class="fa angle-double-left"></i></a></li>
 										<li><a href="#"><i class="fa fa-angle-left"></i></a></li>
 										<li class="active"><a href="#">1</a></li>
 										<li><a href="#">2</a></li>
 										<li><a href="#">3</a></li>
 										<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+										<li><a href="#"><i class="fa angle-double-right"></i></a></li>
 									</ul>
 								</div>
 							</div><!--已读消息 end-->
