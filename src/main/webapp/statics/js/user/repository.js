@@ -1,7 +1,7 @@
 /**
  * 获取图书列表
  */
-var d_limit=9;// 页大小
+var d_limit=3;// 页大小
 var d_pageNumber;// 页码
 var d_order="asc";//排序顺序
 var d_sort;//排序字段
@@ -22,10 +22,14 @@ var repository_vue = new Vue({
 		primary:[],//一级分类id
 		secondary:[],//二级分类id
 		search:[],//搜索的书名
-		ins: 1,//active页码的class标志
+		pageBar: { // 分页工具条参数
+	            pageBarSize: 4,// 分页工具条大小
+	            startPageIndex: 1, // 分页工具条开始页码
+	            endPageIndex: 1, // 分页工具条结束页码
+	        },
 		test:[]
 		},
-		created: function () {
+	created: function () {
 			d_pageNumber = 1;
 　　　　　	pagination("/loanble_book/query");
 	},
@@ -36,8 +40,17 @@ var repository_vue = new Vue({
 			else
 				return str;
 		},
-		active(num) {
-			this.ins=num
+		pageto(currPage){
+			pageto(currPage)
+		},
+		primary_pageto(pageNumber,pcId){
+			primary_pageto(pageNumber,pcId)
+		},
+		secondary_pageto(pageNumber,scId){
+			secondary_pageto(pageNumber,scId)
+		},
+		search_pageto(currPage){
+			search_pageto(currPage)
 		}
 	}
 }) 
@@ -53,6 +66,10 @@ function pagination(to_url){
     dataType: "json",//数据类型可以为 text xml json  script  jsonp
 　　 success: function(result){
 		if(result.code == 0){
+			var pageIndex = getPageIndex(repository_vue.pageBar.pageBarSize, d_pageNumber, result.booklist.totalPage);
+			repository_vue.pageBar.startPageIndex=pageIndex.startPageIndex;
+			repository_vue.pageBar.endPageIndex=pageIndex.endPageIndex;
+			
 			repository_vue.datas = result.booklist.list;	
 			repository_vue.total = result.booklist.totalCount;
 			repository_vue.page = result.booklist.totalPage;
@@ -142,7 +159,6 @@ var classify = new Vue({
  * 一级分类查询
  */
 function findByPrimary(pcId){
-	repository_vue.ins = 1;
 	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/queryprimary?pcId="+pcId);
@@ -151,7 +167,6 @@ function findByPrimary(pcId){
  * 二级分类查询
  */
 function findBySecondary(scId){
-	repository_vue.ins = 1;
 	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/querySecondary?scId="+scId);
@@ -160,7 +175,6 @@ function findBySecondary(scId){
  * 图书名搜索
  */
 function findByBookName(){
-	repository_vue.ins = 1;
 	var bookName = $("#bookName").val();
 	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
@@ -171,7 +185,6 @@ function findByBookName(){
  * @returns
  */
 $("select#limit").change(function(){
-	repository_vue.ins = 1;
 	if(repository_vue.primary!=null){
 		primary_pageto(1,repository_vue.primary);
 	}else if(repository_vue.secondary!=null){

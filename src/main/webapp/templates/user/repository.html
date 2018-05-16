@@ -240,11 +240,12 @@
 								</div>
 								<div class="selector-field f-left ml-30 hidden-xs">
 									<form action="#">
-										<label>每页显示本数</label> <select name="select" id="limit" >										
+										<label>每页显示本数</label> <select name="select" id="limit" >	
+											<option value="3">3</option>									
+											<option value="6">6</option>
 											<option value="9">9</option>
-											<option value="10">10</option>
-											<option value="11">11</option>
 											<option value="12">12</option>
+											<option value="15">15</option>
 										</select>
 									</form>
 								</div>
@@ -338,39 +339,72 @@
 									
 
 									<ul class="shop-pagi display-inline" v-if="primary!=null">
-										<li @click="active(1)"><a :href="'javascript:primary_pageto(1,'+primary+')'"><i
-												class="fa fa-angle-left"></i></a></li>
-										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
-											:href="'javascript:primary_pageto('+n+','+primary+')'">{{n}}</a></li>
-										<li @click="active(page)"><a :href="'javascript:primary_pageto('+page+','+primary+')'"><i
-												class="fa fa-angle-right"></i></a></li>
+												
+										<li><a
+											@click="primary_pageto(pageNumber>1?pageNumber-1:pageNumber,primary)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (pageBar.endPageIndex-pageBar.startPageIndex+1)"
+											:class="{active:(pageBar.startPageIndex+n-1)==pageNumber}">
+											<a @click="primary_pageto(pageBar.startPageIndex+n-1,primary)"
+											href="javascript:;">{{pageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="primary_pageto(pageNumber<page?pageNumber+1:page,primary)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+													
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="secondary!=null">
-										<li @click="active(1)"><a :href="'javascript:secondary_pageto(1,'+secondary+')'"><i
-												class="fa fa-angle-left"></i></a></li>
-										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
-											:href="'javascript:secondary_pageto('+n+','+secondary+')'">{{n}}</a></li>
-										<li @click="active(page)"><a :href="'javascript:secondary_pageto('+page+','+secondary+')'"><i
-												class="fa fa-angle-right"></i></a></li>
+												
+										<li><a
+											@click="secondary_pageto(pageNumber>1?pageNumber-1:pageNumber,secondary)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (pageBar.endPageIndex-pageBar.startPageIndex+1)"
+											:class="{active:(pageBar.startPageIndex+n-1)==pageNumber}">
+											<a @click="secondary_pageto(pageBar.startPageIndex+n-1,secondary)"
+											href="javascript:;">{{pageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="secondary_pageto(pageNumber<page?pageNumber+1:page,secondary)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>	
+												
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="search!=null">
-										<li @click="active(1)"><a href="javascript:search_pageto(1)"><i
-												class="fa fa-angle-left"></i></a></li>
-										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
-											:href="'javascript:search_pageto('+n+')'">{{n}}</a></li>
-										<li @click="active(page)"><a :href="'javascript:search_pageto('+page+')'"><i
-												class="fa fa-angle-right"></i></a></li>
+												
+										<li><a
+											@click="search_pageto(pageNumber>1?pageNumber-1:pageNumber)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (pageBar.endPageIndex-pageBar.startPageIndex+1)"
+											:class="{active:(pageBar.startPageIndex+n-1)==pageNumber}">
+											<a @click="search_pageto(pageBar.startPageIndex+n-1)"
+											href="javascript:;">{{pageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="search_pageto(pageNumber<page?pageNumber+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>	
+											
 									</ul>
+
 									<ul class="shop-pagi display-inline" v-else>
-										<li @click="active(1)"><a href="javascript:pageto(1)"><i
-												class="fa fa-angle-left"></i></a></li>
-										<li v-for="n in page"  @click="active(n)" :class="{active:n==ins}"><a
-											:href="'javascript:pageto('+n+')'">{{n}}</a></li>
-										<li @click="active(page)"><a :href="'javascript:pageto('+page+')'"><i
-												class="fa fa-angle-right"></i></a></li>
+
+										<li><a
+											@click="pageto(pageNumber>1?pageNumber-1:pageNumber)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (pageBar.endPageIndex-pageBar.startPageIndex+1)"
+											:class="{active:(pageBar.startPageIndex+n-1)==pageNumber}">
+											<a @click="pageto(pageBar.startPageIndex+n-1)"
+											href="javascript:;">{{pageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="pageto(pageNumber<page?pageNumber+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+
 									</ul>
-									
-									
+
+
 									<div class="selector-field f-right">
 										<form action="#">
 											<button class="compare">Compare (1)</button>
@@ -639,7 +673,7 @@
 	
 	<script src="../../statics/js/jquery-3.3.1.js"></script>
 	<script src="../../statics/js/vue.js"></script>
-	
+	<script src="../../statics/js/commons/common.js"></script>
 	<script src="../../statics/js/user/repository.js"></script>
 	
 </body>
