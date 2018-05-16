@@ -32,7 +32,7 @@ var repository_vue = new Vue({
 		},
 	created: function () {
 			d_pageNumber = 1;
-			if(d_search==null)
+			if(isBlank(d_search)||d_search=="null")
 　　　　　		pagination("/loanble_book/query");
 			else{
 				pagination("/loanble_book/querySearch?bookName="+d_search);
@@ -84,7 +84,8 @@ function pagination(to_url){
 			repository_vue.secondary = result.secondary;
 			repository_vue.primary = result.primary;
 			repository_vue.search = result.search;
-			$("#bookName").val(d_search);
+			if(!isBlank(result.search)&&result.search!="null")
+				$("#bookName").val(result.search);
 		}
 		else{
 			alert(result.msg);
@@ -182,7 +183,7 @@ function findBySecondary(scId){
  * 图书名搜索
  */
 function findByBookName(){
-	var bookName = $("#bookName").val();
+	var bookName = $("#bookName").val().trim();
 	d_limit = $("#limit option:selected").val();
 	d_pageNumber = 1;
 	pagination("/loanble_book/querySearch?bookName="+bookName);
