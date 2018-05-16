@@ -1,5 +1,7 @@
 package com.bsp.dao;
 
+import java.util.Map;
+
 import com.bsp.entity.News;
 
 public interface NewsMapper extends GenericMapper<News, Integer> {
@@ -16,5 +18,11 @@ public interface NewsMapper extends GenericMapper<News, Integer> {
 	 * @param uuid 用户id
 	 */
 	Integer getNewMsgAmount(String uuid);
+	
+	/**
+	 * 根据用户id和消息id删除一条未读消息
+	 * @param param 参数
+	 */
+	Integer deleteByUserIdAndNid(Map<String, Object> params);
 	
 }

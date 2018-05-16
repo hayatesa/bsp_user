@@ -37,4 +37,11 @@ public interface IMessageService {
 	 */
 	Page getHistoryMsgList(QueryObject queryObject);
 	
+	/**
+	 * 阅读一条未读消息，把未读消息移动到已读消息表中
+	 * @param uuid 用户
+	 * @param nId 消息Id
+	 */
+	void readMsg(String uuid, Integer nId);
+	
 }

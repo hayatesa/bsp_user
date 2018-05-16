@@ -45,9 +45,16 @@ var header_app=new Vue({
         token: {},
         msgNum: 0,
         login: false,
+        search: ''
     },
     methods: {
-      logout: logout
+        logout: logout,
+        doSearch: function () {
+            if (this.search.trim()) {
+                var search = encodeURI(this.search.trim());
+                window.location.href='/p/repository?search='+search;
+            }
+        }
     },
     created: init
 })

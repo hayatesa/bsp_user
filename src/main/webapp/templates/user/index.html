@@ -63,9 +63,9 @@
 					<div class="search-block-top display-inline">
 						<div class="icon-search"></div>
 						<div class="toogle-content">
-							<form action="#" id="searchbox">
-								<input type="text" placeholder="搜索" />
-								<button class="button-search"></button>
+							<form id="searchbox">
+								<input v-model="search" type="text" placeholder="搜索" />
+								<button type="button" @click="doSearch" class="button-search"></button>
 							</form>
 						</div> 
 					</div>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.User;
+import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IMessageService;
 import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Page;
@@ -49,6 +50,7 @@ public class MessageController extends BaseController {
 	 * 获取未读消息列表
 	 */
 	@RequestMapping("unread_list")
+	@RequiresUser
 	public Result getNewMsgList(QueryObject queryObject) {
 		User user = ShiroUtils.getToken();
 		queryObject.setSearch(user.getUuid());// 设置用户uuid
@@ -68,24 +70,28 @@ public class MessageController extends BaseController {
 	 * 获取已读消息列表
 	 */
 	@RequestMapping("read_list")
+	@RequiresUser
 	public Result getHistoryMsgList(QueryObject queryObject) {
-		return Result.success();
+		User user = ShiroUtils.getToken();
+		queryObject.setSearch(user.getUuid());// 设置用户uuid
+		Result rs = new Result();
+		Page page = null;
+		try {
+			page = messageService.getHistoryMsgList(queryObject);
+			rs.put("page", page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
+		return rs;
 	}
 	
 	/**
 	 * 获取所有消息列表
 	 */
 	@RequestMapping("all")
+	@RequiresUser
 	public Result getAllyMsgList(QueryObject queryObject) {
-		return Result.success();
-	}
-	
-	/**
-	 * 打开一条未读消息
-	 * @param nId 消息id
-	 */
-	@RequestMapping("unread")
-	public Result getUnReadMsg(@RequestParam("nId") Integer nId) {
 		return Result.success();
 	}
 	
@@ -94,7 +100,15 @@ public class MessageController extends BaseController {
 	 * @param nId 消息id
 	 */
 	@RequestMapping("read")
-	public Result getReadMsg(@RequestParam("nId") Integer nId) {
+	@RequiresUser
+	public Result readMsg(@RequestParam("nId") Integer nId) {
+		User user = ShiroUtils.getToken();
+		try {
+			messageService.readMsg(user.getUuid(), nId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
 		return Result.success();
 	}
 	

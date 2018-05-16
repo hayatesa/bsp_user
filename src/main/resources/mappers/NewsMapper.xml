@@ -5,7 +5,7 @@
     <id column="n_id" property="nId" jdbcType="INTEGER" />
     <result column="n_subject" property="nSubject" jdbcType="VARCHAR" />
     <result column="news_time" property="newsTime" jdbcType="TIMESTAMP" />
-    <association property="secondaryClassification" column="sc_id" javaType="SecondaryClassification" select="com.bsp.dao.SecondaryClassificationMapper.selectByPrimaryKey" />
+    <association property="user" column="uuid" javaType="User" select="com.bsp.dao.UserMapper.selectByPrimaryKey" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.bsp.entity.News" extends="BaseResultMap" >
     <result column="n_content" property="nContent" jdbcType="LONGVARCHAR" />
@@ -46,6 +46,10 @@
     from news
     where n_id = #{nId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByUserIdAndNid" parameterType="java.util.Map" >
+    delete from news
+    where n_id = #{nId,jdbcType=INTEGER} AND uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from news
     where n_id = #{nId,jdbcType=INTEGER}
