@@ -5,7 +5,7 @@ var loadUnreadMsg = function(app) {
         success: function (data) {
             if (data.code==0) {
                 app.page=data.page;
-                // 设置分页工具条
+                // 设置分页工具条,getPageIndex在common.js中
                 var pageIndex = getPageIndex(app.pageBar.pageBarSize, data.page.currPage, data.page.totalPage);
                 app.pageBar.startPageIndex=pageIndex.startPageIndex;
                 app.pageBar.endPageIndex=pageIndex.endPageIndex;
