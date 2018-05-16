@@ -50,8 +50,8 @@
     left join primary_classification pc on sc.pc_id = pc.pc_id
     <include refid="where_of_query" />
 	<if test="sort!=null">
-		ORDER BY #{sort}
-		<if test="order!=null">#{order}</if>
+		ORDER BY ${sort}
+		<if test="order!=null">${order}</if>
 	</if>
     <if test="startIndex>-1">
 		LIMIT #{startIndex},#{limit}
