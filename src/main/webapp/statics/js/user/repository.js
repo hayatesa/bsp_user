@@ -3,8 +3,8 @@
  */
 var d_limit=3;// 页大小
 var d_pageNumber;// 页码
-var d_order="asc";//排序顺序
-var d_sort;//排序字段
+var d_order="desc";//排序顺序
+var d_sort="total_lending";//排序字段
 var d_search;//搜索关键字
 
 /**
@@ -185,6 +185,32 @@ function findByBookName(){
  * @returns
  */
 $("select#limit").change(function(){
+	if(repository_vue.primary!=null){
+		primary_pageto(1,repository_vue.primary);
+	}else if(repository_vue.secondary!=null){
+		secondary_pageto(1,repository_vue.secondary);
+	}else if(repository_vue.search!=null){
+		search_pageto(1);
+	}else{
+		pageto(1);
+	}
+});
+/**
+ * 设置排序
+ * @returns
+ */
+$("select#sort").change(function(){
+	var select = $("#sort option:selected").val();
+	if(select == 1){
+		d_order = "desc";
+		d_sort = "total_lending";
+	}else if(select == 2){
+		d_order = "asc";
+		d_sort = "total_lending";
+	}else{
+		d_order = "asc";
+		d_sort = "total_lending";
+	}
 	if(repository_vue.primary!=null){
 		primary_pageto(1,repository_vue.primary);
 	}else if(repository_vue.secondary!=null){

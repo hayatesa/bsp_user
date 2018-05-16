@@ -188,8 +188,15 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-4">
+					<h2 class="title-block">图书分类</h2>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a onclick="pageto(1)"> 所有图书 </a>
+							</h4>
+						</div>
+					</div>
 					<div id="classify_app" v-cloak>
-						<h2 class="title-block">图书分类</h2>
 						<div class="panel panel-default" v-for="t in primary_datas">
 							<div class="panel-heading">
 								<h4 class="panel-title">
@@ -211,8 +218,11 @@
 				</div>
 				<div class="col-md-9 col-sm-8" id="list_app" v-cloak>
 					<h2 class="page-heading mt-40">
-						<span class="cat-name">借阅书本</span> <span class="heading-counter">总共有本{{total}}书.</span>
+						<span class="cat-name">借阅图书</span> 
+						<span class="heading-counter">总共有本{{total}}书.</span>
+						
 					</h2>
+					
 					<div class="shop-page-bar">
 						<div>
 							<div class="shop-bar">
@@ -226,15 +236,9 @@
 								</ul>
 								<div class="selector-field f-left ml-20 hidden-xs">
 									<form action="#">
-										<label>Sort by</label> <select name="select">
-											<option value="">----</option>
-											<option value="">Price: Lowest first</option>
-											<option value="">Price: Highest first</option>
-											<option value="">Product Name: A to Z</option>
-											<option value="">Product Name: Z to A</option>
-											<option value="">In stock</option>
-											<option value="">Reference: Lowest first</option>
-											<option value="">Reference: Highest first</option>
+										<label>排序</label> <select name="select" id="sort">
+											<option value="1">累计借出总数: 从高到低</option>
+											<option value="2">累计借出总数: 从低到高</option>
 										</select>
 									</form>
 								</div>
@@ -327,19 +331,12 @@
 
 								</div>
 								<div class="content-sortpagibar" v-if="total!=0">
-									<div class="product-count display-inline"
-										v-if="pageNumber!=page">Showing
-										{{(pageNumber-1)*limit+1}} - {{pageNumber*limit}} of {{total}}
-										items</div>
-									<div class="product-count display-inline"
-										v-if="pageNumber==page&&total==(pageNumber-1)*limit+1">Showing {{total}} item</div>
-									<div class="product-count display-inline"
-										v-if="pageNumber==page&&total!=(pageNumber-1)*limit+1">Showing
-										{{(pageNumber-1)*limit+1}} - {{total}} of {{total}} items</div>
+									<div class="product-count display-inline">当前第{{pageNumber}} / {{page}}页</div>
 									
 
 									<ul class="shop-pagi display-inline" v-if="primary!=null">
-												
+											
+										<li><a @click="primary_pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>		
 										<li><a
 											@click="primary_pageto(pageNumber>1?pageNumber-1:pageNumber,primary)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -352,10 +349,12 @@
 										<li><a
 											@click="primary_pageto(pageNumber<page?pageNumber+1:page,primary)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+										<li><a  @click="primary_pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 													
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="secondary!=null">
-												
+											
+										<li><a @click="secondary_pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>			
 										<li><a
 											@click="secondary_pageto(pageNumber>1?pageNumber-1:pageNumber,secondary)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -368,10 +367,12 @@
 										<li><a
 											@click="secondary_pageto(pageNumber<page?pageNumber+1:page,secondary)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>	
+										<li><a  @click="secondary_pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 												
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="search!=null">
-												
+										
+										<li><a @click="search_pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>					
 										<li><a
 											@click="search_pageto(pageNumber>1?pageNumber-1:pageNumber)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -384,11 +385,13 @@
 										<li><a
 											@click="search_pageto(pageNumber<page?pageNumber+1:page)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>	
+										<li><a  @click="search_pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 											
 									</ul>
 
 									<ul class="shop-pagi display-inline" v-else>
 
+										<li><a @click="pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>															
 										<li><a
 											@click="pageto(pageNumber>1?pageNumber-1:pageNumber)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -401,6 +404,7 @@
 										<li><a
 											@click="pageto(pageNumber<page?pageNumber+1:page)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+										<li><a  @click="pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 
 									</ul>
 
