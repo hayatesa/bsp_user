@@ -116,8 +116,8 @@ var msg_app = new Vue({
             this.loadUnreadMsg(this);
         },
         goReadPage: function (currPage) {// 页面跳转
-            this.unreadPageParams.pageNumber = currPage;
-            this.loadUnreadMsg(this);
+            this.readPageParams.pageNumber = currPage;
+            this.loadReadMsg(this);
         },
         millisecondsToDateTime: function (ms){
             return new Date(ms).toLocaleString();

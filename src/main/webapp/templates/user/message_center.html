@@ -235,7 +235,7 @@
 									</div>
 								</div>
 
-								<div v-show="showPage==0" class="content-sortpagibar">
+								<div v-show="showPage==0&&unreadPage.totalPage>1" class="content-sortpagibar">
 									<div class="product-count display-inline">当前第{{unreadPage.currPage}} / {{unreadPage.totalPage}}页</div>
 									<ul class="shop-pagi display-inline">
 										<li><a @click="goUnreadPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
@@ -282,7 +282,7 @@
 								</div>
 							</div>
 
-							<div v-show="showPage==1" class="content-sortpagibar">
+							<div v-show="showPage==1&&readPage.totalPage>1" class="content-sortpagibar">
 								<div class="product-count display-inline">当前第{{readPage.currPage}} / {{readPage.totalPage}}页</div>
 								<ul class="shop-pagi display-inline">
 									<li><a @click="goReadPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
@@ -290,7 +290,7 @@
 									<li v-for="n in (readPageBar.endPageIndex-readPageBar.startPageIndex+1)" :class="{active:(readPageBar.startPageIndex+n-1)==readPage.currPage}">
 										<a @click="goReadPage(readPageBar.startPageIndex+n-1)" href="javascript:;">{{readPageBar.startPageIndex+n-1}}</a>
 									</li>
-									<li><a @click="goReadPage(readPage.currPage<unreadPage.totalPage?readPage.currPage+1:readPage.totalPage)" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+									<li><a @click="goReadPage(readPage.currPage<readPage.totalPage?readPage.currPage+1:readPage.totalPage)" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
 									<li><a  @click="goReadPage(readPage.totalPage)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 								</ul>
 							</div><!--已读消息 end-->
