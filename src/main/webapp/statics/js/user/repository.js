@@ -5,11 +5,8 @@ var d_limit=3;// 页大小
 var d_pageNumber;// 页码
 var d_order="desc";//排序顺序
 var d_sort="total_lending";//排序字段
-<<<<<<< HEAD
 var d_search=decodeURI(escape(T.p('search')));//搜索关键字
-=======
-var d_search;//搜索关键字
->>>>>>> branch 'master' of https://github.com/hayatesa/bsp_user.git
+
 
 /**
  * 首次加载页面时查询所有图书列表
