@@ -5,7 +5,11 @@ var d_limit=3;// 页大小
 var d_pageNumber;// 页码
 var d_order="desc";//排序顺序
 var d_sort="total_lending";//排序字段
+<<<<<<< HEAD
+var d_search=decodeURI(escape(T.p('search')));//搜索关键字
+=======
 var d_search;//搜索关键字
+>>>>>>> branch 'master' of https://github.com/hayatesa/bsp_user.git
 
 /**
  * 首次加载页面时查询所有图书列表
@@ -31,7 +35,12 @@ var repository_vue = new Vue({
 		},
 	created: function () {
 			d_pageNumber = 1;
-　　　　　	pagination("/loanble_book/query");
+			if(d_search==null)
+　　　　　		pagination("/loanble_book/query");
+			else{
+				pagination("/loanble_book/querySearch?bookName="+d_search);
+			}				
+				
 	},
 	methods:{
 		maxSlice(str){
@@ -78,6 +87,7 @@ function pagination(to_url){
 			repository_vue.secondary = result.secondary;
 			repository_vue.primary = result.primary;
 			repository_vue.search = result.search;
+			$("#bookName").val(d_search);
 		}
 		else{
 			alert(result.msg);
