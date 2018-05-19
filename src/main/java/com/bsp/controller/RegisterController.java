@@ -68,6 +68,9 @@ public class RegisterController extends BaseController {
 	@RequestMapping("sendEmailCode")
 	@ResponseBody
 	public Result sendMailCode(HttpServletRequest request, @RequestParam("email") String email, @RequestParam("vcode") String vcode) {
+		if (!registerService.isAvailableEmail(email)) {
+			return Result.error("该邮箱已被注册，可尝试找回密码。");
+		}
 		String session_vcode = (String) request.getSession().getAttribute("session_vcode");
 		// 校验验证码
 		if (!vcode.toLowerCase().equalsIgnoreCase(session_vcode)) {
@@ -76,9 +79,6 @@ public class RegisterController extends BaseController {
 		// 校验邮箱
 		if (!email.matches(EMAIL_REGEX)) {
 			return Result.error("邮箱格式错误");
-		}
-		if (!registerService.isAvailableEmail(email)) {
-			return Result.error("该邮箱已被注册，可尝试找回密码。");
 		}
 		// 生成邮箱验证码
 		String mailVcode;
@@ -100,6 +100,9 @@ public class RegisterController extends BaseController {
 	@RequestMapping("checkMailCode")
 	@ResponseBody
 	public Result checkMailVcode(HttpServletRequest request, @RequestParam("email") String email, @RequestParam("mailVcode") String mailVcode) {
+		if (!registerService.isAvailableEmail(email)) {
+			return Result.error("该邮箱已被注册，可尝试找回密码。");
+		}
 		if (!email.equalsIgnoreCase(request.getSession().getAttribute("temp_email").toString())) {
 			return Result.error("邮箱账号与发送验证码邮箱不匹配");
 		}
