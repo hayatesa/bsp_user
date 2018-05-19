@@ -18,7 +18,7 @@ public class UserVO {
 	private boolean isDelete;
 
 	// 用户信息
-	private UserInfor userInfor;
+	private UserInfor userInfor = new UserInfor();
 
 	/**
 	 * @param user
