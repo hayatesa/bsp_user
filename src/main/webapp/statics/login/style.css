@@ -6,7 +6,7 @@
 body {
     color: #737c90;
 	background: #fff;
-    font-family: '微软雅黑', sans-serif !important;
+    /*font-family: sans-serif !important;*/
     padding: 0px !important;
     margin: 0px !important;
     font-size:13px;
