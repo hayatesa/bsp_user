@@ -51,14 +51,14 @@ public class RegisterController extends BaseController {
 		try {
 			if (!registerService.isAvailableEmail(email)) {
 				result.put("available", false);
-				result.put("msg", "该邮箱已被注册，如果确定是本人邮箱，请尝试找回密码。");
+				result.put("msg", "该邮箱已被注册，可尝试找回密码。");
 				return result;
 			}
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			return Result.error("请求失败，系统异常");
 		}
-		result.put("available", false);
+		result.put("available", true);
 		return result;
 	}
 
@@ -71,11 +71,14 @@ public class RegisterController extends BaseController {
 		String session_vcode = (String) request.getSession().getAttribute("session_vcode");
 		// 校验验证码
 		if (!vcode.toLowerCase().equalsIgnoreCase(session_vcode)) {
-			return Result.error("验证码输入错误");
+			return Result.error("验证码错误");
 		}
 		// 校验邮箱
 		if (!email.matches(EMAIL_REGEX)) {
 			return Result.error("邮箱格式错误");
+		}
+		if (!registerService.isAvailableEmail(email)) {
+			return Result.error("该邮箱已被注册，可尝试找回密码。");
 		}
 		// 生成邮箱验证码
 		String mailVcode;
@@ -101,7 +104,7 @@ public class RegisterController extends BaseController {
 			return Result.error("邮箱账号与发送验证码邮箱不匹配");
 		}
 		if (!mailVcode.equalsIgnoreCase(request.getSession().getAttribute("session_mailVcode").toString())) {
-			return Result.error("验证码错误，请重新输入");
+			return Result.error("邮箱验证码错误，请重新输入");
 		}
 		// 保存邮箱验证码到session中，用于注册
 		request.getSession().setAttribute("email", email);
@@ -117,13 +120,16 @@ public class RegisterController extends BaseController {
 			@RequestParam("password1") String password1, 
 			@RequestParam("password2") String password2, 
 			UserInfor userInfor) {
+		if (!registerService.isAvailableEmail((String) request.getSession().getAttribute("email"))) {
+			return Result.error("该邮箱已被注册，可尝试找回密码。");
+		}
 		// 表单验证
 		if (userInfor.getuNickname().length() > 20) { // 昵称校验
 			return Result.error("昵称长度过长不能超过20位");
 		} else if (!password1.equals(password2)) { // 密码校验
 			return Result.error("两次输入密码不一致");
-		} else if (password1.length() < 8 || password1.length() > 20) {
-			return Result.error("密码长度为8-20位");
+		} else if (password1.length() < 6 || password1.length() > 20) {
+			return Result.error("密码长度为6-20位");
 		} else if (!userInfor.getuPhone().matches(PHONE_REGEX)) { // 手机号码校验
 			return Result.error("请正确填写手机号码");
 		}

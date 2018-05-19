@@ -52,13 +52,13 @@ public class RegisterService implements IRegisterService {
 		String mailVcode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
 		// 生成邮件主题内容
 		String subject = "注册验证码"; // 邮件主题
-		String content = "您的的验证码为：" + mailVcode + "，有效期30分钟，请尽快完成验证。请不要向任何人泄露验证码。"; // 邮件主体内容
+		String content = "您的验证码为：" + mailVcode + "，请不要向任何人泄露验证码。验证码有效期30分钟，请尽快完成验证。"; // 邮件主体内容
 		MailSendUtils mailSendUtils = new MailSendUtils();
 		try {
 			mailSendUtils.sendMail(dest, subject, content);// 发送邮件
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new  SendEmailException("发送验证码失败，系统异常");
+			throw new  SendEmailException("发送验证码失败，请确保邮箱有效并重试");
 		}
 		return mailVcode;
 	}
