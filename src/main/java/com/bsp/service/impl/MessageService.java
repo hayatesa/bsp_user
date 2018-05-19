@@ -99,4 +99,30 @@ public class MessageService implements IMessageService {
 		}
 	}
 
+	@Override
+	public void deleteUnreadMsg(String uuid, Integer nId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("uuid", uuid);
+		params.put("nId", nId);
+		try {
+			newsMapper.deleteByUserIdAndNid(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("删除消息失败");
+		}
+	}
+
+	@Override
+	public void deleteReadMsg(String uuid, Integer nId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("uuid", uuid);
+		params.put("nId", nId);
+		try {
+			outdatedNewsMapper.deleteByUserIdAndNid(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("删除消息失败");
+		}
+	}
+
 }

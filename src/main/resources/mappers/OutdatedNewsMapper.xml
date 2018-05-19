@@ -41,6 +41,10 @@
     from outdated_news
     where n_id = #{nId,jdbcType=INTEGER}
   </select>
+  <delete id="deleteByUserIdAndNid" parameterType="java.util.Map" >
+    delete from outdated_news
+    where n_id = #{nId,jdbcType=INTEGER} AND uuid = #{uuid,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from outdated_news
     where n_id = #{nId,jdbcType=INTEGER}

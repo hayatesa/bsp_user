@@ -112,4 +112,31 @@ public class MessageController extends BaseController {
 		return Result.success();
 	}
 	
+	/**
+	 * 删除一条未读消息，暂时不开放
+	 * @param nId 消息id
+	 */
+	@RequestMapping("deleteUnread")
+	@RequiresUser
+	public Result deleteUnread(@RequestParam("nId") Integer nId) {
+		
+		return Result.success();
+	}
+	
+	/**
+	 * 删除一条已读消息
+	 * @param nId 消息id
+	 */
+	@RequestMapping("deleteRead")
+	@RequiresUser
+	public Result deleteRead(@RequestParam("nId") Integer nId) {
+		try {
+			messageService.deleteReadMsg(ShiroUtils.getToken().getUuid(), nId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}
+		return Result.success();
+	}
+	
 }

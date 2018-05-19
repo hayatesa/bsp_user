@@ -21,7 +21,7 @@ public interface NewsMapper extends GenericMapper<News, Integer> {
 	
 	/**
 	 * 根据用户id和消息id删除一条未读消息
-	 * @param param 参数
+	 * @param param 参数必须包含uuid和nId
 	 */
 	Integer deleteByUserIdAndNid(Map<String, Object> params);
 	

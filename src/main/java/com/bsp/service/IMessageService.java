@@ -44,4 +44,18 @@ public interface IMessageService {
 	 */
 	void readMsg(String uuid, Integer nId);
 	
+	/**
+	 * 根据用户id和消息id删除一条未读消息
+	 * @param uuid 用户id
+	 * @param nId 消息id
+	 */
+	void deleteUnreadMsg(String uuid, Integer nId);
+	
+	/**
+	 * 根据用户id和消息id删除一条已读消息
+	 * @param uuid 用户id
+	 * @param nId 消息id
+	 */
+	void deleteReadMsg(String uuid, Integer nId);
+	
 }

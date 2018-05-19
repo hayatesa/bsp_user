@@ -67,6 +67,29 @@ var loadReadMsg = function(app) {
     });
 }
 
+var doDeleteRead = function (nId) {
+    var app = this;
+    confirm("操作无法恢复，确定删除？",function () {
+        $.ajax({
+            url: '/msg/deleteRead',
+            data: {
+                nId: nId
+            },
+            success: function (data) {
+                if (data.code==0) {
+                    app.loadReadMsg(app);
+                    return;
+
+                } else if (data.code==401) { //未登录
+                    window.location.href='/login'
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    })
+}
+
 var init = function () {
     loadUnreadMsg(this);
 }
@@ -119,6 +142,7 @@ var msg_app = new Vue({
             this.readPageParams.pageNumber = currPage;
             this.loadReadMsg(this);
         },
+        deleteRead: doDeleteRead,
         millisecondsToDateTime: function (ms){
             return new Date(ms).toLocaleString();
         }
