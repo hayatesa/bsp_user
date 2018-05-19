@@ -36,6 +36,13 @@ MAIN CONTENT
             <h2 class="form-login-heading">注册</h2>
             <div class="login-wrap form-horizontal">
                 <div class="form-group">
+                    <label for="vcode" class="col-sm-2 control-label">验证码</label>
+                    <div class="col-sm-10">
+                        <input v-model="step1.vcode" type="text" class="form-control" id="vcode" placeholder="验证码" style="width: 75px;display: inline-block" />
+                        <img id="codeImg" src="/verifyCode" onclick="javascript:_change();" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="inputEmail" class="col-sm-2 control-label">邮箱</label>
                     <div class="col-sm-10">
                         <div class="input-group">
@@ -47,15 +54,8 @@ MAIN CONTENT
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputVcode" class="col-sm-2 control-label">验证码</label>
-                    <div class="col-sm-10">
-                        <input  v-model="step1.mailVcode" type="text" class="form-control" id="inputVcode" placeholder="邮箱验证码">
-                    </div>
-                </div>
-                <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <input v-model="step1.vcode" type="text" class="form-control" id="vcode" placeholder="验证码" style="width: 75px;display: inline-block" />
-                        <img id="codeImg" src="/verifyCode" onclick="javascript:_change();" />
+                        <input  v-model="step1.mailVcode" type="text" class="form-control" id="inputVcode" placeholder="邮箱验证码">
                     </div>
                 </div>
                 <div class="form-group">
@@ -63,7 +63,7 @@ MAIN CONTENT
                         <span class="text-danger" v-html="step1.msg"></span>
                     </div>
                 </div>
-                <button @click="checkMailCode" class="btn btn-theme btn-block" ><i class="fa fa-arrow-right"></i>&nbsp;下一步</button>
+                <button @click="checkMailCode" :disabled="step1.nextStep" class="btn btn-theme btn-block" ><i class="fa fa-arrow-right"></i>&nbsp;下一步</button>
             </div>
         </div>
 

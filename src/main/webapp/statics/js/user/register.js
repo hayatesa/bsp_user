@@ -114,6 +114,7 @@ var doSendMail = function () {
             if (data.code==0) {
                 app.step1.msg= '<span class="pull-left text-success">发送验证码成功，请登录邮箱获取并填写验证码</span>';
                 disableSecondsInterval(app);
+                app.step1.nextStep=false;
             } else {
                 _change();//重新获取验证码
                 app.step1.msg='<span class="text-danger">'+data.msg+'</span>';
@@ -146,7 +147,6 @@ var doCheckMailCode= function () {
                 app.step1.msg='<span class="pull-left text-success">验证成功</span>';
                 app.step=2;
             } else {
-                _change();//重新获取验证码
                 app.step1.msg='<span class="text-danger">'+data.msg+'</span>';
             }
         }
@@ -181,6 +181,7 @@ var register_app = new Vue({
         step: 1,// 注册步骤，1-验证邮箱，2-填写个人资料,3-注册成功
         step1: {// 步骤1
             seconds: 0, // 获取验证码按钮冻结时间，！=0时冻结
+            nextStep: true,// 是否可以点击下一步
             vcode: '', //验证码
             email: '', // 邮箱
             mailVcode: '', // 邮箱验证码
