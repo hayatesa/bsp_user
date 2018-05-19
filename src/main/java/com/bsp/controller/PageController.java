@@ -39,7 +39,8 @@ public class PageController {
 	public String signIn() {
 		User user = ShiroUtils.getToken();
 		if (user!=null) {
-			return "/user/index";
+			System.out.println(user.getUuid());
+			return "redirect:/";
 		}
 		return "/user/login";
 	}
