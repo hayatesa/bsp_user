@@ -89,6 +89,10 @@ var doSendMail = function () {
     var vcode=app.step1.vcode.trim();
     var email=app.step1.email.trim();
     var e = new RegExp("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$");
+    if(!vcode){
+        app.step1.msg='<span class="text-danger">请填写验证码</span>';
+        return;
+    }
     if (!email) {
         app.step1.msg= '<span class="text-danger">请填写邮箱</span>';
         return;
@@ -96,10 +100,6 @@ var doSendMail = function () {
     if (!e.test(email)) {
         app.step1.msg= '<span class="text-danger">邮箱格式错误</span>';
         $('#inputEmail').focus();
-        return;
-    }
-    if(!vcode){
-        app.step1.msg='<span class="text-danger">请填写验证码</span>';
         return;
     }
     app.step1.msg='<span class="pull-left text-success">正在发送验证码......</span>';
