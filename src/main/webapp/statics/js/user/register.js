@@ -112,7 +112,7 @@ var doSendMail = function () {
         },
         success: function (data){
             if (data.code==0) {
-                app.step1.msg= '<span class="pull-left text-success">发送验证码成功，请登录邮箱获取并填写验证码</span>';
+                app.step1.msg= '<span class="pull-left text-success">验证码发送成功，请登录邮箱查看</span>';
                 disableSecondsInterval(app);
                 app.step1.nextStep=false;
             } else {
