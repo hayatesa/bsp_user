@@ -12,6 +12,7 @@ import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
@@ -42,9 +43,12 @@ public class LoanableBookController extends BaseController {
 		Page page = null;
 		try {
 			page = loanableBookService.getAllListBook(queryObject);
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书列表失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("booklist", page);
@@ -61,9 +65,12 @@ public class LoanableBookController extends BaseController {
 		Page page = null;
 		try {
 			page = loanableBookService.getPrimaryListBook(queryObject,pcId);
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书列表失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("booklist", page);
@@ -80,9 +87,12 @@ public class LoanableBookController extends BaseController {
 		Page page = null;
 		try {
 			page = loanableBookService.getSecondaryListBook(queryObject,scId);
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书列表失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("booklist", page);
@@ -99,9 +109,12 @@ public class LoanableBookController extends BaseController {
 		Page page = null;
 		try {
 			page = loanableBookService.getSearchListBook(queryObject,bookName);
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书列表失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("booklist", page);
@@ -119,9 +132,12 @@ public class LoanableBookController extends BaseController {
 		LoanableBook book = null;
 		try {
 			book = loanableBookService.getLoanableBookInforByid(idInteger);
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书信息失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("detail", book);
@@ -139,9 +155,12 @@ public class LoanableBookController extends BaseController {
 		try {
 			primarylist = loanableBookService.getAllPrimary();
 			secondarylist = loanableBookService.getAllSecondary();
+		}catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			return Result.error("系统错误，获取图书分类信息失败");
+			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
 		result.put("primarylist", primarylist);

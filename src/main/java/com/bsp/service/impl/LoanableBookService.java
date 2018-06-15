@@ -14,6 +14,7 @@ import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Page;
 
@@ -41,20 +42,40 @@ public class LoanableBookService implements ILoanableBookService{
 		bookQueryObject.setOrder(queryObject.getOrder());
 		bookQueryObject.setPageNumber(queryObject.getPageNumber());
 		bookQueryObject.setSort(queryObject.getSort());
-		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
-		int total = loanableBookMapper.getTotalCount(bookQueryObject);
-		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
-		return page;
+		List<LoanableBook> list = null;
+		Integer total = null;
+		try {
+			list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+			total = loanableBookMapper.getTotalCount(bookQueryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取图书列表失败");
+		}
+		return new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 	}
 
 	@Override
 	public List<PrimaryClassification> getAllPrimary() {
-		return primaryClassificationMapper.selectAll();
+		List<PrimaryClassification> list = null;
+		try {
+			list = primaryClassificationMapper.selectAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取图书分类列表失败");
+		}
+		return list;
 	}
 
 	@Override
 	public List<SecondaryClassification> getAllSecondary() {
-		return secondaryClassificationMapper.selectAll();
+		List<SecondaryClassification> list = null;
+		try {
+			list = secondaryClassificationMapper.selectAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取图书分类列表失败");
+		}
+		return list;
 	}
 
 
@@ -66,8 +87,15 @@ public class LoanableBookService implements ILoanableBookService{
 		bookQueryObject.setPageNumber(queryObject.getPageNumber());
 		bookQueryObject.setSort(queryObject.getSort());
 		bookQueryObject.setPrimaryClassification(primaryClassificationMapper.selectByPrimaryKey(pcId));
-		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
-		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		List<LoanableBook> list = null;
+		Integer total = null;
+		try {
+			list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+			total = loanableBookMapper.getTotalCount(bookQueryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取一级分类图书列表失败");
+		}
 		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 		return page;
 	}
@@ -80,8 +108,15 @@ public class LoanableBookService implements ILoanableBookService{
 		bookQueryObject.setPageNumber(queryObject.getPageNumber());
 		bookQueryObject.setSort(queryObject.getSort());
 		bookQueryObject.setSecondaryClassification(secondaryClassificationMapper.selectByPrimaryKey(scId));
-		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
-		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		List<LoanableBook> list = null;
+		Integer total = null;
+		try {
+			list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+			total = loanableBookMapper.getTotalCount(bookQueryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取二级分类图书列表失败");
+		}
 		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 		return page;
 	}
@@ -94,8 +129,15 @@ public class LoanableBookService implements ILoanableBookService{
 		bookQueryObject.setPageNumber(queryObject.getPageNumber());
 		bookQueryObject.setSort(queryObject.getSort());
 		bookQueryObject.setSearch(bookName);
-		List<LoanableBook> list = loanableBookMapper.selectByQueryObject(bookQueryObject);
-		int total = loanableBookMapper.getTotalCount(bookQueryObject);
+		List<LoanableBook> list = null;
+		Integer total = null;
+		try {
+			list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+			total = loanableBookMapper.getTotalCount(bookQueryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取搜索列表失败");
+		}
 		Page page = new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 		return page;
 	}

@@ -76,11 +76,11 @@ function pagination(to_url){
 			repository_vue.pageBar.startPageIndex=pageIndex.startPageIndex;
 			repository_vue.pageBar.endPageIndex=pageIndex.endPageIndex;
 			
-			repository_vue.datas = result.booklist.list;	
-			repository_vue.total = result.booklist.totalCount;
+			repository_vue.datas = result.booklist.rows;	
+			repository_vue.total = result.booklist.total;
 			repository_vue.page = result.booklist.totalPage;
 			repository_vue.pageNumber = d_pageNumber;
-			repository_vue.limit = result.booklist.pageSize;
+			repository_vue.limit = result.booklist.limit;
 			repository_vue.secondary = result.secondary;
 			repository_vue.primary = result.primary;
 			repository_vue.search = result.search;
