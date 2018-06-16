@@ -547,7 +547,7 @@ a#scrollUp {
     border-top: medium none;
     padding: 20px 10px;
     vertical-align: middle;
-    font-size: 13px;
+    font-size: 20px;
 }
 .table-content table td input {
     background: #e5e5e5 none repeat scroll 0 0;
@@ -1027,7 +1027,7 @@ p.checkout-coupon input[type="submit"] {
 }
 .payment-accordion h3 a:before,
 .payment-accordion h3.open a:after {
-    content: "ï•";
+    content: "茂聛鈥�";
     display: inline-block;
     font-family: fontawesome;
     font-size: 20px;
