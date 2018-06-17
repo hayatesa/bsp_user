@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.entity.LendingRecord;
@@ -55,7 +54,6 @@ public class OrderController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/detail")
-	@ResponseBody
 	@RequiresUser
 	public Result detail(@RequestParam("lbId")Integer idInteger) {
 		User user = null;
@@ -79,7 +77,7 @@ public class OrderController extends BaseController {
 	}
 	
 	@RequestMapping("/submit")
-	@ResponseBody
+	@RequiresUser
 	public Result submit(LendingRecord lendingRecord,@RequestParam("lbId")Integer lbId,@RequestParam("uid")String uid) {
 		System.out.println(lbId);
 		System.out.println(uid);

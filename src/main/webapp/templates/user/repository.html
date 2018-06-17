@@ -166,7 +166,6 @@
 					<h2 class="page-heading mt-40">
 						<span class="cat-name">图书检索</span>
 						<span class="heading-counter">共{{total}}册/套</span>
-						
 					</h2>
 					
 					<div class="shop-page-bar">
@@ -210,6 +209,7 @@
 							</div>
 							<!-- Tab panes -->
 							<div class="tab-content">
+								<div v-if="total==0" class="row"><div class="col-md-12 col-sm-12 text-center">暂无数据</div></div>
 								<div role="tabpanel" class="tab-pane" id="home">
 									<div class="row">
 
