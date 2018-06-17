@@ -217,13 +217,7 @@
 											<div class="product-wrapper mb-40">
 												<div class="product-img">
 													<a :href="'details?lbId='+r.lbId"><img
-														:src="r.imagePath" alt="" /></a>
-													<div class="product-action">
-														<a href="#"><i class="pe-7s-cart"></i></a> <a href="#"><i
-															class="pe-7s-like"></i></a> <a href="#"><i
-															class="pe-7s-folder"></i></a> <a href="#" data-toggle="modal"
-															data-target="#productModal"><i class="pe-7s-look"></i></a>
-													</div>
+														:src="r.imagePath" alt="" /></a>								
 												</div>
 												<div class="product-content">
 													<div class="pro-title">
@@ -263,11 +257,15 @@
 														</div>
 														<p>
 															描述：{{r.lbComment=maxSlice(r.lbComment)}}<br />
-															出版社：{{r.lbPublishing}}<br /> ISBN：{{r.isbn}}<br /> 图书所有者：
-															{{r.user.mail}} <br />
+															出版社：{{r.lbPublishing}}<br /> ISBN：{{r.isbn}}<br /> 
+															图书所有者：{{r.user.mail}} <br />
+															剩余可共享图书数量：{{r.left}} <br />
 														</p>
-														<div class="product-action">
-															<a class="cart" :href="r.lbId"><span>借阅</span></a>
+														<div class="product-action" v-if="r.left!=0">
+															<a class="cart" :href="'borrowed?lbId='+r.lbId"><span>借阅</span></a>
+														</div>
+														<div class="product-action" v-else>
+															<a class="cart" href="javascript:return false;" style="opacity: 0.2"><span>借阅</span></a>
 														</div>
 													</div>
 												</div>
@@ -279,11 +277,11 @@
 								</div>
 								<div class="content-sortpagibar" v-if="total!=0">
 									<div class="product-count display-inline">当前第{{pageNumber}} / {{page}}页</div>
-									
+									<div v-if="page!=1">
 
 									<ul class="shop-pagi display-inline" v-if="primary!=null">
 											
-										<li><a @click="primary_pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>		
+										<li><a @click="primary_pageto(1,primary)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>		
 										<li><a
 											@click="primary_pageto(pageNumber>1?pageNumber-1:pageNumber,primary)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -296,12 +294,12 @@
 										<li><a
 											@click="primary_pageto(pageNumber<page?pageNumber+1:page,primary)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
-										<li><a  @click="primary_pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+										<li><a  @click="primary_pageto(page,primary)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 													
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="secondary!=null">
 											
-										<li><a @click="secondary_pageto(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>			
+										<li><a @click="secondary_pageto(1,secondary)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>			
 										<li><a
 											@click="secondary_pageto(pageNumber>1?pageNumber-1:pageNumber,secondary)"
 											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
@@ -314,7 +312,7 @@
 										<li><a
 											@click="secondary_pageto(pageNumber<page?pageNumber+1:page,secondary)"
 											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>	
-										<li><a  @click="secondary_pageto(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+										<li><a  @click="secondary_pageto(page,secondary)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 												
 									</ul>
 									<ul class="shop-pagi display-inline" v-else-if="search!=null">
@@ -355,11 +353,6 @@
 
 									</ul>
 
-
-									<div class="selector-field f-right">
-										<form action="#">
-											<button class="compare">Compare (1)</button>
-										</form>
 									</div>
 								</div>
 							</div>

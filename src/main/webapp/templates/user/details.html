@@ -109,21 +109,21 @@
     </div>
 </header>
 <!-- header end -->
-
+<div  id="app">
 	<div class="space-custom"></div>
 	<!-- breadcrumb start -->
 	<div class="breadcrumb-area">
 		<div class="container">
 			<ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-home"></i></a></li>
-                <li><a href="#"> Sofa</a></li>
-                <li class="active">Laoreet Congue</li>
+                <li><a href="/p/repository">图书检索</a></li>
+                <li class="active">书本详情</li>
 			</ol>
 		</div>
 	</div>
 	<!-- breadcrumb end -->
 	<!-- shop-area start -->
-	<div class="shop-area" id="app">
+	<div class="shop-area">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-5">
@@ -183,9 +183,14 @@
 						<div class="short-desc">
 							<p>{{datas.lbComment}}</p>
 						</div>
-						<div class="box-quantity">
+						<div class="box-quantity" v-if="datas.left!=0">
 							<button>
 								<a :href="'borrowed?lbId='+datas.lbId">借阅</a>
+							</button>
+						</div>
+						<div class="box-quantity" v-else>
+							<button>
+								<a class="cart" href="javascript:return false;" style="opacity: 0.2"><span>借阅</span></a>
 							</button>
 						</div>
 					</div>
@@ -200,15 +205,15 @@
 			<div class="pro-info-box">
 				<!-- Nav tabs -->
 				<ul class="pro-info-tab" role="tablist">
-					<li class="active"><a href="#home3" data-toggle="tab">More info</a></li>
-					<li><a href="#profile3" data-toggle="tab">Data sheet</a></li>
+					<li class="active"><a href="#home3" data-toggle="tab">图书简介</a></li>
+					<li><a href="#profile3" data-toggle="tab">其他参数</a></li>
 					<li><a href="#messages3" data-toggle="tab">Reviews</a></li>
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane active" id="home3">
 						<div class="pro-desc">
-							<p>Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman's wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</p>
+							<p>{{datas.lbComment}}</p>
 						</div>
 					</div>
 					<div class="tab-pane" id="profile3">
@@ -241,6 +246,7 @@
 		</div>
 	</div>
 	<!-- pro-info-area end -->
+</div>
 	<!-- best-sell-area start -->
 	<div class="best-sell-area">
 		<div class="container">

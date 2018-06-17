@@ -59,8 +59,10 @@ var order = new Vue({
                  if(result.code == 0){
                 	 self.datas = result.detail;
                 	 self.user = result.user;
-                 }
-                 else{
+                 }else if(result.code == 401){
+                	 alert(result.msg);
+                	 window.location.href = "login";
+                 }else{
                 	 alert(result.msg);
                  }
             }
