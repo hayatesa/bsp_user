@@ -95,6 +95,7 @@ public class MessageService implements IMessageService {
 			newsMapper.deleteByUserIdAndNid(params);
 			outdatedNewsMapper.insertSelective(outdatedNews);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new SystemErrorException("查看消息失败，系统异常");
 		}
 	}
