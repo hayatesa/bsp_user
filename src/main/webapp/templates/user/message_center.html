@@ -12,12 +12,12 @@
 	<link rel="shortcut icon" type="image/x-icon" href="../../statics/assets/img/logo/logo.jpg">
 
 	<!-- All css files are included here. -->
-	<!-- Bootstrap framework main css -->
-	<link rel="stylesheet" href="../../statics/assets/css/bootstrap.min.css">
 	<!-- This core.css file contents all plugings css file. -->
 	<link rel="stylesheet" href="../../statics/assets/css/core.css">
 	<!-- Theme shortcodes/elements style -->
 	<link rel="stylesheet" href="../../statics/assets/css/shortcode/shortcodes.css">
+	<!-- Bootstrap framework main css -->
+	<link rel="stylesheet" href="../../statics/assets/css/bootstrap.min.css">
 	<!-- Theme main style -->
 	<link rel="stylesheet" href="../../statics/assets/style.css">
 	<!-- Responsive css -->
@@ -150,18 +150,22 @@
 							<div v-show="showPage==0"><!--未读消息 start-->
 								<div v-show="showPage==0" role="tabpanel" class="tab-pane active" id="home">
 									<div class="row">
-										<div v-for="item in unreadPage.rows" class="col-sm-6 col-md-6">
+										<div v-for="item in unreadPage.rows" class="col-sm-12 col-md-12">
 											<div class="thumbnail">
 												<div class="caption">
 													<h3>{{item.nSubject}}</h3>
 													<p><i class="fa fa-clock-o"></i>&nbsp;{{millisecondsToDateTime(item.newsTime)}}</p>
+													<p v-html="item.nContent"></p>
 													<!--<div style="text-align: right">
 														<a class="cart" data-toggle="modal" :data-target="'#msgModal'+item.nId" ><span>查看</span></a>
 													</div>-->
 													<div style="text-align: right" class="box-quantity">
 														<button>
-															<a data-toggle="modal" :data-target="'#msgModal'+item.nId">查看</a>
+															<a @click="readMsg(item.nId)" data-dismiss="modal" href="javascript:;">已读</a>
 														</button>
+														<!--<button>
+															<a data-toggle="modal" :data-target="'#msgModal'+item.nId">查看</a>
+														</button>-->
 													</div>
 													<!--<p style="text-align: right">
 														<a data-toggle="modal" :data-target="'#msgModal'+item.nId" href="#" class="btn btn-primary" role="button"><i class="fa fa-eye"></i></a>
@@ -169,15 +173,15 @@
 												</div>
 											</div>
 											<!-- Modal start -->
-											<div class="modal fade" :id="'msgModal'+item.nId" tabindex="-1" role="dialog">
+											<!--<div class="modal fade" :id="'msgModal'+item.nId" tabindex="-1" role="dialog">
 												<div class="modal-dialog" role="document">
 													<div class="modal-content">
 														<div class="modal-header">
 															<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 															<h4 class="modal-title">{{item.nSubject}}</h4>
-															<p><i class="fa fa-clock-o"></i>&nbsp;{{millisecondsToDateTime(item.newsTime)}}</p>
 														</div>
 														<div class="modal-body">
+															<p><i class="fa fa-clock-o"></i>&nbsp;{{millisecondsToDateTime(item.newsTime)}}</p>
 															<p v-html="item.nContent"></p>
 														</div>
 														<div class="modal-footer">
@@ -191,12 +195,10 @@
 															</div>
 															<div style="text-align: right" class="box-quantity">
 															</div>
-															<!--<button @click="readMsg(item.nId)" type="button" class="btn btn-primary" data-dismiss="modal">已读</button>
-															<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
 														</div>
-													</div><!-- /.modal-content -->
-												</div><!-- /.modal-dialog -->
-											</div>
+													</div>&lt;!&ndash; /.modal-content &ndash;&gt;
+												</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+											</div>-->
 											<!-- Modal end -->
 										</div>
 									</div>
@@ -218,18 +220,23 @@
 
 							<div v-show="showPage==1"><!--已读消息 start-->
 								<div class="row">
-									<div v-for="item in readPage.rows" class="col-sm-6 col-md-6">
+									<div v-for="item in readPage.rows" class="col-sm-12 col-md-12">
 										<div class="thumbnail">
 											<div class="caption">
 												<h3>{{item.nSubject}}</h3>
 												<p><i class="fa fa-clock-o"></i>&nbsp;{{millisecondsToDateTime(item.newsTime)}}</p>
-												<p style="text-align: right">
-													<a data-toggle="modal" :data-target="'#readMsgModal'+item.nId" href="#" class="btn btn-primary" role="button"><i class="fa fa-eye"></i></a>&nbsp;
-													<a @click="deleteRead(item.nId)" href="javascript:;" class="btn btn-default" role="button"><i class="fa fa-trash"></i></a></p>
+												<p v-html="item.nContent"></p>
+												<p style="text-align: right" class="box-quantity">
+													<button>
+														<a @click="deleteRead(item.nId)" data-dismiss="modal" href="javascript:;">删除</a>
+													</button>
+													<!--<a data-toggle="modal" :data-target="'#readMsgModal'+item.nId" href="#" class="btn btn-primary" role="button"><i class="fa fa-eye"></i></a>&nbsp;-->
+													<!--<a @click="deleteRead(item.nId)" href="javascript:;" class="btn btn-default" role="button"><i class="fa fa-trash"></i></a></p>-->
+												<p/>
 											</div>
 										</div>
 										<!-- Modal start -->
-										<div class="modal fade" :id="'readMsgModal'+item.nId" tabindex="-1" role="dialog">
+										<!--<div class="modal fade" :id="'readMsgModal'+item.nId" tabindex="-1" role="dialog">
 											<div class="modal-dialog" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -243,9 +250,9 @@
 													<div class="modal-footer">
 														<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 													</div>
-												</div><!-- /.modal-content -->
-											</div><!-- /.modal-dialog -->
-										</div>
+												</div>&lt;!&ndash; /.modal-content &ndash;&gt;
+											</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+										</div>-->
 										<!-- Modal end -->
 									</div>
 								</div>

@@ -1,6 +1,7 @@
 [v-cloak] {
     display: none;
 }
+/*角标 */
 .mobile-superscript {
     font-family: sans-serif;
     height: 12px;
@@ -38,6 +39,7 @@
     color: #fff !important;
 }
 /*重写模板颜色*/
+/*
 ul.sidebar-menu li a:hover {
     color: #f25d8e;
 }
@@ -170,10 +172,11 @@ p.checkout-coupon input[type="submit"]:hover {
 label.inline > a {
     color: #f25d8e;
 }
-/*重写移动设备菜单样式*/
+!*重写移动设备菜单样式*!
 .mean-container .mean-bar {
     background: #f25d8e;
 }
 .mean-container .mean-nav ul li a:hover {
     color: #f25d8e;
 }
+*/
