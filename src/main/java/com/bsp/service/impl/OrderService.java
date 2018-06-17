@@ -1,8 +1,6 @@
 package com.bsp.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +12,6 @@ import com.bsp.dao.MappingMapper;
 import com.bsp.dao.UserMapper;
 import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
-import com.bsp.entity.Mapping;
 import com.bsp.entity.User;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;

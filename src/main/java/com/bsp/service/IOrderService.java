@@ -1,9 +1,7 @@
 package com.bsp.service;
 
-import java.util.List;
 
 import com.bsp.entity.LendingRecord;
-import com.bsp.entity.Mapping;
 
 public interface IOrderService {
 	

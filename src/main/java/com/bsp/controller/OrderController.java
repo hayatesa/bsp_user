@@ -1,10 +1,7 @@
 package com.bsp.controller;
 
-import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
-import com.bsp.entity.Mapping;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.DataUpdateException;
@@ -24,7 +20,6 @@ import com.bsp.service.IOrderService;
 import com.bsp.service.IUserService;
 import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Result;
-import com.bsp.vo.UserVO;
 
 /**
  * 订单流转
@@ -35,7 +30,6 @@ import com.bsp.vo.UserVO;
 @Scope(value="prototype")
 @RequestMapping("/order")
 public class OrderController extends BaseController {
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private IUserService userService;
@@ -76,7 +70,6 @@ public class OrderController extends BaseController {
 			return Result.error(e.getMessage());
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(ShiroUtils.getSession().getId() + "获取登录信息失败:" + e.getMessage());
 			return Result.error("由于未知错误，请求失败");
 		}
 		Result result = new Result();
