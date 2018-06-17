@@ -16,6 +16,7 @@ import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.Mapping;
 import com.bsp.entity.User;
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IOrderService;
 
@@ -72,6 +73,9 @@ public class OrderService implements IOrderService{
 	@Override
 	public void addOrder(Integer lbId, String uid, LendingRecord lendingRecord) {
 		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lbId);
+		if(book.getLeft()==0) {
+			throw new DataUpdateException("图书剩余可借数量为0");
+		}
 		User user = userMapper.selectByPrimaryKey(uid);
 		lendingRecord.setUser(user);
 		lendingRecord.setLoanableBook(book);

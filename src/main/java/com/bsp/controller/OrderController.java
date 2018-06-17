@@ -2,6 +2,7 @@ package com.bsp.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.bsp.entity.LoanableBook;
 import com.bsp.entity.Mapping;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.service.IOrderService;
@@ -60,6 +62,7 @@ public class OrderController extends BaseController {
 	 */
 	@RequestMapping("/detail")
 	@ResponseBody
+	@RequiresUser
 	public Result detail(@RequestParam("lbId")Integer idInteger) {
 		User user = null;
 		UserInfor userInfor;
@@ -90,6 +93,9 @@ public class OrderController extends BaseController {
 		try {
 			orderService.addOrder(lbId,uid,lendingRecord);
 		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (DataUpdateException e) {
 			e.printStackTrace();
 			return Result.error(e.getMessage());
 		} catch (Exception e) {
