@@ -1,6 +1,7 @@
 package com.bsp.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,12 +11,14 @@ import com.bsp.dao.LendingRecordMapper;
 import com.bsp.dao.LoanableBookMapper;
 import com.bsp.dao.MappingMapper;
 import com.bsp.dao.UserMapper;
+import com.bsp.dto.OrderQueryObject;
 import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.User;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IOrderService;
+import com.bsp.utils.Page;
 
 @Service
 @Transactional
@@ -84,6 +87,20 @@ public class OrderService implements IOrderService{
 			e.printStackTrace();
 			throw new SystemErrorException("系统异常，插入数据失败");
 		}
+	}
+
+	@Override
+	public Page getAllListOrder(OrderQueryObject queryObject) {
+		List<LendingRecord> list = null;
+		Integer total = null;
+		try {
+			list = lendingRecordMapper.selectByQueryObject(queryObject);
+			total = lendingRecordMapper.getTotalCount(queryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取借阅记录失败");
+		}
+		return new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 	}
 	
 	
