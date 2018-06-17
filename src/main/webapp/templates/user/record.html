@@ -130,7 +130,7 @@
 	</div>
 	<!-- breadcrumb end -->
 	<!-- cart-main-area start -->
-	<div class="cart-main-area" id="record_app">
+	<div class="cart-main-area" id="record_app" v-cloak>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3 col-sm-4">
@@ -163,56 +163,53 @@
 												<div class="product-img">
 													<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
 												</div>
-											</div>											
+											</div>
 										</div>
 										<div class="col-xs-7 col-sm-7 col-md-8">
 											<div class="product-content product-list">
+												<div class="pro-title clearfix">
+													<h3 style="float: left; width: 50%">
+														<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+													</h3>
+												</div>
 												<div class="row">
 													<div class="col-sm-6 clo-md-6">
 														<p>
-															<strong>订单号： {{order.lrId}}</strong><br /> <span
-																v-if="order.lrStruts==0">状态： <span
-																class="label label-success">正常</span> 等待借出方同意<br /></span> <span
-																v-else-if="order.lrStruts==4">状态： <span
-																class="label label-success">正常</span> 等待借出方将图书送至中转站<br /></span>
-															<span v-else-if="order.lrStruts==6">状态： <span
-																class="label label-success">正常</span> 等待借入方取走图书<br /></span> <span
-																v-else-if="order.lrStruts==7">状态： <span
-																class="label label-danger">异常</span> 借入方未按时取走图书，等待借出方取回<br /></span>
-															<span v-else-if="order.lrStruts==8">状态：<span
-																class="label label-success">正常</span> 等待借入方归还图书<br /></span> <span
-																v-else-if="order.lrStruts==9">状态： <span
-																class="label label-danger">异常</span> 借入方未按时归还图书<br /></span> <span
-																v-else-if="order.lrStruts==10">状态：<span
-																class="label label-success">正常</span> 等待借出方取回图书<br /></span>
-															书名： {{order.loanableBook.lbName}}<br /> 出版社:
-															{{order.loanableBook.lbPublishing}}<br /> <span
-																v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
-															<span v-else>借出方同意时间：无<br /></span> <span
-																v-if="order.takeAwayTime!=null">我的取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
-															<span v-else>我的取书时间：无<br /></span> <span
-																v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
-															<span v-else>实际还书时间：无<br /></span> <span
-																v-if="order.backAdmin!=null">图书接受者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
-															<span v-else>图书接受者（借出方->中转站）：无<br /></span>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+															借出方：{{order.loanableBook.user.mail}}<br />
+															联系电话：{{order.loanableBook.phone}}<br />
+															ISBN:{{order.loanableBook.isbn}}<br />
+															数量:{{order.amount}}
 														</p>
 													</div>
-
 													<div class="col-sm-6 clo-md-6">
 														<p>
-															订单时间： {{order.createTime}}<br /> 借出方：
-															{{order.loanableBook.user.mail}}<br /> ISBN:
-															{{order.loanableBook.isbn}}<br /> 所借数量：{{order.amount}}<br />
+															<span v-if="order.lrStruts==0">状态： <span class="label label-success">正常</span> 等待借出方同意<br /></span>
+															<span v-else-if="order.lrStruts==4">状态： <span class="label label-success">正常</span> 借出方已同意申请，等待借出方将图书送至中转站<br /></span>
+															<span v-else-if="order.lrStruts==6">状态： <span class="label label-success">正常</span> 图书已送达中转站，等待借入方取书<br /></span>
+															<span v-else-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+															<span v-else-if="order.lrStruts==8">状态：<span class="label label-success">正常</span> 正在借阅<br /></span>
+															<span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+															<span v-else-if="order.lrStruts==10">状态：<span class="label label-success">正常</span> 等待借出方取回图书<br /></span>
+															<span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+															<span v-else>借出方同意时间：无<br /></span>
 															<span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
-															<span v-else>借出方送到中转站时间：无<br /></span> <span
-																v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
-															<span v-else>应还时间：无<br /></span> <span
-																v-if="order.receiveAdmin!=null">图书接受者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
-															<span v-else>图书接受者（借出方->中转站）：无<br /></span><br/>
+															<span v-else>借出方送到中转站时间：无<br /></span>
+															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+															<span v-else>取书时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+															<span v-else>应还时间：无<br /></span>
+															<span v-else>实际还书时间：无<br /></span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
+															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无</span>
 														</p>
 													</div>
 												</div>
-																												
 												<div class="product-action" v-if="order.lrStruts==0">
 													<a class="cart" href="#"><span>取消订单</span></a>													
 												</div>											
