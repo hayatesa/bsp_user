@@ -15,6 +15,7 @@
 	<!-- This core.css file contents all plugings css file. -->
 	<link rel="stylesheet" href="../../statics/assets/css/core.css">
 	<!-- Theme shortcodes/elements style -->
+	<link rel="stylesheet" href="../../statics/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../../statics/assets/css/shortcode/shortcodes.css">
 	<!-- Theme main style -->
 	<link rel="stylesheet" href="../../statics/assets/style.css">
@@ -27,8 +28,7 @@
 
 	<!-- Modernizr JS -->
 	<script src="../../statics/assets/js/vendor/modernizr-2.8.3.min.js"></script>
-	
-	<link rel="stylesheet" href="../../statics/assets/css/bootstrap.min.css">
+
 	<script
 	src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -138,7 +138,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a onclick="pageto(1)"> 所有图书 </a>
+								<a onclick="pageto(1)"> 所有 </a>
 							</h4>
 						</div>
 					</div>
@@ -164,8 +164,8 @@
 				</div>
 				<div class="col-md-9 col-sm-8" id="list_app" v-cloak>
 					<h2 class="page-heading mt-40">
-						<span class="cat-name">借阅图书</span> 
-						<span class="heading-counter">总共有本{{total}}书.</span>
+						<span class="cat-name">图书检索</span>
+						<span class="heading-counter">共{{total}}册</span>
 						
 					</h2>
 					
@@ -183,20 +183,21 @@
 								<div class="selector-field f-left ml-20 hidden-xs">
 									<form>
 										<label>排序</label> <select name="select" id="sort">
-											<option value="1">累计借出总数: 从高到低</option>
-											<option value="2">累计借出总数: 从低到高</option>
+											<option value="1">借出次数: 从高到低</option>
+											<option value="2">借出次数: 从低到高</option>
 										</select>
 									</form>
 								</div>
 								<div class="selector-field f-left ml-30 hidden-xs">
 									<form action="#">
-										<label>每页显示本数</label> <select name="select" id="limit" >	
+										<label>显示</label> <select name="select" id="limit" >
 											<option value="3">3</option>									
 											<option value="6">6</option>
 											<option value="9">9</option>
 											<option value="12">12</option>
 											<option value="15">15</option>
 										</select>
+										<label>条</label>
 									</form>
 								</div>
 								<div class="selector-field f-right ml-30">
@@ -222,7 +223,7 @@
 												<div class="product-content">
 													<div class="pro-title">
 														<h3>
-															<a :href="'details?lbId='+r.lbId">{{r.lbName}}</a>
+															<a :href="'details?lbId='+r.lbId">《{{r.lbName}}》</a>
 														</h3>
 													</div>
 												</div>
@@ -251,15 +252,15 @@
 													<div class="product-content product-list">
 														<div class="pro-title">
 															<h3 style="float: left; width: 50%">
-																<a :href="'details?lbId='+r.lbId">{{r.lbName}}</a>
+																<a :href="'details?lbId='+r.lbId">《{{r.lbName}}》</a>
 															</h3>
-															<h6 style="float: left; width: 50%" align="right">累计借出总数：{{r.totalLending}}</h6>
+															<h6 style="float: left; width: 50%" align="right">借阅次数：{{r.totalLending}}</h6>
 														</div>
 														<p>
+															出版社：{{r.lbPublishing}}<br /> ISBN：{{r.isbn}}<br />
+															所属用户：{{r.user.mail}} <br />
+															剩余：{{r.left}} （册/套）<br />
 															描述：{{r.lbComment=maxSlice(r.lbComment)}}<br />
-															出版社：{{r.lbPublishing}}<br /> ISBN：{{r.isbn}}<br /> 
-															图书所有者：{{r.user.mail}} <br />
-															剩余可共享图书数量：{{r.left}} <br />
 														</p>
 														<div class="product-action" v-if="r.left!=0">
 															<a class="cart" :href="'borrowed?lbId='+r.lbId"><span>借阅</span></a>
