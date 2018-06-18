@@ -4,6 +4,7 @@ package com.bsp.controller;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,11 +79,15 @@ public class OrderController extends BaseController {
 	
 	@RequestMapping("/submit")
 	@RequiresUser
-	public Result submit(LendingRecord lendingRecord,@RequestParam("lbId")Integer lbId,@RequestParam("uid")String uid) {
-		System.out.println(lbId);
-		System.out.println(uid);
+	public Result submit(@RequestBody LendingRecord lendingRecord) {
+/*		System.out.println(lendingRecord.getAmount());
+		System.out.println(lendingRecord.getLoanPhone());
+		System.out.println(lendingRecord.getLoanableBook().getLbId());*/
+		User user = null;
+		user = ShiroUtils.getToken();
+		lendingRecord.setUser(user);
 		try {
-			orderService.addOrder(lbId,uid,lendingRecord);
+			orderService.addOrder(lendingRecord);
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			return Result.error(e.getMessage());

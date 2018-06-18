@@ -71,14 +71,13 @@ public class OrderService implements IOrderService{
 		return transfer_station;
 	}
 	@Override
-	public void addOrder(Integer lbId, String uid, LendingRecord lendingRecord) {
-		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lbId);
+	public void addOrder(LendingRecord lendingRecord) {
+		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lendingRecord.getLoanableBook().getLbId());
 		if(book.getLeft()==0) {
 			throw new DataUpdateException("图书剩余可借数量为0");
 		}
-		User user = userMapper.selectByPrimaryKey(uid);
-		lendingRecord.setUser(user);
-		lendingRecord.setLoanableBook(book);
+		book.setLeft(book.getLeft()-1);
+		loanableBookMapper.updateByPrimaryKeySelective(book);
 		lendingRecord.setCreateTime(new Date());
 		lendingRecord.setLrStruts(new Byte("0"));
 		try {

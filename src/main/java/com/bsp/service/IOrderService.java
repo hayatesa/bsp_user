@@ -21,10 +21,8 @@ public interface IOrderService {
 	
 	/**
 	 * 添加订单
-	 * @param lbId 图书id
-	 * @param uid 用户id
 	 */
-	void addOrder(Integer lbId, String uid, LendingRecord lendingRecord);
+	void addOrder(LendingRecord lendingRecord);
 	
 	/**
 	 * 获取分页的订单数据
