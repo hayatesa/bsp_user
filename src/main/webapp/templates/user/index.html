@@ -51,7 +51,7 @@
 							<ul>
 								<li><a href="/">首页</a></li>
 								<li><a href="/p/repository">图书检索</a></li>
-								<li v-show="login"><a href="/p/borrowed">借阅记录</a></li>
+								<li v-show="login"><a href="/p/record">借阅记录</a></li>
 								<li v-show="login"><a href="/p/lended">借出记录</a></li>
 								<li v-show="login"><a href="/p/my_share">共享图书</a></li>
 								<li v-show="login"><a href="/p/message_center">消息<span v-show="msgNum"  id="msgNum" class="superscript">{{msgNum}}</span></a></li>
@@ -63,8 +63,8 @@
 					<div class="search-block-top display-inline">
 						<div class="icon-search"></div>
 						<div class="toogle-content">
-							<form id="searchbox">
-								<input v-model="search" type="text" placeholder="搜索" />
+							<form action="javascript:doSearch()" id="searchbox">
+								<input v-model="search" type="text" placeholder="搜索图书" />
 								<button type="button" @click="doSearch" class="button-search"></button>
 							</form>
 						</div>
@@ -96,7 +96,7 @@
 							<ul>
 								<li><a href="/">首页</a></li>
 								<li><a href="/p/repository">图书检索</a></li>
-								<li v-show="login"><a href="/p/borrowed">借阅记录</a></li>
+								<li v-show="login"><a href="/p/record">借阅记录</a></li>
 								<li v-show="login"><a href="/p/lended">借出记录</a></li>
 								<li v-show="login"><a href="/p/my_share">共享图书</a></li>
 								<li v-show="login"><a href="/p/message_center">消息<span v-show="msgNum" id="msgNum" class="mobile-superscript">{{msgNum}}</span></a></li>

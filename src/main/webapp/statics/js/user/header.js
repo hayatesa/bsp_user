@@ -39,6 +39,13 @@ var logout = function () {
     })
 }
 
+var doSearch = function () {
+    if (header_app.search.trim()) {
+        var search = encodeURI(header_app.search.trim());
+        window.location.href='/p/repository?search='+search;
+    }
+}
+
 var header_app=new Vue({
     el: "#header-app",
     data: {
@@ -49,12 +56,7 @@ var header_app=new Vue({
     },
     methods: {
         logout: logout,
-        doSearch: function () {
-            if (this.search.trim()) {
-                var search = encodeURI(this.search.trim());
-                window.location.href='/p/repository?search='+search;
-            }
-        }
+        doSearch: doSearch
     },
     created: init
 })
