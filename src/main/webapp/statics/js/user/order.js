@@ -15,15 +15,15 @@ var doJudge = function() {
 var doSubmit = function() {
 	var app = this;
 	var phone = $('#phone').val();
+	app.lendingRecord.loanPhone = phone;
+	app.lendingRecord.amount = app.amount;
+	app.lendingRecord.loanableBook.lbId = plbId;
 	$.ajax({
         url: "/order/submit",
-        data:{
-        	lbId:plbId,
-        	uid:app.user.uuid,
-        	loanPhone:phone,
-        	amount:app.amount
-        },
+        type: "post",
         dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(app.lendingRecord),
 　　 	success: function(result){
              if(result.code == 0){
             	 alert("提交申请成功！");
@@ -46,7 +46,12 @@ var order = new Vue({
 		datas:[],//书的信息
 		lbId:[],//当前书的id
 		user:[],//当前登录的用户
-		amount:1//借书的数量
+		amount:1,//借书的数量
+		lendingRecord:{
+			"amount":[],
+		 	"loanPhone":[],
+			"loanableBook":{"lbId":[]},
+		}
 	},
 	created: function () {
 			var self = this;

@@ -71,14 +71,13 @@ public class OrderService implements IOrderService{
 		return transfer_station;
 	}
 	@Override
-	public void addOrder(Integer lbId, String uid, LendingRecord lendingRecord) {
-		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lbId);
+	public void addOrder(LendingRecord lendingRecord) {
+		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lendingRecord.getLoanableBook().getLbId());
 		if(book.getLeft()==0) {
 			throw new DataUpdateException("图书剩余可借数量为0");
 		}
-		User user = userMapper.selectByPrimaryKey(uid);
-		lendingRecord.setUser(user);
-		lendingRecord.setLoanableBook(book);
+		book.setLeft(book.getLeft()-1);
+		loanableBookMapper.updateByPrimaryKeySelective(book);
 		lendingRecord.setCreateTime(new Date());
 		lendingRecord.setLrStruts(new Byte("0"));
 		try {
@@ -101,6 +100,24 @@ public class OrderService implements IOrderService{
 			throw new SystemErrorException("系统错误，获取借阅记录失败");
 		}
 		return new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
+	}
+
+	@Override
+	public void updata(Integer lrId) {
+		LendingRecord record = null;
+		try {
+			record = lendingRecordMapper.selectByPrimaryKey(lrId);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取订单记录失败");
+		}
+		record.setLrStruts(new Byte("1"));
+		try {
+			lendingRecordMapper.updateByPrimaryKeySelective(record);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，更新订单记录失败");
+		}
 	}
 	
 	
