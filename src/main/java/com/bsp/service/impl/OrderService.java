@@ -72,12 +72,23 @@ public class OrderService implements IOrderService{
 	}
 	@Override
 	public void addOrder(LendingRecord lendingRecord) {
-		LoanableBook book = loanableBookMapper.selectByPrimaryKey(lendingRecord.getLoanableBook().getLbId());
+		LoanableBook book = null;
+		try {
+			book = loanableBookMapper.selectByPrimaryKey(lendingRecord.getLoanableBook().getLbId());
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			throw new SystemErrorException("系统异常，获取图书数据失败");
+		}
 		if(book.getLeft()==0) {
 			throw new DataUpdateException("图书剩余可借数量为0");
 		}
 		book.setLeft(book.getLeft()-1);
-		loanableBookMapper.updateByPrimaryKeySelective(book);
+		try {
+			loanableBookMapper.updateByPrimaryKeySelective(book);
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			throw new SystemErrorException("系统异常，更新图书数据失败");
+		}
 		lendingRecord.setCreateTime(new Date());
 		lendingRecord.setLrStruts(new Byte("0"));
 		try {
