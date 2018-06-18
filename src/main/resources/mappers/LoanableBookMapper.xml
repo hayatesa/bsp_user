@@ -271,7 +271,7 @@
       lb_status = #{lbStatus,jdbcType=TINYINT},
       is_delete = #{isDelete,jdbcType=TINYINT},
       sc_id = #{secondaryClassification.scId,jdbcType=INTEGER},
-      uuid = #{user.uuid,jdbcType=VARCHAR}
+      uuid = #{user.uuid,jdbcType=VARCHAR},
       left = #{left,jdbcType=INTEGER},
     where lb_id = #{lbId,jdbcType=INTEGER}
   </update>
