@@ -31,6 +31,7 @@ public class InRecordControl {
 		System.out.println("页大小："+queryObject.getLimit());
 		System.out.println("当前页："+queryObject.getPageNumber());
 		System.out.println("订单状态："+queryObject.getStatus());
+		System.out.println("搜索字段："+queryObject.getSearch());
 		queryObject.setUuid("d500618bd4e4473a8abbcd53b6f29ece");
 		Page page = null;
 		try {

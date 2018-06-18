@@ -148,10 +148,47 @@
 				</div>
 				<div class="col-md-9 col-sm-8">
 					<h2 class="page-heading mt-40">
-						<span v-show="showPage==0" class="cat-name">正在进行</span>
-						<span v-show="showPage==1" class="cat-name">异常记录</span>
-						<span v-show="showPage==2" class="cat-name">已经结束</span>
+						<div v-show="showPage==0" id="row">
+							<div class="col-sm-6 clo-md-6">
+								<span class="cat-name">正在进行</span>
+							</div>
+							<div class="col-sm-6 clo-md-6">								
+								<div class="input-group">                           		
+                                	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search0" v-model="ingParams.search"/>
+                                	<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(0)">搜索</button>
+                               		</span>
+                       			 </div>
+							</div>
+						</div>
+						<div v-show="showPage==1" id="row">
+							<div class="col-sm-6 clo-md-6">
+								<span class="cat-name">异常记录</span>
+							</div>
+							<div class="col-sm-6 clo-md-6">								
+								<div class="input-group">                           		
+                                	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search1" v-model="bugPageParams.search"/>
+                                	<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(1)">搜索</button>
+                               		</span>
+                       			 </div>
+							</div>
+						</div>
+						<div v-show="showPage==2" id="row">
+							<div class="col-sm-6 clo-md-6">
+								<span class="cat-name">已经结束</span>
+							</div>
+							<div class="col-sm-6 clo-md-6">								
+								<div class="input-group">                           		
+                                	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search2" v-model="edPageParams.search"/>
+                                	<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(2)">搜索</button>
+                               		</span>
+                       			 </div>
+							</div>
+						</div>
 					</h2>
+					<h5 class="page-header"></h5>
 					<div class="shop-page-bar">
 						<!-- Tab panes -->
 						<div class="tab-content">
@@ -181,7 +218,7 @@
 															借出方：{{order.loanableBook.user.mail}}<br />
 															联系电话：{{order.loanableBook.phone}}<br />
 															ISBN:{{order.loanableBook.isbn}}<br />
-															数量:{{order.amount}}
+															所借数量:{{order.amount}}
 														</p>
 													</div>
 													<div class="col-sm-6 clo-md-6">
@@ -216,7 +253,7 @@
 											</div>									
 										</div>
 									</div>
-									<ul class="shop-pagi display-inline" v-if="page!=1">
+									<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
 
 										<li><a @click="goIngPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>															
 										<li><a
@@ -237,13 +274,159 @@
 								</div>
 							</div>
 							<div v-show="showPage==1">
-								<div class="row">
-								异常记录
+								<div role="tabpanel" class="tab-pane" id="profile">
+									<div class="row mb-50" v-for="order in bugPage">
+										<div class="col-xs-5 col-sm-5 col-md-4">
+											<div class="product-wrapper">
+												<div class="product-img">
+													<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-8">
+											<div class="product-content product-list">
+												<div class="pro-title clearfix">
+													<h3 style="float: left; width: 50%">
+														<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+													</h3>
+												</div>
+												<div class="row">
+													<div class="col-sm-6 clo-md-6">
+														<p>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+															借出方：{{order.loanableBook.user.mail}}<br />
+															联系电话：{{order.loanableBook.phone}}<br />
+															ISBN:{{order.loanableBook.isbn}}<br />
+															所借数量:{{order.amount}}
+														</p>
+													</div>
+													<div class="col-sm-6 clo-md-6">
+														<p>										
+															<span v-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>													
+															<span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>															
+															<span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+															<span v-else>借出方同意时间：无<br /></span>
+															<span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+															<span v-else>借出方送到中转站时间：无<br /></span>
+															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+															<span v-else>取书时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+															<span v-else>应还时间：无<br /></span>
+															<span v-else>实际还书时间：无<br /></span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
+															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无</span>
+														</p>
+													</div>
+												</div>
+												<div class="product-action" v-if="order.lrStruts==0">
+													<a class="cart" href="#"><span>取消订单</span></a>													
+												</div>											
+											</div>									
+										</div>
+									</div>
+									<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
+
+										<li><a @click="goBugPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>															
+										<li><a
+											@click="goBugPage(currPage>1?currPage-1:currPage)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (bugPageBar.endPageIndex-bugPageBar.startPageIndex+1)"
+											:class="{active:(bugPageBar.startPageIndex+n-1)==currPage}">
+											<a @click="goBugPage(bugPageBar.startPageIndex+n-1)"
+											href="javascript:;">{{bugPageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="goBugPage(currPage<page?currPage+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+										<li><a  @click="goBugPage(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+
+									</ul>
 								</div>
 							</div>
 							<div v-show="showPage==2">
-								<div class="row">
-								已经结束
+								<div role="tabpanel" class="tab-pane" id="profile">
+									<div class="row mb-50" v-for="order in edPage">
+										<div class="col-xs-5 col-sm-5 col-md-4">
+											<div class="product-wrapper">
+												<div class="product-img">
+													<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-8">
+											<div class="product-content product-list">
+												<div class="pro-title clearfix">
+													<h3 style="float: left; width: 50%">
+														<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+													</h3>
+												</div>
+												<div class="row">
+													<div class="col-sm-6 clo-md-6">
+														<p>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+															借出方：{{order.loanableBook.user.mail}}<br />
+															联系电话：{{order.loanableBook.phone}}<br />
+															ISBN:{{order.loanableBook.isbn}}<br />
+															所借数量:{{order.amount}}
+														</p>
+													</div>
+													<div class="col-sm-6 clo-md-6">
+														<p>
+															<span v-if="order.lrStruts==1">状态： <span class="label label-warning">失效</span> 借入方取消申请<br /></span>
+															<span v-else-if="order.lrStruts==2">状态： <span class="label label-warning">失效</span> 借出方拒绝申请<br /></span>
+															<span v-else-if="order.lrStruts==3">状态： <span class="label label-warning">失效</span> 申请超时<br /></span>
+															<span v-else-if="order.lrStruts==5">状态： <span class="label label-warning">失效</span> 借出方未按时将图书送至中转站<br /></span>
+															<span v-else-if="order.lrStruts==11">状态：<span class="label label-info">捐赠</span><br /></span>
+															<span v-else-if="order.lrStruts==12">状态： <span class="label label-primary">完成</span><br /></span>													
+															<span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+															<span v-else>借出方同意时间：无<br /></span>
+															<span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+															<span v-else>借出方送到中转站时间：无<br /></span>
+															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+															<span v-else>取书时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+															<span v-else>应还时间：无<br /></span>
+															<span v-else>实际还书时间：无<br /></span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
+															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（借出方->中转站）：无</span>
+														</p>
+													</div>
+												</div>
+												<div class="product-action" v-if="order.lrStruts==0">
+													<a class="cart" href="#"><span>取消订单</span></a>													
+												</div>											
+											</div>									
+										</div>
+									</div>
+									<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
+
+										<li><a @click="goEdPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>															
+										<li><a
+											@click="goEdPage(currPage>1?currPage-1:currPage)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+										<li
+											v-for="n in (edPageBar.endPageIndex-edPageBar.startPageIndex+1)"
+											:class="{active:(edPageBar.startPageIndex+n-1)==currPage}">
+											<a @click="goEdPage(edPageBar.startPageIndex+n-1)"
+											href="javascript:;">{{edPageBar.startPageIndex+n-1}}</a>
+										</li>
+										<li><a
+											@click="goEdPage(currPage<page?currPage+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+										<li><a  @click="goEdPage(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+
+									</ul>
 								</div>
 							</div>
 						</div>
