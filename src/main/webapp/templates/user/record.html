@@ -248,7 +248,7 @@
 													</div>
 												</div>
 												<div class="product-action" v-if="order.lrStruts==0">
-													<a class="cart" href="#"><span>取消订单</span></a>													
+													<a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span>取消订单</span></a>														
 												</div>											
 											</div>									
 										</div>
@@ -324,7 +324,7 @@
 													</div>
 												</div>
 												<div class="product-action" v-if="order.lrStruts==0">
-													<a class="cart" href="#"><span>取消订单</span></a>													
+													<a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span>取消订单</span></a>												
 												</div>											
 											</div>									
 										</div>
@@ -404,7 +404,7 @@
 													</div>
 												</div>
 												<div class="product-action" v-if="order.lrStruts==0">
-													<a class="cart" href="#"><span>取消订单</span></a>													
+													<a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span>取消订单</span></a>													
 												</div>											
 											</div>									
 										</div>

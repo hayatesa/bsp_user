@@ -47,5 +47,24 @@ public class InRecordControl {
 		result.put("page", page);
 		return result;
 	}
+	 /**
+	  * 取消订单
+	  * @return
+	  */
+	@RequestMapping("cancel")
+	public Result cancel(@RequestParam("lrId")Integer lrId) {
+		try {
+			orderService.updata(lrId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return Result.error("由于未知错误，请求失败");
+		}
+		Result result = new Result();
+		result.put("msg", "取消订单成功！");
+		return result;
+	}
 
 }

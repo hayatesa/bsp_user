@@ -31,4 +31,6 @@ public interface IOrderService {
 	 * @param queryObject
 	 */
 	Page getAllListOrder(OrderQueryObject queryObject);
+	
+	void updata(Integer lrId);
 }

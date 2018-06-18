@@ -102,6 +102,24 @@ public class OrderService implements IOrderService{
 		}
 		return new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
 	}
+
+	@Override
+	public void updata(Integer lrId) {
+		LendingRecord record = null;
+		try {
+			record = lendingRecordMapper.selectByPrimaryKey(lrId);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取订单记录失败");
+		}
+		record.setLrStruts(new Byte("1"));
+		try {
+			lendingRecordMapper.updateByPrimaryKeySelective(record);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，更新订单记录失败");
+		}
+	}
 	
 	
 

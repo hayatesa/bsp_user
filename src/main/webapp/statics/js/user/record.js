@@ -145,6 +145,25 @@ var record_app = new Vue({
             }
            this.showPage = page;
         },
+        cancel: function(t_lrId){
+        	var app = this;
+        	 $.ajax({
+     	        url: '/in_record/cancel',
+     	        data: {
+     	        	lrId : t_lrId
+     	        },
+     	        success: function (data) {
+     	            if (data.code==0) {    	                
+     	            	alert(data.msg);
+     	            	app.switchPage(2);
+     	            } else if (data.code==401) { //未登录
+     	                window.location.href='/login'
+     	            } else {
+     	                alert(data.msg);
+     	            }
+     	        }
+     	    });
+        },
         loadIngOrder:loadIngOrder,
         loadBugOrder:loadBugOrder,
         loadEdgOrder:loadEdgOrder,
