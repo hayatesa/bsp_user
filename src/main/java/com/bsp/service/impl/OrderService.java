@@ -82,7 +82,7 @@ public class OrderService implements IOrderService{
 		if(book.getLeft()==0) {
 			throw new DataUpdateException("图书剩余可借数量为0");
 		}
-		book.setLeft(book.getLeft()-1);
+		book.setLeft(book.getLeft()-lendingRecord.getAmount());
 		try {
 			loanableBookMapper.updateByPrimaryKeySelective(book);
 		} catch (Exception e1) {			
@@ -121,6 +121,20 @@ public class OrderService implements IOrderService{
 		} catch (Exception e) {			
 			e.printStackTrace();
 			throw new SystemErrorException("系统错误，获取订单记录失败");
+		}
+		LoanableBook book = null;
+		try {
+			book = loanableBookMapper.selectByPrimaryKey(record.getLoanableBook().getLbId());
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			throw new SystemErrorException("系统异常，获取图书数据失败");
+		}
+		book.setLeft(book.getLeft()+record.getAmount());
+		try {
+			loanableBookMapper.updateByPrimaryKeySelective(book);
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			throw new SystemErrorException("系统异常，更新图书数据失败");
 		}
 		record.setLrStruts(new Byte("1"));
 		try {
