@@ -12,10 +12,12 @@ import com.bsp.dao.PrimaryClassificationMapper;
 import com.bsp.dao.SecondaryClassificationMapper;
 import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.dto.QueryObject;
+import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.News;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.service.ITestAspectService;
 import com.bsp.utils.Result;
 
 
@@ -27,7 +29,12 @@ public class TestController {
 	@Autowired private PrimaryClassificationMapper primaryClassificationMapper;
 	@Autowired private LoanableBookMapper loanableBookMapper;
 	@Autowired private NewsMapper newsMapper;
+	@Autowired private ITestAspectService testAspectService;
 	
+	public void setTestAspectService(ITestAspectService testAspectService) {
+		this.testAspectService = testAspectService;
+	}
+
 	public void setNewsMapper(NewsMapper newsMapper) {
 		this.newsMapper = newsMapper;
 	}
@@ -91,6 +98,14 @@ public class TestController {
 		rs.put("list",list);
 		rs.put("size", list.size());
 		return rs;
+	}
+	
+	@RequestMapping("aspect")
+	public Result testAspect() {
+		LendingRecord lr = new LendingRecord();
+		lr.setAmount(354644455);
+		testAspectService.doTest(lr);
+		return Result.success();
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.bsp.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.bsp.dao.NewsMapper;
 import com.bsp.dao.OutdatedNewsMapper;
+import com.bsp.dao.UserMapper;
 import com.bsp.dto.QueryObject;
 import com.bsp.entity.News;
 import com.bsp.entity.OutdatedNews;
+import com.bsp.entity.User;
 import com.bsp.exceptions.SystemErrorException;
+import com.bsp.exceptions.UserDefinedException;
 import com.bsp.service.IMessageService;
 import com.bsp.utils.Page;
 
@@ -24,6 +28,12 @@ public class MessageService implements IMessageService {
 	private NewsMapper newsMapper;
 	@Autowired
 	private OutdatedNewsMapper outdatedNewsMapper;
+	@Autowired
+	private UserMapper userMapper;
+
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
 	
 	public void setOutdatedNewsMapper(OutdatedNewsMapper outdatedNewsMapper) {
 		this.outdatedNewsMapper = outdatedNewsMapper;
@@ -123,6 +133,25 @@ public class MessageService implements IMessageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("删除消息失败");
+		}
+	}
+	
+	@Override
+	public void sendMessage(String mail, String subject, String content) {
+		News news = new News();
+		news.setnContent(content);
+		news.setNewsTime(new Date());
+		news.setnSubject(subject);
+		List<User> list = userMapper.selectByMail(mail);
+		if (list.size()==0) {
+			throw new UserDefinedException("用户不存在");
+		}
+		news.setUser(list.get(0));
+		try {
+			newsMapper.insertSelective(news);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统异常，发送信息失败");
 		}
 	}
 

@@ -10,11 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bsp.dao.LendingRecordMapper;
 import com.bsp.dao.LoanableBookMapper;
 import com.bsp.dao.MappingMapper;
-import com.bsp.dao.UserMapper;
 import com.bsp.dto.OrderQueryObject;
 import com.bsp.entity.LendingRecord;
 import com.bsp.entity.LoanableBook;
-import com.bsp.entity.User;
 import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IOrderService;
@@ -34,12 +32,6 @@ public class OrderService implements IOrderService{
 	private LendingRecordMapper lendingRecordMapper;
 	public void setLendingRecordMapper(LendingRecordMapper lendingRecordMapper) {
 		this.lendingRecordMapper = lendingRecordMapper;
-	}
-	
-	@Autowired
-	private UserMapper userMapper;
-	public void setUserMapper(UserMapper userMapper) {
-		this.userMapper = userMapper;
 	}
 	
 	@Autowired
@@ -78,6 +70,9 @@ public class OrderService implements IOrderService{
 		} catch (Exception e2) {
 			e2.printStackTrace();
 			throw new SystemErrorException("系统异常，获取图书数据失败");
+		}
+		if (book.getUser().getUuid().equals(lendingRecord.getUser().getUuid())) {
+			throw new DataUpdateException("不允许借阅自己共享的图书");			
 		}
 		if(book.getLeft()==0) {
 			throw new DataUpdateException("图书剩余可借数量为0");
