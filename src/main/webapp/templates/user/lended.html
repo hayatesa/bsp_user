@@ -4,12 +4,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>xxx图书共享-借出记录</title>
+	<title>借阅记录</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- favicon
-    ============================================ -->
-	<link rel="shortcut icon" type="image/x-icon" href="../../statics/assets/img/logo/logo.jpg">
+        ============================================ -->
+	<link rel="shortcut icon" type="image/x-icon"
+		  href="../../statics/assets/img/logo/logo.jpg">
 
 	<!-- All css files are included here. -->
 	<!-- Bootstrap framework main css -->
@@ -17,7 +18,8 @@
 	<!-- This core.css file contents all plugings css file. -->
 	<link rel="stylesheet" href="../../statics/assets/css/core.css">
 	<!-- Theme shortcodes/elements style -->
-	<link rel="stylesheet" href="../../statics/assets/css/shortcode/shortcodes.css">
+	<link rel="stylesheet"
+		  href="../../statics/assets/css/shortcode/shortcodes.css">
 	<!-- Theme main style -->
 	<link rel="stylesheet" href="../../statics/assets/style.css">
 	<!-- Responsive css -->
@@ -36,104 +38,51 @@
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 <!-- header start -->
-<header class="header-pos blg">
+<header v-cloak id="header-app" class="header-pos">
 	<div class="header-area header-middle">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-2 col-sm-3 col-xs-12">
 					<div class="logo">
-						<a href="index.html"><img src="../../statics/assets/img/logo/logo.jpg" alt="" /></a>
+						<a href="/"><img src="../../statics/assets/img/logo/logo.jpg"
+										 alt="" /></a>
 					</div>
 				</div>
 				<div class="col-md-10 col-sm-9 col-xs-12 text-right xs-center">
 					<div class="main-menu display-inline hidden-sm hidden-xs">
 						<nav>
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li><a href="../../statics/assets/shop.html">Sofa</a></li>
-								<li><a href="#">Elements</a></li>
-								<li><a href="../../statics/assets/shop.html">Lighting</a></li>
-								<li><a href="#">Pages</a></li>
-								<li><a href="#">What's New</a></li>
+								<li><a href="/">首页</a></li>
+								<li><a href="/p/repository">图书检索</a></li>
+								<li v-show="login"><a href="/p/borrowed">借阅记录</a></li>
+								<li v-show="login"><a href="/p/lended">借出记录</a></li>
+								<li v-show="login"><a href="/p/my_share">共享图书</a></li>
+								<li v-show="login"><a href="/p/message_center">消息<span
+										v-show="msgNum" id="msgNum" class="superscript">{{msgNum}}</span></a></li>
+								<li v-show="!login"><a href="/login">登录</a></li>
+								<li v-show="!login"><a href="/p/register">注册账号</a></li>
 							</ul>
 						</nav>
 					</div>
 					<div class="search-block-top display-inline">
 						<div class="icon-search"></div>
 						<div class="toogle-content">
-							<form action="#" id="searchbox">
-								<input type="text" placeholder="Search" />
-								<button class="button-search"></button>
+							<form id="searchbox">
+								<input v-model="search" type="text" placeholder="搜索" />
+								<button type="button" @click="doSearch" class="button-search"></button>
 							</form>
 						</div>
-					</div>
-					<div class="shopping-cart ml-20 display-inline">
-						<a href="../../statics/assets/cart.html"><b>shopping cart</b>(2)</a>
-						<ul>
-							<li>
-								<div class="cart-img">
-									<a href="#"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
-								</div>
-								<div class="cart-content">
-									<h3><a href="#"> 1 X Faded...</a> </h3>
-									<span><b>S, Orange</b></span>
-									<span class="cart-price">£ 16.84</span>
-								</div>
-								<div class="cart-del">
-									<i class="fa fa-times-circle"></i>
-								</div>
-							</li>
-							<li>
-								<div class="cart-img">
-									<a href="#"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
-								</div>
-								<div class="cart-content">
-									<h3><a href="#"> 1 X Faded...</a> </h3>
-									<span><b>S, Orange</b></span>
-									<span class="cart-price">£ 16.84</span>
-								</div>
-								<div class="cart-del">
-									<i class="fa fa-times-circle"></i>
-								</div>
-							</li>
-							<li>
-								<div class="shipping">
-									<span class="f-left">Shipping </span>
-									<span class="f-right cart-price"> $7.00</span>
-								</div>
-								<hr class="shipping-border" />
-								<div class="shipping">
-									<span class="f-left"> Total </span>
-									<span class="f-right cart-price">$692.00</span>
-								</div>
-							</li>
-							<li class="checkout m-0"><a href="#">checkout <i class="fa fa-angle-right"></i></a></li>
-						</ul>
 					</div>
 					<div class="setting-menu display-inline">
 						<div class="icon-nav current"></div>
 						<ul class="content-nav toogle-content">
 							<li class="currencies-block-top">
-								<div class="current"><b>Currency : USD</b></div>
+								<!--<div class="current"><b>My Account</b></div>-->
 								<ul>
-									<li><a href="#">Dollar (USD)</a></li>
-									<li><a href="#">Pound (GBP)</a></li>
-								</ul>
-							</li>
-							<li class="currencies-block-top">
-								<div class="current"><b>English</b></div>
-								<ul>
-									<li><a href="#">English</a></li>
-									<li><a href="#">اللغة العربية</a></li>
-								</ul>
-							</li>
-							<li class="currencies-block-top">
-								<div class="current"><b>My Account</b></div>
-								<ul>
-									<li><a href="#">My account</a></li>
-									<li><a href="#">My wishlist</a></li>
-									<li><a href="#">Checkout</a></li>
-									<li><a href="#">Log in</a></li>
+									<li v-show="login"><a href="/p/user_center">账户信息</a></li>
+									<li @click="logout" v-show="login"><a href="javascript:;">退出登录</a></li>
+									<li v-show="!login"><a href="/login">登录</a></li>
+									<li v-show="!login"><a href="/p/register">注册账号</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -149,12 +98,15 @@
 					<div class="mobile-menu">
 						<nav id="mobile-menu-active">
 							<ul>
-								<li><a href="#">Home</a></li>
-								<li><a href="../../statics/assets/shop.html">Sofa</a></li>
-								<li><a href="#">Elements</a></li>
-								<li><a href="../../statics/assets/shop.html">Lighting</a></li>
-								<li><a href="#">Pages</a></li>
-								<li><a href="#">What's New</a></li>
+								<li><a href="/">首页</a></li>
+								<li><a href="/p/repository">图书检索</a></li>
+								<li v-show="login"><a href="/p/borrowed">借阅记录</a></li>
+								<li v-show="login"><a href="/p/lended">借出记录</a></li>
+								<li v-show="login"><a href="/p/my_share">共享图书</a></li>
+								<li v-show="login"><a href="/p/message_center">消息<span
+										v-show="msgNum" id="msgNum" class="mobile-superscript">{{msgNum}}</span></a></li>
+								<li v-show="!login"><a href="/login">登录</a></li>
+								<li v-show="!login"><a href="/p/register">注册账号</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -164,6 +116,7 @@
 	</div>
 </header>
 <!-- header end -->
+
 <div class="space-custom"></div>
 <!-- breadcrumb start -->
 <div class="breadcrumb-area">
@@ -177,80 +130,316 @@
 </div>
 <!-- breadcrumb end -->
 <!-- cart-main-area start -->
-<div class="cart-main-area">
+<div class="cart-main-area" id="record_app" v-cloak>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-				<form action="#">
-					<div class="table-content table-responsive">
-						<table>
-							<thead>
-							<tr>
-								<th class="product-thumbnail">Image</th>
-								<th class="product-name">Product</th>
-								<th class="product-price">Price</th>
-								<th class="product-quantity">Quantity</th>
-								<th class="product-subtotal">Total</th>
-								<th class="product-remove">Remove</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td class="product-thumbnail"><a href="#"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a></td>
-								<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-								<td class="product-price"><span class="amount">£165.00</span></td>
-								<td class="product-quantity"><input type="number" value="1" /></td>
-								<td class="product-subtotal">£165.00</td>
-								<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-							</tr>
-							<tr>
-								<td class="product-thumbnail"><a href="#"><img src="../../statics/assets/img/product/2.jpg" alt="" /></a></td>
-								<td class="product-name"><a href="#">Vestibulum dictum magna</a></td>
-								<td class="product-price"><span class="amount">£50.00</span></td>
-								<td class="product-quantity"><input type="number" value="1" /></td>
-								<td class="product-subtotal">£50.00</td>
-								<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-							</tr>
-							</tbody>
-						</table>
+			<div class="col-md-3 col-sm-4">
+				<div class="column">
+					<h2 class="title-block">借出记录</h2>
+					<div class="sidebar-widget">
+						<ul class="sidebar-menu">
+							<li><a @click="switchPage(0)" href="javascript:;">正在进行</a></li>
+							<li><a @click="switchPage(1)" href="javascript:;">异常记录 </a></li>
+							<li><a @click="switchPage(2)" href="javascript:;">已经结束 </a></li>
+						</ul>
 					</div>
-					<div class="row">
-						<div class="col-md-8 col-sm-7 col-xs-12">
-							<div class="buttons-cart">
-								<input type="submit" value="Update Cart" />
-								<a href="#">Continue Shopping</a>
-							</div>
-							<div class="coupon">
-								<h3>Coupon</h3>
-								<p>Enter your coupon code if you have one.</p>
-								<input type="text" placeholder="Coupon code" />
-								<input type="submit" value="Apply Coupon" />
+
+				</div>
+			</div>
+			<div class="col-md-9 col-sm-8">
+				<h2 class="page-heading mt-40">
+					<div v-show="showPage==0" id="row">
+						<div class="col-sm-6 clo-md-6">
+							<span class="cat-name">正在进行</span>
+						</div>
+						<div class="col-sm-6 clo-md-6">
+							<div class="input-group">
+								<input type="text" placeholder="输入订单号" class="form-control" style="height: 38px" id="r_search0" v-model="ingParams.search"/>
+								<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(0)">搜索</button>
+                               		</span>
 							</div>
 						</div>
-						<div class="col-md-4 col-sm-5 col-xs-12">
-							<div class="cart_totals">
-								<h2>Cart Totals</h2>
-								<table>
-									<tbody>
-									<tr class="cart-subtotal">
-										<th>Subtotal</th>
-										<td><span class="amount">£215.00</span></td>
-									</tr>
-									<tr class="order-total">
-										<th>Total</th>
-										<td>
-											<strong><span class="amount">£215.00</span></strong>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="wc-proceed-to-checkout">
-									<a href="#">Proceed to Checkout</a>
+					</div>
+					<div v-show="showPage==1" id="row">
+						<div class="col-sm-6 clo-md-6">
+							<span class="cat-name">异常记录</span>
+						</div>
+						<div class="col-sm-6 clo-md-6">
+							<div class="input-group">
+								<input type="text" placeholder="输入订单号" class="form-control" style="height: 38px" id="r_search1" v-model="bugPageParams.search"/>
+								<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(1)">搜索</button>
+                               		</span>
+							</div>
+						</div>
+					</div>
+					<div v-show="showPage==2" id="row">
+						<div class="col-sm-6 clo-md-6">
+							<span class="cat-name">已经结束</span>
+						</div>
+						<div class="col-sm-6 clo-md-6">
+							<div class="input-group">
+								<input type="text" placeholder="输入订单号" class="form-control" style="height: 38px" id="r_search2" v-model="edPageParams.search"/>
+								<span class="input-group-btn">
+                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(2)">搜索</button>
+                               		</span>
+							</div>
+						</div>
+					</div>
+				</h2>
+				<h5 class="page-header"></h5>
+				<div class="shop-page-bar">
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div v-show="showPage==0">
+							<div role="tabpanel" class="tab-pane" id="profile">
+								<div class="row mb-50" v-for="order in ingPage">
+									<div class="col-xs-5 col-sm-5 col-md-4">
+										<div class="product-wrapper">
+											<div class="product-img">
+												<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-8">
+										<div class="product-content product-list">
+											<div class="pro-title clearfix">
+												<h3 style="float: left; width: 50%">
+													<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+												</h3>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+														借入方：{{order.user.mail}}<br />
+														联系电话：{{order.user.phone}}<br />
+														ISBN:{{order.loanableBook.isbn}}<br />
+														所借数量:{{order.amount}}
+													</p>
+												</div>
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span v-if="order.lrStruts==0">状态： <span class="label label-success">正常</span> 等待借入方同意<br /></span>
+														<span v-else-if="order.lrStruts==4">状态： <span class="label label-success">正常</span> 借入方已同意申请，等待借入方将图书送至中转站<br /></span>
+														<span v-else-if="order.lrStruts==6">状态： <span class="label label-success">正常</span> 图书已送达中转站，等待借入方取书<br /></span>
+														<span v-else-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+														<span v-else-if="order.lrStruts==8">状态：<span class="label label-success">正常</span> 正在借阅<br /></span>
+														<span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+														<span v-else-if="order.lrStruts==10">状态：<span class="label label-success">正常</span> 等待借入方取回图书<br /></span>
+														<span v-if="order.agreeTime!=null">借入方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+														<span v-else>借入方同意时间：无<br /></span>
+														<span v-if="order.sendToTime!=null">借入方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+														<span v-else>借入方送到中转站时间：无<br /></span>
+														<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+														<span v-else>取书时间：无<br /></span>
+														<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+														<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+														<span v-else>应还时间：无<br /></span>
+														<span v-else>实际还书时间：无<br /></span>
+														<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无<br /></span>
+														<span v-if="order.receiveAdmin!=null">图书接收者（借入方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无</span>
+													</p>
+												</div>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="agree(order.lrId)"><span>同意借出</span></a>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="deny(order.lrId)"><span>拒绝借出</span></a>
+											</div>
+										</div>
+									</div>
 								</div>
+								<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
+
+									<li><a @click="goIngPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
+									<li><a
+											@click="goIngPage(currPage>1?currPage-1:currPage)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+									<li
+											v-for="n in (ingPageBar.endPageIndex-ingPageBar.startPageIndex+1)"
+											:class="{active:(ingPageBar.startPageIndex+n-1)==currPage}">
+										<a @click="goIngPage(ingPageBar.startPageIndex+n-1)"
+										   href="javascript:;">{{ingPageBar.startPageIndex+n-1}}</a>
+									</li>
+									<li><a
+											@click="goIngPage(currPage<page?currPage+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+									<li><a  @click="goIngPage(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+
+								</ul>
+							</div>
+						</div>
+						<div v-show="showPage==1">
+							<div role="tabpanel" class="tab-pane" id="profile">
+								<div class="row mb-50" v-for="order in bugPage">
+									<div class="col-xs-5 col-sm-5 col-md-4">
+										<div class="product-wrapper">
+											<div class="product-img">
+												<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-8">
+										<div class="product-content product-list">
+											<div class="pro-title clearfix">
+												<h3 style="float: left; width: 50%">
+													<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+												</h3>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+														借入方：{{order.user.mail}}<br />
+														联系电话：{{order.user.phone}}<br />
+														ISBN:{{order.loanableBook.isbn}}<br />
+														所借数量:{{order.amount}}
+													</p>
+												</div>
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span v-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+														<span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+														<span v-if="order.agreeTime!=null">借入方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+														<span v-else>借入方同意时间：无<br /></span>
+														<span v-if="order.sendToTime!=null">借入方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+														<span v-else>借入方送到中转站时间：无<br /></span>
+														<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+														<span v-else>取书时间：无<br /></span>
+														<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+														<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+														<span v-else>应还时间：无<br /></span>
+														<span v-else>实际还书时间：无<br /></span>
+														<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无<br /></span>
+														<span v-if="order.receiveAdmin!=null">图书接收者（借入方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无</span>
+													</p>
+												</div>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="agree(order.lrId)"><span>同意借出</span></a>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="deny(order.lrId)"><span>拒绝借出</span></a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
+
+									<li><a @click="goBugPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
+									<li><a
+											@click="goBugPage(currPage>1?currPage-1:currPage)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+									<li
+											v-for="n in (bugPageBar.endPageIndex-bugPageBar.startPageIndex+1)"
+											:class="{active:(bugPageBar.startPageIndex+n-1)==currPage}">
+										<a @click="goBugPage(bugPageBar.startPageIndex+n-1)"
+										   href="javascript:;">{{bugPageBar.startPageIndex+n-1}}</a>
+									</li>
+									<li><a
+											@click="goBugPage(currPage<page?currPage+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+									<li><a  @click="goBugPage(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+
+								</ul>
+							</div>
+						</div>
+						<div v-show="showPage==2">
+							<div role="tabpanel" class="tab-pane" id="profile">
+								<div class="row mb-50" v-for="order in edPage">
+									<div class="col-xs-5 col-sm-5 col-md-4">
+										<div class="product-wrapper">
+											<div class="product-img">
+												<a href="#"><img src="../../statics/images/cover.png" alt="" /></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-8">
+										<div class="product-content product-list">
+											<div class="pro-title clearfix">
+												<h3 style="float: left; width: 50%">
+													<a :href="'details?lbId='+order.loanableBook.lbId">《{{order.loanableBook.lbName}}》</a>
+												</h3>
+											</div>
+											<div class="row">
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span>订单号： {{order.lrId}}</span><br />
+														订单时间： {{millisecondsToDateTime(order.createTime)}}<br />
+														出版社: {{order.loanableBook.lbPublishing}}<br />
+														借入方：{{order.user.mail}}<br />
+														联系电话：{{order.user.phone}}<br />
+														ISBN:{{order.loanableBook.isbn}}<br />
+														所借数量:{{order.amount}}
+													</p>
+												</div>
+												<div class="col-sm-6 clo-md-6">
+													<p>
+														<span v-if="order.lrStruts==1">状态： <span class="label label-warning">失效</span> 借入方取消申请<br /></span>
+														<span v-else-if="order.lrStruts==2">状态： <span class="label label-warning">失效</span> 借入方拒绝申请<br /></span>
+														<span v-else-if="order.lrStruts==3">状态： <span class="label label-warning">失效</span> 申请超时<br /></span>
+														<span v-else-if="order.lrStruts==5">状态： <span class="label label-warning">失效</span> 借入方未按时将图书送至中转站<br /></span>
+														<span v-else-if="order.lrStruts==11">状态：<span class="label label-info">捐赠</span><br /></span>
+														<span v-else-if="order.lrStruts==12">状态： <span class="label label-primary">完成</span><br /></span>
+														<span v-if="order.agreeTime!=null">借入方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+														<span v-else>借入方同意时间：无<br /></span>
+														<span v-if="order.sendToTime!=null">借入方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+														<span v-else>借入方送到中转站时间：无<br /></span>
+														<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+														<span v-else>取书时间：无<br /></span>
+														<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+														<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+														<span v-else>应还时间：无<br /></span>
+														<span v-else>实际还书时间：无<br /></span>
+														<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无<br /></span>
+														<span v-if="order.receiveAdmin!=null">图书接收者（借入方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+														<span v-else>图书接收者（借入方->中转站）：无</span>
+													</p>
+												</div>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="agree(order.lrId)"><span>同意借出</span></a>
+											</div>
+											<div class="product-action" v-if="order.lrStruts==0">
+												<a class="cart" href="javascript:;" @click="deny(order.lrId)"><span>拒绝借出</span></a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
+
+									<li><a @click="goEdPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
+									<li><a
+											@click="goEdPage(currPage>1?currPage-1:currPage)"
+											href="javascript:;"><i class="fa fa-angle-left"></i></a></li>
+									<li
+											v-for="n in (edPageBar.endPageIndex-edPageBar.startPageIndex+1)"
+											:class="{active:(edPageBar.startPageIndex+n-1)==currPage}">
+										<a @click="goEdPage(edPageBar.startPageIndex+n-1)"
+										   href="javascript:;">{{edPageBar.startPageIndex+n-1}}</a>
+									</li>
+									<li><a
+											@click="goEdPage(currPage<page?currPage+1:page)"
+											href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
+									<li><a  @click="goEdPage(page)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+
+								</ul>
 							</div>
 						</div>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -387,7 +576,7 @@
 				</div>
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<div class="payment">
-						<img src="../../statics/assets/img/payment.png" alt="" />
+
 					</div>
 				</div>
 			</div>
@@ -396,54 +585,10 @@
 	<!-- footer-bootom-area end -->
 </footer>
 <!-- footer end -->
-<!-- Modal -->
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-			</div>
-			<div class="modal-body">
-				<div class="modal-img">
-					<a href="../../statics/assets/shop.html"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a>
-				</div>
-				<div class="modal-pro-content">
-					<h3><a href="#">Phasellus Vel Hendrerit</a></h3>
-					<div class="pro-rating">
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star"></i>
-						<i class="fa fa-star-o"></i>
-					</div>
-					<span>(2 customer reviews)</span>
-					<div class="price">
-						<span>$70.00</span>
-						<span class="old">$80.11</span>
-					</div>
-					<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet.</p>
-					<form action="#">
-						<input type="number" value="1" />
-						<button>Add to cart</button>
-					</form>
-					<div class="product_meta">
-						<span class="posted_in">Categories: <a rel="tag" href="#">Albums</a>, <a rel="tag" href="#">Music</a></span> <span class="tagged_as">Tags: <a rel="tag" href="#">Albums</a>, <a rel="tag" href="#">Music</a></span>
-					</div>
-					<div class="social">
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-google-plus"></i></a>
-						<a href="#"><i class="fa fa-instagram"></i></a>
-						<a href="#"><i class="fa fa-pinterest"></i></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Modal end -->
+
 
 <!-- jquery latest version -->
+<script src="../../statics/js/jquery-3.3.1.js"></script>
 <script src="../../statics/assets/js/vendor/jquery-1.12.0.min.js"></script>
 <!-- Bootstrap framework js -->
 <script src="../../statics/assets/js/bootstrap.min.js"></script>
@@ -458,7 +603,11 @@
 <!-- All js plugins included in this file. -->
 <script src="../../statics/assets/js/plugins.js"></script>
 <!-- Main js file that contents all jQuery plugins activation. -->
-<script src="../../statics/assets/js/main.js"></script>
+<script src="../../statics/js/plugins/layer/layer.js"></script>
+<script src="../../statics/js/vue.js"></script>
+<script src="../../statics/js/commons/common.js"></script>
+<script src="../../statics/js/user/header.js"></script>
+<script src="../../statics/js/user/lended.js"></script>
 </body>
 
 </html>

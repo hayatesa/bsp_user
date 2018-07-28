@@ -18,4 +18,5 @@ public interface LoanableBookMapper extends GenericMapper<LoanableBook, Integer>
 	 * @param queryObject 查询对象
 	 */
 	List<LoanableBook> selectByQueryObject(LoanableBookQueryObject queryObject);
+	
 }
