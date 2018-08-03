@@ -10,7 +10,6 @@ import com.bsp.dao.LoanableBookMapper;
 import com.bsp.dao.PrimaryClassificationMapper;
 import com.bsp.dao.SecondaryClassificationMapper;
 import com.bsp.dto.LoanableBookQueryObject;
-import com.bsp.dto.QueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
@@ -36,7 +35,7 @@ public class LoanableBookService implements ILoanableBookService{
 	}
 
 	@Override
-	public Page getAllListBook(QueryObject queryObject) {
+	public Page getAllListBook(LoanableBookQueryObject queryObject) {
 		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
 		bookQueryObject.setLimit(queryObject.getLimit());
 		bookQueryObject.setOrder(queryObject.getOrder());
@@ -80,7 +79,7 @@ public class LoanableBookService implements ILoanableBookService{
 
 
 	@Override
-	public Page getPrimaryListBook(QueryObject queryObject, Integer pcId) {
+	public Page getPrimaryListBook(LoanableBookQueryObject queryObject, Integer pcId) {
 		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
 		bookQueryObject.setLimit(queryObject.getLimit());
 		bookQueryObject.setOrder(queryObject.getOrder());
@@ -101,7 +100,7 @@ public class LoanableBookService implements ILoanableBookService{
 	}
 
 	@Override
-	public Page getSecondaryListBook(QueryObject queryObject, Integer scId) {
+	public Page getSecondaryListBook(LoanableBookQueryObject queryObject, Integer scId) {
 		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
 		bookQueryObject.setLimit(queryObject.getLimit());
 		bookQueryObject.setOrder(queryObject.getOrder());
@@ -122,7 +121,7 @@ public class LoanableBookService implements ILoanableBookService{
 	}
 
 	@Override
-	public Page getSearchListBook(QueryObject queryObject, String bookName) {
+	public Page getSearchListBook(LoanableBookQueryObject queryObject, String bookName) {
 		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
 		bookQueryObject.setLimit(queryObject.getLimit());
 		bookQueryObject.setOrder(queryObject.getOrder());

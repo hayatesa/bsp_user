@@ -43,6 +43,7 @@
 		<if test="secondaryClassification==null">
 			<if test="primaryClassification!=null">AND pc.pc_id=#{primaryClassification.pcId}</if>
 		</if>
+		<if test="uuid!=null">AND loanable_book.uuid=#{uuid}</if>
 		AND loanable_book.is_delete=0
 	</where>
   </sql>

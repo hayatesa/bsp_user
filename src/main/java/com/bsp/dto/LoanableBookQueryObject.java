@@ -8,6 +8,8 @@ public class LoanableBookQueryObject extends QueryObject{
 	private PrimaryClassification primaryClassification; // 一级分类,设置二级分类后无效
 	private SecondaryClassification secondaryClassification; // 二级分类
 	
+	private String uuid; // 用户
+	
 	public LoanableBookQueryObject() {
 		super();
 	}
@@ -70,6 +72,14 @@ public class LoanableBookQueryObject extends QueryObject{
 
 	public void setSecondaryClassification(SecondaryClassification secondaryClassification) {
 		this.secondaryClassification = secondaryClassification;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	
 }

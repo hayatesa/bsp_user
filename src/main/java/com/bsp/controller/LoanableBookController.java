@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bsp.dto.QueryObject;
+import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
+import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
@@ -39,7 +40,7 @@ public class LoanableBookController extends BaseController {
 	 * @param queryObject
 	 */
 	@RequestMapping("query")
-	public Result query(QueryObject queryObject) {
+	public Result query(LoanableBookQueryObject queryObject) {
 		Page page = null;
 		try {
 			page = loanableBookService.getAllListBook(queryObject);
@@ -60,7 +61,7 @@ public class LoanableBookController extends BaseController {
 	 * @param queryObject
 	 */
 	@RequestMapping("queryprimary")
-	public Result queryprimary(QueryObject queryObject,@RequestParam("pcId")Integer pcId) {
+	public Result queryprimary(LoanableBookQueryObject queryObject,@RequestParam("pcId")Integer pcId) {
 		//System.out.println("一级分类的id："+pcId);
 		Page page = null;
 		try {
@@ -83,7 +84,7 @@ public class LoanableBookController extends BaseController {
 	 * @param queryObject
 	 */
 	@RequestMapping("querySecondary")
-	public Result querySecondary(QueryObject queryObject,@RequestParam("scId")Integer scId) {
+	public Result querySecondary(LoanableBookQueryObject queryObject,@RequestParam("scId")Integer scId) {
 		Page page = null;
 		try {
 			page = loanableBookService.getSecondaryListBook(queryObject,scId);
@@ -105,7 +106,7 @@ public class LoanableBookController extends BaseController {
 	 * @param queryObject
 	 */
 	@RequestMapping("querySearch")
-	public Result querySearch(QueryObject queryObject,@RequestParam("bookName")String bookName) {
+	public Result querySearch(LoanableBookQueryObject queryObject,@RequestParam("bookName")String bookName) {
 		Page page = null;
 		try {
 			page = loanableBookService.getSearchListBook(queryObject,bookName);
@@ -165,6 +166,25 @@ public class LoanableBookController extends BaseController {
 		Result result = new Result();
 		result.put("primarylist", primarylist);
 		result.put("secondarylist", secondarylist);
+		return result;
+	}
+	
+	@RequestMapping("pageOfUser")
+	public Result page(LoanableBookQueryObject queryObject) {
+		queryObject.setUuid(ShiroUtils.getToken().getUuid());
+		Page page = null;
+		try {
+			page = loanableBookService.getAllListBook(queryObject);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，查询数据失败");
+		}
+		Result result = Result.success();
+		result.put("page", page);
 		return result;
 	}
 }
