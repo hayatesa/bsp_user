@@ -32,7 +32,7 @@
 		)
 		</if>
 		<if test="uuid!=null">AND loanable_book.uuid=#{uuid}</if>
-		AND is_delete=0
+		AND clb_status!=2
 	</where>
   </sql>
   <select id="getTotalCount" resultType="java.lang.Integer" parameterType="com.bsp.dto.CheckLoanableBookQueryObject" >

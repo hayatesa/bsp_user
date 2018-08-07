@@ -177,7 +177,7 @@
 </div>
 <!-- breadcrumb end -->
 <!-- cart-main-area start -->
-<div id="vue_app" class="cart-main-area">
+<div id="vue_app" v-cloak class="cart-main-area">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 col-sm-4">
@@ -185,80 +185,97 @@
 					<h2 class="title-block">我的共享</h2>
 					<div class="sidebar-widget">
 						<ul class="sidebar-menu">
-							<li><a href="javascript:;">正在共享 </a></li>
-							<li><a href="javascript:;">正在审核 </a></li>
+							<li><a @click="switchPage(0)" href="javascript:;">正在共享 </a></li>
+							<li><a @click="switchPage(1)" href="javascript:;">正在审核 </a></li>
+							<li><a @click="switchPage(2)" href="javascript:;">添加共享 </a></li>
 						</ul>
 					</div>
+				</div>
+			</div>
+			<div v-show="showPage==0" class="col-md-9 col-sm-8">
+				<h2 class="page-heading mt-40">
+					<span class="cat-name">正在共享</span>
+				</h2>
+				<div class="table-content table-responsive">
+					<table>
+						<thead>
+						<tr>
+							<th class="product-thumbnail">封面</th>
+							<th class="product-name">详情</th>
+							<th class="product-remove">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr v-for="item in sharingPage.rows">
+							<td class="product-thumbnail"><a :href="item.imagePath"  target="_blank"><img :src="item.imagePath" alt=""/></a></td>
+							<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
+								<span style="font-weight: bold">书名：</span><span>《{{item.lbName}}》</span></br>
+								<span style="font-weight: bold">作者：</span><span>{{item.lbAuthor}}</span></br>
+								<span style="font-weight: bold">出版社：</span><span>{{item.lbAuthor}}</span></br>
+								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #ffae00;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
+								<span style="font-weight: bold">ISBN：</span><span>{{item.isbn}}</span></br>
+								<span style="font-weight: bold">数量：</span><span>{{item.lbNumber}}</span></br>
+								<span style="font-weight: bold">手机号：</span><span>{{item.phone}}</span></br>
+								<span style="font-weight: bold">状态：</span>
+								<span v-if="item.lbStatus==0" class="label label-warning">暂停共享</span>
+								<span v-if="item.lbStatus==1" class="label label-primary">共享中</span>
+								<span v-if="item.lbStatus==2" class="label label-danger">已下架</span></br>
+								<span style="font-weight: bold">评价：</span><span>{{textCut(item.lbComment, 100)}}</span></br>
+							</td>
+							<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
 
 				</div>
 			</div>
-			<div class="col-md-9 col-sm-8">
-				<form action="#">
-					<div class="table-content table-responsive">
-						<table>
-							<thead>
-							<tr>
-								<th class="product-thumbnail">封面</th>
-								<th class="product-name">详情</th>
-								<th class="product-remove">操作</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td class="product-thumbnail"><a href="#"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a></td>
-								<td class="product-name">Vestibulum suscipit</td>
-								<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-							</tr>
-							<tr>
-								<td class="product-thumbnail"><a href="#"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a></td>
-								<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-								<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-							</tr>
-							<tr>
-								<td class="product-thumbnail"><a href="#"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a></td>
-								<td class="product-name"><a href="#">Vestibulum suscipit</a></td>
-								<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="row">
-						<div class="col-md-8 col-sm-7 col-xs-12">
-							<div class="buttons-cart">
-								<input type="submit" value="Update Cart" />
-								<a href="#">Continue Shopping</a>
-							</div>
-							<div class="coupon">
-								<h3>Coupon</h3>
-								<p>Enter your coupon code if you have one.</p>
-								<input type="text" placeholder="Coupon code" />
-								<input type="submit" value="Apply Coupon" />
-							</div>
-						</div>
-						<div class="col-md-4 col-sm-5 col-xs-12">
-							<div class="cart_totals">
-								<h2>Cart Totals</h2>
-								<table>
-									<tbody>
-									<tr class="cart-subtotal">
-										<th>Subtotal</th>
-										<td><span class="amount">£215.00</span></td>
-									</tr>
-									<tr class="order-total">
-										<th>Total</th>
-										<td>
-											<strong><span class="amount">£215.00</span></strong>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="wc-proceed-to-checkout">
-									<a href="#">Proceed to Checkout</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
+			<div v-show="showPage==1" class="col-md-9 col-sm-8">
+				<h2 class="page-heading mt-40">
+					<span class="cat-name">正在审核</span>
+				</h2>
+				<div class="table-content table-responsive">
+					<table>
+						<thead>
+						<tr>
+							<th class="product-thumbnail">封面</th>
+							<th class="product-name">详情</th>
+							<th class="product-remove">操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr v-for="item in applyingPage.rows">
+							<td class="product-thumbnail"><a :href="item.imagePath"  target="_blank"><img :src="item.imagePath" alt=""/></a></td>
+							<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
+								<span style="font-weight: bold">书名：</span><span>《{{item.clbName}}》</span></br>
+								<span style="font-weight: bold">作者：</span><span>{{item.clbAuthor}}</span></br>
+								<span style="font-weight: bold">出版社：</span><span>{{item.clbAuthor}}</span></br>
+								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #ffae00;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
+								<span style="font-weight: bold">ISBN：</span><span>{{item.isbn}}</span></br>
+								<span style="font-weight: bold">数量：</span><span>{{item.clbNumber}}</span></br>
+								<span style="font-weight: bold">手机号：</span><span>{{item.phone}}</span></br>
+								<span style="font-weight: bold">状态：</span>
+								<span v-if="item.clbStatus==0" class="label label-warning">等待审核</span>
+								<span v-if="item.clbStatus==1" class="label label-danger">审核不通过</span><span v-if="item.clbStatus==1">&nbsp;{{item.failureCause}}</span></br>
+								<span style="font-weight: bold">评价：</span><span>{{textCut(item.clbComment, 100)}}</span>
+							</td>
+							<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
+
+				</div>
+			</div>
+			<div v-show="showPage==2" class="col-md-9 col-sm-8">
+				<h2 class="page-heading mt-40">
+					<span class="cat-name">添加共享</span>
+				</h2>
+				<div class="table-content table-responsive">
+					ok
+				</div>
 			</div>
 		</div>
 	</div>

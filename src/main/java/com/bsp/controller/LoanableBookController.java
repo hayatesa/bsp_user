@@ -2,6 +2,7 @@ package com.bsp.controller;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -170,6 +171,7 @@ public class LoanableBookController extends BaseController {
 	}
 	
 	@RequestMapping("pageOfUser")
+	@RequiresUser
 	public Result page(LoanableBookQueryObject queryObject) {
 		queryObject.setUuid(ShiroUtils.getToken().getUuid());
 		Page page = null;

@@ -1,5 +1,6 @@
 package com.bsp.controller;
 
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class ShareApplyController extends BaseController {
 	 * @param param 封装图书信息
 	 */
 	@RequestMapping("apply")
+	@RequiresUser
 	public Result apply(CheckLoanableBook param) {
 		return Result.success();
 	}
@@ -34,6 +36,7 @@ public class ShareApplyController extends BaseController {
 	 * @param clbId 待审核的书的id
 	 */
 	@RequestMapping("update")
+	@RequiresUser
 	public Result update(Integer clbId) {
 		return Result.success();
 	}
@@ -43,11 +46,13 @@ public class ShareApplyController extends BaseController {
 	 * @param clbId 待审核图书的id
 	 */
 	@RequestMapping("cancel")
+	@RequiresUser
 	public Result cancel(Integer clbId) {
 		return Result.success();
 	}
 	
 	@RequestMapping("page")
+	@RequiresUser
 	public Result page(CheckLoanableBookQueryObject queryObject) {
 		Page page;
 		try {
