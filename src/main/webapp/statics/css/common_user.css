@@ -1,6 +1,12 @@
 [v-cloak] {
     display: none;
 }
+/*表单输入框*/
+.data-input {
+    margin-bottom: 20px !important;
+    padding-bottom: 10px !important;
+}
+
 /*角标 */
 .mobile-superscript {
     font-family: sans-serif;

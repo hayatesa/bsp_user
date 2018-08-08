@@ -59,7 +59,7 @@ var textCut = function (text, length) {
 var vue_app = new Vue({
     el: '#vue_app',
     data: {
-        showPage: 0, // 0-共享中 1-正在申请 2-添加申请
+        showPage: 2, // 0-共享中 1-正在申请 2-添加申请
         sharingPage: {}, // 页数据
         sharingPageParams: { // 正在共享页面参数
             limit: 3, // 页大小
@@ -104,8 +104,12 @@ var vue_app = new Vue({
         loadSharingPage: loadSharingPage,
         loadApplyingPage: loadApplyingPage,
         goSharingPage: function (currPage) {// 页面跳转
+            this.sharingPageParams.pageNumber = currPage;
+            this.loadSharingPage(this);
+        },
+        goApplyingPage: function (currPage) {// 页面跳转
             this.applyingPageParams.pageNumber = currPage;
-            this.loadUnreadMsg(this);
+            this.loadApplyingPage(this);
         },
         textCut: textCut
     },
