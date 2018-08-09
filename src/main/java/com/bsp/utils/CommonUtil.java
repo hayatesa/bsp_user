@@ -234,5 +234,22 @@ public class CommonUtil {
         }
         return sb.toString().toUpperCase(); 
     }
+    
+    /**
+     * 数组中是否存在某个字符串
+     * @param ignoreCase 是否忽略大小写
+     * @param searchStr 被检测的字符串
+     * @param strs 字符串数组
+     */
+    public static boolean targetInStringArray(boolean ignoreCase, String searchStr, String... strs) {
+    	for (String string : strs) {
+			if (ignoreCase && string.equalsIgnoreCase(searchStr)) {
+				return true;
+			} else if (string.equals(searchStr)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

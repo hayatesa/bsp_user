@@ -1,3 +1,7 @@
+$(function () {
+
+})
+
 var loadSharingPage = function (app) {
     $.ajax({
         url: '/loanble_book/pageOfUser',
@@ -42,6 +46,7 @@ var loadApplyingPage = function (app) {
 
 var init = function () {
     loadSharingPage(this);
+
 }
 /**
  * 裁剪文本，超过部分用 ‘......’代替
@@ -80,6 +85,7 @@ var vue_app = new Vue({
             startPageIndex: 1,
             endPageIndex: 1,
         },
+        newApplyStep:  0, // 步骤, 0-上传封面, 1-填写表单
         newApply: {
             clbName: '', // 书名
             clbAuthor: '', // 作者
@@ -110,6 +116,12 @@ var vue_app = new Vue({
         goApplyingPage: function (currPage) {// 页面跳转
             this.applyingPageParams.pageNumber = currPage;
             this.loadApplyingPage(this);
+        },
+        changeStepOfNewApply: function (step) {
+            this.newApplyStep = step;
+        },
+        millisecondsToDateTime: function (ms){
+            return new Date(ms).toLocaleString();
         },
         textCut: textCut
     },

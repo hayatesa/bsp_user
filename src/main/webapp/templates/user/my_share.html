@@ -27,6 +27,10 @@
 
 	<link rel="stylesheet" href="../../statics/css/common_user.css">
 
+	<link rel="stylesheet" href="../../statics/js/plugins/webuploader-0.1.5/webuploader.css">
+
+	<link rel="stylesheet" href="../../statics/css/webuploader-demo.css">
+
 	<!-- Modernizr JS -->
 	<script src="../../statics/assets/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
@@ -211,19 +215,25 @@
 							<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
 								<span style="font-weight: bold">书名：</span><span>《{{item.lbName}}》</span></br>
 								<span style="font-weight: bold">作者：</span><span>{{item.lbAuthor}}</span></br>
-								<span style="font-weight: bold">出版社：</span><span>{{item.lbAuthor}}</span></br>
-								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #ffae00;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
+								<span style="font-weight: bold">出版社：</span><span>{{item.lbPublishing}}</span></br>
+								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #66ccff;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
 								<span style="font-weight: bold">ISBN：</span><span>{{item.isbn}}</span></br>
-								<span style="font-weight: bold">数量：</span><span>{{item.lbNumber}}</span></br>
+								<span style="font-weight: bold">共享开始时间：</span><span>{{millisecondsToDateTime(item.openLoanTime)}}</span></br>
+								<span style="font-weight: bold">数量：</span><span>{{item.lbNumber}}</span>，
+								<span style="font-weight: bold">剩余：</span><span>{{item.left}}</span>，
+								<span style="font-weight: bold">累计借出：</span><span>{{item.totalLending}}</span></br>
 								<span style="font-weight: bold">手机号：</span><span>{{item.phone}}</span></br>
+								<span style="font-weight: bold">借阅时长：</span><span>{{item.lbDuratuin}} 天</span></br>
 								<span style="font-weight: bold">状态：</span>
 								<span v-if="item.lbStatus==0" class="label label-warning">暂停共享</span>
 								<span v-if="item.lbStatus==1" class="label label-primary">共享中</span>
 								<span v-if="item.lbStatus==2" class="label label-danger">已下架</span></br>
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.lbComment, 100)}}</span></br>
 							</td>
-							<td class="product-remove">
-								<a href="#"><i class="fa fa-edit"></i></a>
+							<td class="product-name" style="font-size: 12px;width: 6em;" class="product-remove">
+								<a v-if="item.lbStatus==1" href="#"><i class="fa fa-pause"></i> 暂停</a>
+								<a v-if="item.lbStatus==0" href="#"><i class="fa fa-play"></i> 开启</a>
+								<span v-if="item.lbStatus==2" href="#">-</span>
 							</td>
 						</tr>
 						</tbody>
@@ -299,11 +309,31 @@
 				</h2>
 				<div class="row">
 					<div class="col-md-8 col-sm-7 col-xs-12">
-						<form>
-						<div class="data-input">
-							<label>封面：</label>
-							<input type="file" accept="image/*"/>
+						<div v-show="newApplyStep==0" >
+								<div id="uploader" class="wu-example">
+									<div class="queueList">
+										<div id="dndArea" class="placeholder">
+											<div id="filePicker"></div>
+											<p>或将图片拖到这里，只允许上传1张图片，文件大小不超过1M</p>
+										</div>
+									</div>
+									<div class="statusBar" style="display:none;">
+										<div class="progress">
+											<span class="text">0%</span>
+											<span class="percentage"></span>
+										</div>
+										<div class="info"></div>
+										<div class="btns">
+											<div id="filePicker2"></div>
+											<div class="uploadBtn">开始上传</div>
+										</div>
+									</div>
+								</div>
+							<div class="buttons-cart" >
+								<a @click="changeStepOfNewApply(1)" >下一步 <i class="fa fa-chevron-right"></i></a>
+							</div>
 						</div>
+						<form v-show="newApplyStep==1" >
 						<div class="data-input">
 							<label>手机号：</label>
 							<input type="text" placeholder="" />
@@ -326,7 +356,7 @@
 						</div>
 						<div class="data-input">
 							<label>一级分类：</label>
-							<select type="text" placeholder="">
+							<select type="text" placeholder="">e
 								<option selected>op1</option>
 								<option>op2</option>
 							</select>
@@ -343,8 +373,8 @@
 							<textarea rows="5" maxlength="2000" placeholder="" ></textarea>
 						</div>
 						<div class="buttons-cart">
+							<a href="javascript:;" @click="changeStepOfNewApply(0)"><i class="fa fa-chevron-left"></i> 上一步</a>
 							<input type="button" value="提交" />
-							<input type="reset" value="重置" />
 						</div>
 						</form>
 					</div>
@@ -558,9 +588,12 @@
 <!-- Main js file that contents all jQuery plugins activation. -->
 <script src="../../statics/assets/js/main.js"></script>
 
+
 <script src="../../statics/js/plugins/layer/layer.js"></script>
+<script src="../../statics/js/plugins/webuploader-0.1.5/webuploader.min.js"></script>
 <script src="../../statics/js/vue.js"></script>
 <script src="../../statics/js/commons/common.js"></script>
+<script src="../../statics/js/commons/webuploaderInit.js"></script>
 <!--<script src="../../statics/js/user/header.js"></script>-->
 <script src="../../statics/js/user/my_share.js"></script>
 </body>
