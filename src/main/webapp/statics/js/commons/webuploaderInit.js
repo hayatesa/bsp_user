@@ -1,4 +1,8 @@
-jQuery(function() {
+jQuery(function () {
+    initWebUploader();
+});
+
+var initWebUploader = function() {
     var $ = jQuery,    // just in case. Make sure it's not an other libaray.
 
         $wrap = $('#uploader'),
@@ -22,18 +26,18 @@ jQuery(function() {
         // 总体进度条
         $progress = $statusBar.find('.progress').hide(),
 
-        // 添加的文件数量
+        // 添加的文件数量,初始值0
         fileCount = 0,
 
-        // 添加的文件总大小
+        // 添加的文件总大小,初始值0
         fileSize = 0,
 
         // 优化retina, 在retina下这个值是2
         ratio = window.devicePixelRatio || 1,
 
         // 缩略图大小
-        thumbnailWidth = 350 * ratio,
-        thumbnailHeight = 460 * ratio,
+        thumbnailWidth = 110 * ratio,
+        thumbnailHeight = 110 * ratio,
 
         // 可能有pedding, ready, uploading, confirm, done.
         state = 'pedding',
@@ -62,19 +66,36 @@ jQuery(function() {
 
     // 实例化
     uploader = WebUploader.create({
-        pick: {
+        pick: { // 指定选择文件的按钮容器，不指定则不创建按钮。
             id: '#filePicker',
-            label: '点击选择图片'
+            label: '选择封面',
+            multiple: false
         },
-        dnd: '#uploader .queueList',
-        paste: document.body,
-
-        accept: {
+        dnd: '#uploader .queueList', // 指定Drag And Drop拖拽的容器，如果不指定，则不启动。
+        paste: document.body, // 指定监听paste事件的容器，如果不指定，不启用此功能。此功能为通过粘贴来添加截屏的图片。建议设置为document.body.
+        resize: false, // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传
+        accept: { // 指定接受哪些类型的文件。
             title: 'Images',
             extensions: 'gif,jpg,jpeg,bmp,png',
             mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png,'
         },
+        /*thumb: {
+            width: 110,
+            height: 110,
 
+            // 图片质量，只有type为`image/jpeg`的时候才有效。
+            quality: 100,
+
+            // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+            allowMagnify: true,
+
+            // 是否允许裁剪。
+            crop: true,
+
+            // 为空的话则保留原有图片格式。
+            // 否则强制转换成指定的类型。
+            type: 'image/jpg'
+        },*/
         // swf文件路径
         swf: '/statics/js/plugins/webuploader-0.1.5/Uploader.swf',
         disableGlobalDnd: true,
@@ -82,12 +103,12 @@ jQuery(function() {
         //分页上传
         chunked: true,
         //服务器地址
-        server: '/file/cover',
+        server: '/share/cover',
         //上传文件名
-        fileVal:'file',
+        fileVal:'cover',
         fileNumLimit: 1,
-        fileSizeLimit: 1024*1024,    // 200 M
-        fileSingleSizeLimit: 1024*1024    // 50 M
+        fileSizeLimit: 1024*1024,    // 1 M
+        fileSingleSizeLimit: 1024*1024    // 1 M
     });
 
     // 添加“添加文件”的按钮，
@@ -122,7 +143,7 @@ jQuery(function() {
                         break;
 
                     default:
-                        text = '上传失败，请重试';
+                        text = '上传失败';
                         break;
                 }
 
@@ -331,7 +352,7 @@ jQuery(function() {
 
             case 'confirm':
                 $progress.hide();
-                $upload.text( '开始上传' ).addClass( 'disabled' );
+                //$upload.text( '开始上传' ).addClass( 'disabled' );
 
                 stats = uploader.getStats();
                 if ( stats.successNum && !stats.uploadFailNum ) {
@@ -342,9 +363,9 @@ jQuery(function() {
             case 'finish':
                 stats = uploader.getStats();
                 if ( stats.successNum ) {
-                    $upload.text( '开始上传' ).removeClass( 'disabled' );
+                    //$upload.text( '开始上传' ).removeClass( 'disabled' );
                     $( '#filePicker2' ).removeClass( 'element-invisible' );
-                    alert( '上传成功' );
+                    //alert( '上传成功' );
                 } else {
                     // 没有成功的图片，重设
                     state = 'done';
@@ -412,7 +433,17 @@ jQuery(function() {
 
     //上传成功回调函数
     uploader.on( 'uploadSuccess', function(files,response) {
-        console.log(response);
+        if(response.code===0) {
+            alert('上传成功');
+            $upload.text('重新上传');
+            $upload.unbind("click");//移除click事件
+            $upload.on('click', resetWebUploader);
+        } else if (response.code==401) { //未登录
+            window.location.href='/login'
+        } else {
+            alert(response.msg);
+            resetWebUploader();
+        }
     });
 
     //错误提示
@@ -451,4 +482,30 @@ jQuery(function() {
 
     $upload.addClass( 'state-' + state );
     updateTotalProgress();
-});
+}
+
+
+var resetWebUploader = function () {
+    var $ = jQuery;
+    var template = '<div class="queueList">' +
+        '<div id="dndArea" class="placeholder">' +
+        '<div id="filePicker"></div>' +
+        '<p>可将图片拽或截图粘贴，只允许上传1张且大小不超过1M的图片</p>' +
+        '<p>支持图片类型：gif,jpg,jpeg,bmp,png</p>' +
+        '</div>' +
+        '</div>' +
+        '<div class="statusBar" style="display:none;">' +
+        '<div class="progress">' +
+        '<span class="text">0%</span>' +
+        '<span class="percentage"></span>' +
+        '</div>' +
+        '<div class="info"></div>' +
+        '<div class="btns">' +
+        '<div id="filePicker2"></div>' +
+        '<div class="uploadBtn">开始上传</div>' +
+        '</div>' +
+        '</div>';
+    var $wrap = $('#uploader');
+    $wrap.html(template);
+    initWebUploader();
+}

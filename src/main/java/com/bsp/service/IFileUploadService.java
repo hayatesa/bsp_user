@@ -10,10 +10,4 @@ public interface IFileUploadService {
 	 */
 	String uploadCover(MultipartFile multipartFile);
 	
-	/**
-	 * 删除一次申请中由于重复上传产生的旧封面，避免存储过多无用文件
-	 * @param fileName 
-	 */
-	void deleteOldCoverInApply(String fileName);
-	
 }

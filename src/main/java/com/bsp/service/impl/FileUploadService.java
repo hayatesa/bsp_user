@@ -39,7 +39,6 @@ public class FileUploadService implements IFileUploadService {
 		}
 		String newFileName = CommonUtil.createUUID().toString() + suffix;
 		String relativePath = this.getRelativePathByFileName(newFileName); //生成二级目录
-		String absPath = dir+relativePath; // 绝对路径
 		try {
 			if (StringUtils.containsIgnoreCase(sys, "linux")) { // Linux系统
 				dir = mapingMapper.selectByPrimaryKey("path_image_linux").getmValue();
@@ -48,6 +47,7 @@ public class FileUploadService implements IFileUploadService {
 			} else {
 				throw new SystemErrorException("未知服务器类型，操作失败;");
 			}
+			String absPath = dir+relativePath; // 绝对路径
 			InputStream inputStream = multipartFile.getInputStream();
 			File abs = new File(absPath); 
 			if (!abs.exists()) {
@@ -66,11 +66,6 @@ public class FileUploadService implements IFileUploadService {
 			throw new SystemErrorException("服务器异常，上传失败");
 		}
 		return new File(relativePath+"/"+newFileName).toString();
-	}
-	
-	@Override
-	public void deleteOldCoverInApply(String fileName) {
-		
 	}
 	
 	/**

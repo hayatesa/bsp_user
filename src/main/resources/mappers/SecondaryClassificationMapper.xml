@@ -22,6 +22,12 @@
     from secondary_classification
     where is_delete=0
   </select>
+  <select id="selectByPcId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from secondary_classification
+    where pc_id = #{pcId,jdbcType=INTEGER} AND is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from secondary_classification
     where sc_id = #{scId,jdbcType=INTEGER}

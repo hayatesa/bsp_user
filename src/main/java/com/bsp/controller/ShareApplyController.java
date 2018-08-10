@@ -1,15 +1,23 @@
 package com.bsp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.entity.CheckLoanableBook;
+import com.bsp.enums.BussCode;
 import com.bsp.exceptions.SystemErrorException;
+import com.bsp.service.IFileUploadService;
 import com.bsp.service.IShareApplyService;
+import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
@@ -21,13 +29,40 @@ public class ShareApplyController extends BaseController {
 	@Autowired
 	private IShareApplyService shareApplyService;
 	
+	@Autowired
+	private IFileUploadService fileUploadService;
+
+	@RequestMapping("/cover")
+	public Result coverUpload(@RequestParam("cover") MultipartFile multipartFile, HttpServletRequest request) {
+		String fileNameSessionKey = "session_cover_" + ShiroUtils.getToken().getUuid();
+		try {
+			String fileName = fileUploadService.uploadCover(multipartFile);
+			request.getSession().setAttribute(fileNameSessionKey, fileName); // 包含二级目录的文件名到session
+			System.out.println(request.getSession().getAttribute(fileNameSessionKey));;
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
+		}
+		return Result.success();
+	}
+	
 	/**
 	 * 共享图书，生成待管理员审核的订单，图片上传还需定义接口
 	 * @param param 封装图书信息
 	 */
 	@RequestMapping("apply")
 	@RequiresUser
-	public Result apply(CheckLoanableBook param) {
+	public Result apply(@RequestBody CheckLoanableBook checkLoanableBook, HttpServletRequest request) {
+		String fileNameSessionKey = "session_cover_" + ShiroUtils.getToken().getUuid();
+		String session_cover = (String)request.getSession().getAttribute(fileNameSessionKey);
+		System.out.println(session_cover);
+		if (session_cover == null) {
+			return Result.error(BussCode.MODIFY_ERR, "请上传封面");
+		}
+		checkLoanableBook.setImagePath(session_cover); // 封面路径
 		return Result.success();
 	}
 	
@@ -74,5 +109,8 @@ public class ShareApplyController extends BaseController {
 		this.shareApplyService = shareApplyService;
 	}
 	
+	public void setFileUploadService(IFileUploadService fileUploadService) {
+		this.fileUploadService = fileUploadService;
+	}
 	
 }
