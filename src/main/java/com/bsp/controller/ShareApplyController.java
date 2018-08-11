@@ -58,11 +58,20 @@ public class ShareApplyController extends BaseController {
 	public Result apply(@RequestBody CheckLoanableBook checkLoanableBook, HttpServletRequest request) {
 		String fileNameSessionKey = "session_cover_" + ShiroUtils.getToken().getUuid();
 		String session_cover = (String)request.getSession().getAttribute(fileNameSessionKey);
-		System.out.println(session_cover);
 		if (session_cover == null) {
 			return Result.error(BussCode.MODIFY_ERR, "请上传封面");
 		}
+		checkLoanableBook.setUser(ShiroUtils.getToken()); // 设置用户
 		checkLoanableBook.setImagePath(session_cover); // 封面路径
+		try {
+			shareApplyService.addShare(checkLoanableBook);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
+		}
 		return Result.success();
 	}
 	

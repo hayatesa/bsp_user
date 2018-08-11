@@ -1,6 +1,7 @@
 package com.bsp.service;
 
 import com.bsp.dto.CheckLoanableBookQueryObject;
+import com.bsp.entity.CheckLoanableBook;
 import com.bsp.utils.Page;
 
 public interface IShareApplyService {
@@ -12,8 +13,8 @@ public interface IShareApplyService {
 	Page pageOfApply(CheckLoanableBookQueryObject queryObject);
 	
 	/**
-	 * 保存封面
-	 * @param fileName 文件名
+	 * 添加共享申请
+	 * @param checkLoanableBook 实体
 	 */
-	void saveCoverImg(String fileName);
+	void addShare(CheckLoanableBook checkLoanableBook);
 }

@@ -331,74 +331,80 @@
 								</div>
 							</div>
 							<div class="buttons-cart" >
-								<a @click="changeStepOfNewApply(1)" >下一步 <i class="fa fa-chevron-right"></i></a>
+								<a href="javascript:;" @click="changeStepOfNewApply(1)">下一步 <i class="fa fa-chevron-right"></i></a>
 							</div>
 						</div>
-						<form v-show="newApplyStep==1" >
-							<div class="data-input">
-								<label>手机号：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.phone}}</span>
-								<input v-model="newApply.phone" type="text"/>
-							</div>
-							<div class="data-input">
-								<label>书名：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.name}}</span>
-								<input v-model="newApply.clbNmae" type="text"/>
-							</div>
-							<div class="data-input">
-								<label>作者：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.author}}</span>
-								<input v-model="newApply.clbAuthor" type="text"/>
-							</div>
-							<div class="data-input">
-								<label>出版社：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.publishing}}</span>
-								<input v-model="newApply.clbPublishing" type="text"/>
-							</div>
-							<div class="data-input">
-								<label>ISBN：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.isbn}}</span>
-								<input v-model="newApply.isbn" type="text"/>
-							</div>
-							<div class="data-input">
-								<label>数量：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.number}}</span>
-								<input v-model="newApply.clbNumber" type="number" min="1"/>
-							</div>
-							<div class="data-input">
-								<label>可借时长(天)：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.duration}}</span>
-								<input v-model="newApply.clbDuration" type="number" min="15"/>
-							</div>
-							<div class="data-input">
-								<label>一级分类：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.primaryClassification}}</span>
-								<select @change="loadSecondaryClassifications" v-model="pcId">
-									<option selected value="0" >请选择</option>
-									<option v-for="item in primaryClassifications" :value="item.pcId">{{item.pcName}}</option>
-								</select>
-							</div>
-							<div class="data-input">
-								<label>二级分类：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.secondaryClassification}}</span>
-								<select v-model="newApply.secondaryClassification.scId" >
-									<option value="0" selected>请选择</option>
-									<option v-for="item in secondaryClassifications" :value="item.scId">{{item.scName}}</option>
-								</select>
-							</div>
-							<div class="data-input">
-								<label>评价：</label>
-								<span class="text-danger" style="font-size: 12px">{{newApplyMsg.comment}}</span>
-								<textarea v-model="newApply.clbComment" rows="5" maxlength="2000" ></textarea>
-							</div>
-							<div class="buttons-cart">
-								<a href="javascript:;" @click="changeStepOfNewApply(0)"><i class="fa fa-chevron-left"></i> 上一步</a>
-								<input type="button" value="提交" />
-							</div>
-						</form>
-						<div v-show="newApplyStep==2" >
-							<div><i class="fa fa-check-circle text-success"></i> 提交申请成功，等待管理员审核。</div>
+					</div>
+				</div>
+				<div class="row" style="padding: 15px" v-show="newApplyStep==1" >
+					<form class="row">
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>书名：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.name}}</span>
+							<input @change="applyCheck" v-model="newApply.clbName" type="text"/>
 						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>作者：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.author}}</span>
+							<input @change="applyCheck" v-model="newApply.clbAuthor" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>出版社：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.publishing}}</span>
+							<input @change="applyCheck" v-model="newApply.clbPublishing" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>ISBN：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.isbn}}</span>
+							<input @change="applyCheck" v-model="newApply.isbn" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>数量：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.number}}</span>
+							<input @change="applyCheck" v-model="newApply.clbNumber" type="number" min="1"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>可借时长(天)：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.duration}}</span>
+							<input @change="applyCheck" v-model="newApply.clbDuration" type="number" min="15"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>一级分类：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.primaryClassification}}</span>
+							<select @change="loadSecondaryClassifications" v-model="pcId">
+								<option selected value="0" >请选择</option>
+								<option v-for="item in primaryClassifications" :value="item.pcId">{{item.pcName}}</option>
+							</select>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>二级分类：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.secondaryClassification}}</span>
+							<select  @change="applyCheck" v-model="newApply.secondaryClassification.scId" >
+								<option value="0" selected>请选择</option>
+								<option v-for="item in secondaryClassifications" :value="item.scId">{{item.scName}}</option>
+							</select>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>手机号：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.phone}}</span>
+							<input @change="applyCheck" v-model="newApply.phone" type="text"/>
+						</div>
+						<div class="col-xs-12"  style="margin-bottom: 10px">
+							<label>评价：</label>
+							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.comment}}</span>
+							<textarea @change="applyCheck" v-model="newApply.clbComment" rows="5" maxlength="2000" ></textarea>
+						</div>
+					</form>
+					<div class="row" style="padding-left: 15px">
+						<div class="buttons-cart">
+							<a href="javascript:;" @click="changeStepOfNewApply(0)"><i class="fa fa-chevron-left"></i> 上一步</a>
+							<input @click="apply" type="button" value="提交" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div v-show="newApplyStep==2" >
+						<div><i class="fa fa-check-circle text-success"></i> 提交申请成功，等待管理员审核。</div>
 					</div>
 				</div>
 			</div>
@@ -615,7 +621,6 @@
 <script src="../../statics/js/plugins/webuploader-0.1.5/webuploader.min.js"></script>
 <script src="../../statics/js/vue.js"></script>
 <script src="../../statics/js/commons/common.js"></script>
-<script src="../../statics/js/commons/webuploaderInit.js"></script>
 <!--<script src="../../statics/js/user/header.js"></script>-->
 <script src="../../statics/js/user/my_share.js"></script>
 </body>

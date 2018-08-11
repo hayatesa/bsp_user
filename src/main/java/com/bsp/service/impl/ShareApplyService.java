@@ -19,10 +19,15 @@ public class ShareApplyService implements IShareApplyService {
 	private CheckLoanableBookMapper checkLoanableBookMapper;
 	
 	@Override
-	public void saveCoverImg(String fileName) {
-		
+	public void addShare(CheckLoanableBook checkLoanableBook) {
+		try {
+			checkLoanableBookMapper.insertSelective(checkLoanableBook);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，提交申请失败");
+		}
 	}
-
+	
 	@Override
 	public Page pageOfApply(CheckLoanableBookQueryObject queryObject) {
 		Integer totalCount = 0;
@@ -32,7 +37,7 @@ public class ShareApplyService implements IShareApplyService {
 			list = checkLoanableBookMapper.selectByQueryObject(queryObject);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new SystemErrorException("由于系统异常，查询数据失败");
+			throw new SystemErrorException("服务器异常，提交申请失败");
 		}
 		return new Page(list, totalCount, queryObject.getLimit(), queryObject.getPageNumber());
 	}
@@ -44,7 +49,5 @@ public class ShareApplyService implements IShareApplyService {
 	public void setCheckLoanableBookMapper(CheckLoanableBookMapper checkLoanableBookMapper) {
 		this.checkLoanableBookMapper = checkLoanableBookMapper;
 	}
-	
-	
 
 }
