@@ -211,7 +211,7 @@
 						</thead>
 						<tbody>
 						<tr v-for="item in sharingPage.rows">
-							<td class="product-thumbnail"><a :href="item.imagePath"  target="_blank"><img :src="item.imagePath" alt=""/></a></td>
+							<td class="product-thumbnail"><a :href="'/cover?imagePath='+item.imagePath"  target="_blank"><img :src="'/cover?imagePath='+item.imagePath" alt=""/></a></td>
 							<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
 								<span style="font-weight: bold">书名：</span><span>《{{item.lbName}}》</span></br>
 								<span style="font-weight: bold">作者：</span><span>{{item.lbAuthor}}</span></br>
@@ -269,11 +269,11 @@
 						</thead>
 						<tbody>
 						<tr v-for="item in applyingPage.rows">
-							<td class="product-thumbnail"><a :href="item.imagePath"  target="_blank"><img :src="item.imagePath" alt=""/></a></td>
+							<td class="product-thumbnail"><a :href="'/cover?imagePath='+item.imagePath"  target="_blank"><img :src="'/cover?imagePath='+item.imagePath" alt=""/></a></td>
 							<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
 								<span style="font-weight: bold">书名：</span><span>《{{item.clbName}}》</span></br>
 								<span style="font-weight: bold">作者：</span><span>{{item.clbAuthor}}</span></br>
-								<span style="font-weight: bold">出版社：</span><span>{{item.clbAuthor}}</span></br>
+								<span style="font-weight: bold">出版社：</span><span>{{item.clbPublishing}}</span></br>
 								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #ffae00;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
 								<span style="font-weight: bold">ISBN：</span><span>{{item.isbn}}</span></br>
 								<span style="font-weight: bold">数量：</span><span>{{item.clbNumber}}</span></br>
@@ -337,7 +337,7 @@
 					</div>
 				</div>
 				<div class="row" style="padding: 15px" v-show="newApplyStep==1" >
-					<form class="row">
+					<form id="newApplyForm" class="row">
 						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
 							<label>书名：</label>
 							<span class="text-danger" style="font-size: 12px">{{newApplyMsg.name}}</span>
@@ -404,7 +404,10 @@
 				</div>
 				<div class="row">
 					<div v-show="newApplyStep==2" >
-						<div><i class="fa fa-check-circle text-success"></i> 提交申请成功，等待管理员审核。</div>
+						<div style="padding: 15px;min-height: 500px;text-align: center;">
+                            <p style="font-size: 40px"><i class="fa fa-check-circle text-success"></i> 提交申请成功。</p>
+                            <p style="text-align: center;"><a href="javascript:;" @click="initNewApplyForm"><i class="fa fa-chevron-circle-left"></i> 返回</a></p>
+                        </div>
 					</div>
 				</div>
 			</div>

@@ -46,6 +46,10 @@ public class CoverImageController {
 		FileInputStream fis = null;
 		
 		File file = new File(filePath);
+		if (!file.exists()) { // 如果文件不存在,读取备选封面
+			String alt = request.getSession().getServletContext().getRealPath("/statics/img/cover_alt.png");
+			file = new File(alt);
+		}
 		fis = new FileInputStream(file);
 		response.setContentType("image/jpg"); // 设置返回的文件类型
 		response.setHeader("Access-Control-Allow-Origin", "*");// 设置该图片允许跨域访问

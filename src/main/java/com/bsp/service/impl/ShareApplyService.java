@@ -20,6 +20,7 @@ public class ShareApplyService implements IShareApplyService {
 	
 	@Override
 	public void addShare(CheckLoanableBook checkLoanableBook) {
+		checkLoanableBook.setClbStatus((byte)0);// 转台0，未审核
 		try {
 			checkLoanableBookMapper.insertSelective(checkLoanableBook);
 		} catch (Exception e) {

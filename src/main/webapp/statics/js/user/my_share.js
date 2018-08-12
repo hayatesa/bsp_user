@@ -628,9 +628,9 @@ var applyCheck = function () {
     } else {
         msg.comment = '';
     }
-    if (!obj.clbDuration.trim()  || obj.clbDuration < 7 || obj.clbDuration > 2147483647) {
+    if (!obj.clbDuration.trim()  || obj.clbDuration < 7 || obj.clbDuration > 365) {
         result = false;
-        msg.duration = '不能为空，且大于7小于2147483647';
+        msg.duration = '不能为空，且大于7小于365';
     } else {
         msg.duration = '';
     }
@@ -709,6 +709,37 @@ var apply = function () {
     })
 }
 
+/**
+ * 初始化添加共享页面
+ */
+var initNewApplyForm = function () {
+    resetWebUploader();
+    vue_app.newApplyStep = 0;
+    vue_app.newApply= {
+        clbName: '', // 书名
+            clbAuthor: '', // 作者
+            clbPublishing: '', // 出版社
+            isbn: '', // isbn号
+            clbDuration: '', // 时长（天）
+            clbNumber: '', // 数量（本）
+            clbComment: '', // 评价
+            phone: '', // 手机号
+            secondaryClassification: {scId: 0} // 二级分类
+    };
+    vue_app.newApplyMsg= { // 错误提示文本
+        name: '', // 书名
+            author: '', // 作者
+            publishing: '', // 出版社
+            isbn: '', // isbn号
+            duration: '', // 时长（天）
+            number: '', // 数量（本）
+            comment: '', // 评价
+            phone: '', // 手机号
+            primaryClassification: '', // 一级分类
+            secondaryClassification: '' // 二级分类
+    }
+}
+
 var init = function () {
     loadSharingPage(this);
     loadPrimaryClassifications();
@@ -717,7 +748,7 @@ var init = function () {
 var vue_app = new Vue({
     el: '#vue_app',
     data: {
-        showPage: 2, // 0-共享中 1-正在申请 2-添加申请
+        showPage: 0, // 0-共享中 1-正在申请 2-添加申请
         sharingPage: {}, // 页数据
         sharingPageParams: { // 正在共享页面参数
             limit: 3, // 页大小
@@ -738,7 +769,7 @@ var vue_app = new Vue({
             startPageIndex: 1,
             endPageIndex: 1,
         },
-        newApplyStep:  0, // 步骤, 0-上传封面, 1-填写表单, 3-提示成功
+        newApplyStep: 0, // 步骤, 0-上传封面, 1-填写表单, 3-提示成功
         newApply: {
             clbName: '', // 书名
             clbAuthor: '', // 作者
@@ -772,6 +803,8 @@ var vue_app = new Vue({
                 this.loadSharingPage(this);
             } else if (page==1) {
                 this.loadApplyingPage(this);
+            } else if (page==2) {
+                initNewApplyForm();
             }
             this.showPage = page;
         },
@@ -781,6 +814,7 @@ var vue_app = new Vue({
         loadApplyingPage: loadApplyingPage,
         loadPrimaryClassifications: loadPrimaryClassifications,
         loadSecondaryClassifications: loadSecondaryClassifications,
+        initNewApplyForm: initNewApplyForm,
         goSharingPage: function (currPage) {// 页面跳转
             this.sharingPageParams.pageNumber = currPage;
             this.loadSharingPage(this);
