@@ -2,7 +2,6 @@ package com.bsp.controller;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,6 @@ import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
-import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
 
@@ -170,23 +168,4 @@ public class LoanableBookController extends BaseController {
 		return result;
 	}
 	
-	@RequestMapping("pageOfUser")
-	@RequiresUser
-	public Result page(LoanableBookQueryObject queryObject) {
-		queryObject.setUuid(ShiroUtils.getToken().getUuid());
-		Page page = null;
-		try {
-			page = loanableBookService.getAllListBook(queryObject);
-		} catch (SystemErrorException e) {
-			e.printStackTrace();
-			return Result.error(e.getMessage());
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-			return Result.error("由于未知错误，查询数据失败");
-		}
-		Result result = Result.success();
-		result.put("page", page);
-		return result;
-	}
 }

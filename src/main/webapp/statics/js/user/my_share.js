@@ -513,7 +513,7 @@ var resetWebUploader = function () {
 
 var loadSharingPage = function (app) {
     $.ajax({
-        url: '/loanble_book/pageOfUser',
+        url: '/shared_book/page',
         data: app.sharingPageParams,
         success: function (data) {
             if (data.code==0) {

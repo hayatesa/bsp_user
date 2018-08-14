@@ -13,6 +13,8 @@ import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.entity.User;
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.ILoanableBookService;
 import com.bsp.utils.Page;
@@ -141,6 +143,95 @@ public class LoanableBookService implements ILoanableBookService{
 		return page;
 	}
 
+	@Override
+	public void close(User user, Integer lbId) {
+		LoanableBook lb = null;
+		try {
+			lb = loanableBookMapper.selectByPrimaryKey(lbId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，查找记录失败");
+		}
+		if (lb==null) {
+			throw new DataUpdateException("记录不存在");
+		}
+		if (!lb.getUser().getUuid().equals(user.getUuid())) {
+			throw new DataUpdateException("非本用户不允许操作");
+		}
+		if (lb.getIsDelete() == (byte)1) {//纪录已删除
+			throw new DataUpdateException("图书已删除");
+		}
+		if (lb.getLbStatus() == (byte)0) {//已经是关闭状态
+			throw new DataUpdateException("共享已关闭，无需操作");
+		} else if (lb.getLbStatus() == (byte)2) {//已被管理员下架
+			throw new DataUpdateException("不可操作，该图书已被管理员下架");
+		}
+		lb.setLbStatus((byte)0); // 关闭共享
+		try {
+			loanableBookMapper.updateByPrimaryKeySelective(lb);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，关闭共享失败");
+		}
+	}
 
+	@Override
+	public void open(User user, Integer lbId) {
+		LoanableBook lb = null;
+		try {
+			lb = loanableBookMapper.selectByPrimaryKey(lbId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，查找记录失败");
+		}
+		if (lb==null) {
+			throw new DataUpdateException("记录不存在");
+		}
+		if (!lb.getUser().getUuid().equals(user.getUuid())) {
+			throw new DataUpdateException("非本用户不允许操作");
+		}
+		if (lb.getIsDelete()  == (byte)1) {//纪录已删除
+			throw new DataUpdateException("图书已删除");
+		}
+		if (lb.getLbStatus() == (byte)1) {//共享已开启
+			throw new DataUpdateException("共享已开启，无需操作");
+		} else if (lb.getLbStatus() == (byte)2) {//已被管理员下架
+			throw new DataUpdateException("不可操作，该图书已被管理员下架");
+		}
+		lb.setLbStatus((byte)1); // 开启共享
+		try {
+			loanableBookMapper.updateByPrimaryKeySelective(lb);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，开启共享失败");
+		}
+	}
+
+	@Override
+	public void delete(User user, Integer lbId) {
+		LoanableBook lb = null;
+		try {
+			lb = loanableBookMapper.selectByPrimaryKey(lbId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，查找记录失败");
+		}
+		if (lb==null) {
+			throw new DataUpdateException("记录不存在");
+		}
+		if (!lb.getUser().getUuid().equals(user.getUuid())) {
+			throw new DataUpdateException("非本用户不允许操作");
+		}
+		if (lb.getIsDelete()  == (byte)1) {//纪录已删除
+			throw new DataUpdateException("图书已删除");
+		}
+		lb.setIsDelete((byte)1); // 删除状态
+		try {
+			loanableBookMapper.updateByPrimaryKeySelective(lb);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，删除失败");
+		}
+	}
 
 }

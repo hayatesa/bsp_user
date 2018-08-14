@@ -6,6 +6,7 @@ import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
+import com.bsp.entity.User;
 import com.bsp.utils.Page;
 
 public interface ILoanableBookService {
@@ -53,5 +54,26 @@ public interface ILoanableBookService {
 	 * @return
 	 */
 	Page getSearchListBook(LoanableBookQueryObject queryObject, String bookName);
+	
+	/**
+	 * 关闭共享
+	 * @param user 用户用于判断是否为本用户操作
+	 * @param lbId 
+	 */
+	void close(User user, Integer lbId);
+	
+	/**
+	 * 开启共享
+	 * @param user 用户用于判断是否为本用户操作
+	 * @param lbId 
+	 */
+	void open(User user, Integer lbId);
+	
+	/**
+	 * 删除共享
+	 * @param user 用户用于判断是否为本用户操作
+	 * @param lbId 
+	 */
+	void delete(User user, Integer lbId);
 	
 }
