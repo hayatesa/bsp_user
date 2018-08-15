@@ -576,7 +576,7 @@ var loadPrimaryClassifications=function () {
             } else if (data.code!=0){
                 alert(data.msg);
             } else {
-                vue_app.primaryClassifications=data.list;
+                my_share_app.primaryClassifications=data.list;
             }
 
         }
@@ -585,7 +585,7 @@ var loadPrimaryClassifications=function () {
 }
 
 var loadSecondaryClassifications=function () {
-    var pcId = vue_app.pcId;
+    var pcId = my_share_app.pcId;
     if (pcId>0) {
         $.ajax({
             url: '/sc/findByPcId',
@@ -599,22 +599,22 @@ var loadSecondaryClassifications=function () {
                 } else if (data.code!=0){
                     alert(data.msg);
                 } else {
-                    vue_app.secondaryClassifications=data.list;
+                    my_share_app.secondaryClassifications=data.list;
                 }
 
             }
         })
     } else {
-        vue_app.secondaryClassifications=[];
+        my_share_app.secondaryClassifications=[];
     }
-    vue_app.newApply.secondaryClassification.scId=0;
+    my_share_app.newApply.secondaryClassification.scId=0;
     applyCheck();
 
 }
 
 var applyCheck = function () {
-    var obj = vue_app.newApply;
-    var msg = vue_app.newApplyMsg;
+    var obj = my_share_app.newApply;
+    var msg = my_share_app.newApplyMsg;
     var result = true;
     if (!obj.clbAuthor.trim()) {
         result = false;
@@ -665,7 +665,7 @@ var applyCheck = function () {
     } else {
         msg.phone = '';
     }
-    if (vue_app.pcId == 0) {
+    if (my_share_app.pcId == 0) {
         result = false;
         msg.primaryClassification = '请选择一级分类';
     } else {
@@ -688,17 +688,77 @@ var apply = function () {
     confirm("提交申请?", function () {
         $.ajax({
             url: '/share/apply',
-            type: 'post',
-            dataType : "JSON",
-            contentType:"application/json",
-            data: JSON.stringify(vue_app.newApply),
+            data: JSON.stringify(my_share_app.newApply),
             success: function (data) {
                 if(data.code==0){
-                    vue_app.newApplyStep = 2;
+                    my_share_app.newApplyStep = 2;
                 } else if (data.code==1003) { // 封面未上传
                     alert(data.msg);
-                    vue_app.newApplyStep = 0; // 返回封面上传
+                    my_share_app.newApplyStep = 0; // 返回封面上传
                 } else if (data.code==401){
+                    window.location.href='/login';
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
+var openShare = function (lbId) {
+    confirm("开启共享?", function () {
+        $.ajax({
+            url: '/shared_book/open',
+            data: {
+                lbId: lbId
+            },
+            success: function (data) {
+                if(data.code==0) {
+                    loadSharingPage(my_share_app);
+                }else if (data.code==401){
+                    window.location.href='/login';
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
+var closeShare = function (lbId) {
+    confirm("关闭共享?", function () {
+        $.ajax({
+            url: '/shared_book/close',
+            data: {
+                lbId: lbId
+            },
+            success: function (data) {
+                if(data.code==0) {
+                    loadSharingPage(my_share_app);
+                }else if (data.code==401){
+                    window.location.href='/login';
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
+var deleteShare = function (lbId) {
+    confirm("删除共享?", function () {
+        $.ajax({
+            url: '/shared_book/delete',
+            data: {
+                lbId: lbId
+            },
+            success: function (data) {
+                if(data.code==0) {
+                    loadSharingPage(my_share_app);
+                }else if (data.code==401){
                     window.location.href='/login';
                     return;
                 } else {
@@ -714,29 +774,29 @@ var apply = function () {
  */
 var initNewApplyForm = function () {
     resetWebUploader();
-    vue_app.newApplyStep = 0;
-    vue_app.newApply= {
+    my_share_app.newApplyStep = 0;
+    my_share_app.newApply= {
         clbName: '', // 书名
-            clbAuthor: '', // 作者
-            clbPublishing: '', // 出版社
-            isbn: '', // isbn号
-            clbDuration: '', // 时长（天）
-            clbNumber: '', // 数量（本）
-            clbComment: '', // 评价
-            phone: '', // 手机号
-            secondaryClassification: {scId: 0} // 二级分类
+        clbAuthor: '', // 作者
+        clbPublishing: '', // 出版社
+        isbn: '', // isbn号
+        clbDuration: '', // 时长（天）
+        clbNumber: '', // 数量（本）
+        clbComment: '', // 评价
+        phone: '', // 手机号
+        secondaryClassification: {scId: 0} // 二级分类
     };
-    vue_app.newApplyMsg= { // 错误提示文本
+    my_share_app.newApplyMsg= { // 错误提示文本
         name: '', // 书名
-            author: '', // 作者
-            publishing: '', // 出版社
-            isbn: '', // isbn号
-            duration: '', // 时长（天）
-            number: '', // 数量（本）
-            comment: '', // 评价
-            phone: '', // 手机号
-            primaryClassification: '', // 一级分类
-            secondaryClassification: '' // 二级分类
+        author: '', // 作者
+        publishing: '', // 出版社
+        isbn: '', // isbn号
+        duration: '', // 时长（天）
+        number: '', // 数量（本）
+        comment: '', // 评价
+        phone: '', // 手机号
+        primaryClassification: '', // 一级分类
+        secondaryClassification: '' // 二级分类
     }
 }
 
@@ -745,8 +805,8 @@ var init = function () {
     loadPrimaryClassifications();
 }
 
-var vue_app = new Vue({
-    el: '#vue_app',
+var my_share_app = new Vue({
+    el: '#my_share_app',
     data: {
         showPage: 0, // 0-共享中 1-正在申请 2-添加申请
         sharingPage: {}, // 页数据
@@ -808,6 +868,9 @@ var vue_app = new Vue({
             }
             this.showPage = page;
         },
+        openShare: openShare,
+        closeShare: closeShare,
+        deleteShare: deleteShare,
         apply: apply,
         applyCheck: applyCheck,
         loadSharingPage: loadSharingPage,
@@ -821,7 +884,7 @@ var vue_app = new Vue({
         },
         goApplyingPage: function (currPage) {// 页面跳转
             this.applyingPageParams.pageNumber = currPage;
-            this.loadApplyingPage(this);
+            this.loadApplyingPage(my_share_app);
         },
         changeStepOfNewApply: function (step) {
             this.newApplyStep = step;

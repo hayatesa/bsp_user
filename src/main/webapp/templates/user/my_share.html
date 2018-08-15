@@ -55,10 +55,10 @@
 							<ul>
 								<li><a href="index.html">Home</a></li>
 								<li><a href="../../statics/assets/shop.html">Sofa</a></li>
-								<li><a href="#">Elements</a></li>
+								<li><a href="javascript:;">Elements</a></li>
 								<li><a href="../../statics/assets/shop.html">Lighting</a></li>
-								<li><a href="#">Pages</a></li>
-								<li><a href="#">What's New</a></li>
+								<li><a href="javascript:;">Pages</a></li>
+								<li><a href="javascript:;">What's New</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -76,10 +76,10 @@
 						<ul>
 							<li>
 								<div class="cart-img">
-									<a href="#"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
+									<a href="javascript:;"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
 								</div>
 								<div class="cart-content">
-									<h3><a href="#"> 1 X Faded...</a> </h3>
+									<h3><a href="javascript:;"> 1 X Faded...</a> </h3>
 									<span><b>S, Orange</b></span>
 									<span class="cart-price">£ 16.84</span>
 								</div>
@@ -89,10 +89,10 @@
 							</li>
 							<li>
 								<div class="cart-img">
-									<a href="#"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
+									<a href="javascript:;"><img src="../../statics/assets/img/cart/1.jpg" alt="" /></a>
 								</div>
 								<div class="cart-content">
-									<h3><a href="#"> 1 X Faded...</a> </h3>
+									<h3><a href="javascript:;"> 1 X Faded...</a> </h3>
 									<span><b>S, Orange</b></span>
 									<span class="cart-price">£ 16.84</span>
 								</div>
@@ -111,7 +111,7 @@
 									<span class="f-right cart-price">$692.00</span>
 								</div>
 							</li>
-							<li class="checkout m-0"><a href="#">checkout <i class="fa fa-angle-right"></i></a></li>
+							<li class="checkout m-0"><a href="javascript:;">checkout <i class="fa fa-angle-right"></i></a></li>
 						</ul>
 					</div>
 					<div class="setting-menu display-inline">
@@ -120,24 +120,24 @@
 							<li class="currencies-block-top">
 								<div class="current"><b>Currency : USD</b></div>
 								<ul>
-									<li><a href="#">Dollar (USD)</a></li>
-									<li><a href="#">Pound (GBP)</a></li>
+									<li><a href="javascript:;">Dollar (USD)</a></li>
+									<li><a href="javascript:;">Pound (GBP)</a></li>
 								</ul>
 							</li>
 							<li class="currencies-block-top">
 								<div class="current"><b>English</b></div>
 								<ul>
-									<li><a href="#">English</a></li>
-									<li><a href="#">اللغة العربية</a></li>
+									<li><a href="javascript:;">English</a></li>
+									<li><a href="javascript:;">اللغة العربية</a></li>
 								</ul>
 							</li>
 							<li class="currencies-block-top">
 								<div class="current"><b>My Account</b></div>
 								<ul>
-									<li><a href="#">My account</a></li>
-									<li><a href="#">My wishlist</a></li>
-									<li><a href="#">Checkout</a></li>
-									<li><a href="#">Log in</a></li>
+									<li><a href="javascript:;">My account</a></li>
+									<li><a href="javascript:;">My wishlist</a></li>
+									<li><a href="javascript:;">Checkout</a></li>
+									<li><a href="javascript:;">Log in</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -153,12 +153,12 @@
 					<div class="mobile-menu">
 						<nav id="mobile-menu-active">
 							<ul>
-								<li><a href="#">Home</a></li>
+								<li><a href="javascript:;">Home</a></li>
 								<li><a href="../../statics/assets/shop.html">Sofa</a></li>
-								<li><a href="#">Elements</a></li>
+								<li><a href="javascript:;">Elements</a></li>
 								<li><a href="../../statics/assets/shop.html">Lighting</a></li>
-								<li><a href="#">Pages</a></li>
-								<li><a href="#">What's New</a></li>
+								<li><a href="javascript:;">Pages</a></li>
+								<li><a href="javascript:;">What's New</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -173,15 +173,15 @@
 <div class="breadcrumb-area">
 	<div class="container">
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-home"></i></a></li>
-			<li><a href="#">Shop</a></li>
+			<li><a href="javascript:;"><i class="fa fa-home"></i></a></li>
+			<li><a href="javascript:;">Shop</a></li>
 			<li class="active">Cart</li>
 		</ol>
 	</div>
 </div>
 <!-- breadcrumb end -->
 <!-- cart-main-area start -->
-<div id="vue_app" v-cloak class="cart-main-area">
+<div id="my_share_app" v-cloak class="cart-main-area">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 col-sm-4">
@@ -230,10 +230,10 @@
 								<span v-if="item.lbStatus==2" class="label label-danger">已下架</span></br>
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.lbComment, 100)}}</span></br>
 							</td>
-							<td class="product-name" style="font-size: 12px;width: 6em;" class="product-remove">
-								<a v-if="item.lbStatus==1" href="#"><i class="fa fa-pause"></i> 暂停</a>
-								<a v-if="item.lbStatus==0" href="#"><i class="fa fa-play"></i> 开启</a>
-								<span v-if="item.lbStatus==2" href="#">-</span>
+							<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
+								<a @click="closeShare(item.lbId)"  v-if="item.lbStatus==1" href="javascript:;"><i class="fa fa-pause"></i> 关闭</a>
+								<a @click="openShare(item.lbId)"  v-if="item.lbStatus==0" href="javascript:;"><i class="fa fa-play"></i> 开启</a>
+								<a @click="deleteShare(item.lbId)" href="javascript:;"><i class="fa fa-trash-o"></i> 删除</a>
 							</td>
 						</tr>
 						</tbody>
@@ -249,7 +249,7 @@
 								<a @click="goSharingPage(sharingPageBar.startPageIndex+n-1)" href="javascript:;">{{sharingPageBar.startPageIndex+n-1}}</a>
 							</li>
 							<li><a @click="goSharingPage(sharingPage.currPage<sharingPage.totalPage?sharingPage.currPage+1:sharingPage.totalPage)" href="javascript:;"><i class="fa fa-angle-right"></i></a></li>
-							<li><a  @click="goSharingPage(sharingPage.totalPage)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
+							<li><a @click="goSharingPage(sharingPage.totalPage)" href="javascript:;"><i class="fa fa-angle-double-right"></i></a></li>
 						</ul>
 					</div><!--已读消息 end-->
 				</div>
@@ -283,7 +283,10 @@
 								<span v-if="item.clbStatus==1" class="label label-danger">审核不通过</span><span v-if="item.clbStatus==1">&nbsp;{{item.failureCause}}</span></br>
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.clbComment, 100)}}</span>
 							</td>
-							<td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+							<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
+                                <a @click="" href="javascript:;"><i class="fa fa-edit"></i> 编辑</a>
+                                <a @click="" href="javascript:;"><i class="fa fa-trash-o"></i> 删除</a>
+                            </td>
 						</tr>
 						</tbody>
 					</table>
@@ -488,11 +491,11 @@
 					<div class="footer-widget">
 						<h3 class="footer-title">My account</h3>
 						<ul class="block-content">
-							<li><a href="#">My orders</a></li>
-							<li><a href="#">My credit slips</a></li>
-							<li><a href="#">Sitemap</a></li>
-							<li><a href="#">My addresses</a></li>
-							<li><a href="#">My personal info</a></li>
+							<li><a href="javascript:;">My orders</a></li>
+							<li><a href="javascript:;">My credit slips</a></li>
+							<li><a href="javascript:;">Sitemap</a></li>
+							<li><a href="javascript:;">My addresses</a></li>
+							<li><a href="javascript:;">My personal info</a></li>
 						</ul>
 					</div>
 				</div>
@@ -500,11 +503,11 @@
 					<div class="footer-widget">
 						<h3 class="footer-title">Information</h3>
 						<ul class="block-content">
-							<li><a href="#">Contact us</a></li>
-							<li><a href="#">Discount</a></li>
-							<li><a href="#">Site map</a></li>
-							<li><a href="#">About us</a></li>
-							<li><a href="#">Custom service</a></li>
+							<li><a href="javascript:;">Contact us</a></li>
+							<li><a href="javascript:;">Discount</a></li>
+							<li><a href="javascript:;">Site map</a></li>
+							<li><a href="javascript:;">About us</a></li>
+							<li><a href="javascript:;">Custom service</a></li>
 						</ul>
 					</div>
 				</div>
@@ -512,11 +515,11 @@
 					<div class="footer-widget">
 						<h3 class="footer-title">OUR SERVICE</h3>
 						<ul class="block-content">
-							<li><a href="#">My orders</a></li>
-							<li><a href="#">My credit slips</a></li>
-							<li><a href="#">Sitemap</a></li>
-							<li><a href="#">My addresses</a></li>
-							<li><a href="#">My personal info</a></li>
+							<li><a href="javascript:;">My orders</a></li>
+							<li><a href="javascript:;">My credit slips</a></li>
+							<li><a href="javascript:;">Sitemap</a></li>
+							<li><a href="javascript:;">My addresses</a></li>
+							<li><a href="javascript:;">My personal info</a></li>
 						</ul>
 					</div>
 				</div>
@@ -567,7 +570,7 @@
 					<a href="../../statics/assets/shop.html"><img src="../../statics/assets/img/product/1.jpg" alt="" /></a>
 				</div>
 				<div class="modal-pro-content">
-					<h3><a href="#">Phasellus Vel Hendrerit</a></h3>
+					<h3><a href="javascript:;">Phasellus Vel Hendrerit</a></h3>
 					<div class="pro-rating">
 						<i class="fa fa-star"></i>
 						<i class="fa fa-star"></i>
@@ -586,14 +589,14 @@
 						<button>Add to cart</button>
 					</form>
 					<div class="product_meta">
-						<span class="posted_in">Categories: <a rel="tag" href="#">Albums</a>, <a rel="tag" href="#">Music</a></span> <span class="tagged_as">Tags: <a rel="tag" href="#">Albums</a>, <a rel="tag" href="#">Music</a></span>
+						<span class="posted_in">Categories: <a rel="tag" href="javascript:;">Albums</a>, <a rel="tag" href="javascript:;">Music</a></span> <span class="tagged_as">Tags: <a rel="tag" href="javascript:;">Albums</a>, <a rel="tag" href="javascript:;">Music</a></span>
 					</div>
 					<div class="social">
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-google-plus"></i></a>
-						<a href="#"><i class="fa fa-instagram"></i></a>
-						<a href="#"><i class="fa fa-pinterest"></i></a>
+						<a href="javascript:;"><i class="fa fa-facebook"></i></a>
+						<a href="javascript:;"><i class="fa fa-twitter"></i></a>
+						<a href="javascript:;"><i class="fa fa-google-plus"></i></a>
+						<a href="javascript:;"><i class="fa fa-instagram"></i></a>
+						<a href="javascript:;"><i class="fa fa-pinterest"></i></a>
 					</div>
 				</div>
 			</div>
