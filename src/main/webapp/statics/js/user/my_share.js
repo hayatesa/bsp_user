@@ -769,6 +769,28 @@ var deleteShare = function (lbId) {
     })
 }
 
+
+var cancelShare = function (clbId) {
+    confirm("删除共享?", function () {
+        $.ajax({
+            url: '/share/cancel',
+            data: {
+                clbId: clbId
+            },
+            success: function (data) {
+                if(data.code==0) {
+                    loadSharingPage(my_share_app);
+                }else if (data.code==401){
+                    window.location.href='/login';
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
 /**
  * 初始化添加共享页面
  */
@@ -860,8 +882,10 @@ var my_share_app = new Vue({
     methods: {
         switchPage: function (page) {//切换页
             if (page==0){
+                this.sharingPageParams.pageNumber = 1;
                 this.loadSharingPage(this);
             } else if (page==1) {
+                this.applyingPageParams.pageNumber = 1;
                 this.loadApplyingPage(this);
             } else if (page==2) {
                 initNewApplyForm();
@@ -871,6 +895,7 @@ var my_share_app = new Vue({
         openShare: openShare,
         closeShare: closeShare,
         deleteShare: deleteShare,
+        cancelShare: cancelShare,
         apply: apply,
         applyCheck: applyCheck,
         loadSharingPage: loadSharingPage,

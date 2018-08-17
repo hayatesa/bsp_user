@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.bsp.dao.CheckLoanableBookMapper;
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.entity.CheckLoanableBook;
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IShareApplyService;
 import com.bsp.utils.Page;
@@ -26,6 +27,23 @@ public class ShareApplyService implements IShareApplyService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemErrorException("服务器异常，提交申请失败");
+		}
+	}
+	
+	@Override
+	public void cancelApply(Integer clbId) {
+		CheckLoanableBook record = checkLoanableBookMapper.selectByPrimaryKey(clbId);
+		if (record == null) {
+			throw new DataUpdateException("删除失败，记录不存在");
+		}
+		if (record.getClbStatus() == (byte)2) {
+			throw new DataUpdateException("删除失败，该申请已通过审核");
+		}
+		try {
+			checkLoanableBookMapper.deleteByPrimaryKey(clbId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，删除记录失败");
 		}
 	}
 	

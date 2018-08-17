@@ -17,4 +17,10 @@ public interface IShareApplyService {
 	 * @param checkLoanableBook 实体
 	 */
 	void addShare(CheckLoanableBook checkLoanableBook);
+	
+	/**
+	 * 删除申请
+	 * @param clbId　id
+	 */
+	void cancelApply(Integer clbId);
 }

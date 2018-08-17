@@ -38,7 +38,6 @@ public class ShareApplyController extends BaseController {
 		try {
 			String fileName = fileUploadService.uploadCover(multipartFile);
 			request.getSession().setAttribute(fileNameSessionKey, fileName); // 包含二级目录的文件名到session
-			System.out.println(request.getSession().getAttribute(fileNameSessionKey));;
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			return Result.error(e.getMessage());
@@ -92,6 +91,15 @@ public class ShareApplyController extends BaseController {
 	@RequestMapping("cancel")
 	@RequiresUser
 	public Result cancel(Integer clbId) {
+		try {
+			shareApplyService.cancelApply(clbId);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
+		}
 		return Result.success();
 	}
 	

@@ -285,7 +285,7 @@
 							</td>
 							<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
                                 <a @click="" href="javascript:;"><i class="fa fa-edit"></i> 编辑</a>
-                                <a @click="" href="javascript:;"><i class="fa fa-trash-o"></i> 删除</a>
+                                <a @click="cancelShare(item.clbId)" href="javascript:;"><i class="fa fa-trash-o"></i> 取消</a>
                             </td>
 						</tr>
 						</tbody>
@@ -310,9 +310,9 @@
 				<h2 class="page-heading mt-40">
 					<span class="cat-name">添加共享</span>
 				</h2>
-				<div class="row">
+				<div v-show="newApplyStep==0" class="row">
 					<div class="col-md-8 col-sm-7 col-xs-12">
-						<div v-show="newApplyStep==0" >
+						<div >
 							<div id="uploader" class="wu-example">
 								<div class="queueList">
 									<div id="dndArea" class="placeholder">
