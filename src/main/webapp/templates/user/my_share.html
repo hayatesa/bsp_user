@@ -29,7 +29,7 @@
 
 	<link rel="stylesheet" href="../../statics/js/plugins/webuploader-0.1.5/webuploader.css">
 
-	<link rel="stylesheet" href="../../statics/css/webuploader-demo.css">
+	<link rel="stylesheet" href="../../statics/js/imageWebUploader/css/imageWebUploader.css">
 
 	<!-- Modernizr JS -->
 	<script src="../../statics/assets/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -258,7 +258,83 @@
 				<h2 class="page-heading mt-40">
 					<span class="cat-name">正在审核</span>
 				</h2>
-				<div class="table-content table-responsive">
+				<div v-show="applyingPageShow.showEdit" class="row" style="padding: 15px" v-show="editApplyStep==1" >
+
+					<div v-show="applyingPageShow.editApplyStep==0" class="row">
+						<div class="col-md-8 col-sm-7 col-xs-12">
+							<div id="editApply-image-uploader"></div>
+							<div class="buttons-cart" >
+								<a href="javascript:;" @click="changeStepOfEditApply(1)">下一步 <i class="fa fa-chevron-right"></i></a>
+							</div>
+						</div>
+					</div>
+
+					<form v-show="applyingPageShow.editApplyStep==1" id="editApplyForm" class="row">
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>书名：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.name}}</span>
+							<input @change="applyCheck" v-model="editApply.clbName" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>作者：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.author}}</span>
+							<input @change="applyCheck" v-model="editApply.clbAuthor" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>出版社：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.publishing}}</span>
+							<input @change="applyCheck" v-model="editApply.clbPublishing" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>ISBN：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.isbn}}</span>
+							<input @change="applyCheck" v-model="editApply.isbn" type="text"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>数量：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.number}}</span>
+							<input @change="applyCheck" v-model="editApply.clbNumber" type="number" min="1"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>可借时长(天)：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.duration}}</span>
+							<input @change="applyCheck" v-model="editApply.clbDuration" type="number" min="15"/>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>一级分类：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.primaryClassification}}</span>
+							<select @change="loadSecondaryClassifications" v-model="pcId">
+								<option selected value="0" >请选择</option>
+								<option v-for="item in primaryClassifications" :value="item.pcId">{{item.pcName}}</option>
+							</select>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>二级分类：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.secondaryClassification}}</span>
+							<select  @change="applyCheck" v-model="editApply.secondaryClassification.scId" >
+								<option value="0" selected>请选择</option>
+								<option v-for="item in secondaryClassifications" :value="item.scId">{{item.scName}}</option>
+							</select>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
+							<label>手机号：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.phone}}</span>
+							<input @change="applyCheck" v-model="editApply.phone" type="text"/>
+						</div>
+						<div class="col-xs-12"  style="margin-bottom: 10px">
+							<label>评价：</label>
+							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.comment}}</span>
+							<textarea @change="applyCheck" v-model="editApply.clbComment" rows="5" maxlength="2000" ></textarea>
+						</div>
+					</form>
+					<div v-show="applyingPageShow.editApplyStep==1" class="row" style="padding-left: 15px">
+						<div class="buttons-cart">
+							<a href="javascript:;" @click="changeStepOfEditApply(0)"><i class="fa fa-chevron-left"></i> 上一步</a>
+							<input @click="apply" type="button" value="提交" />
+						</div>
+					</div>
+				</div>
+				<div  v-show="!applyingPageShow.showEdit" class="table-content table-responsive">
 					<table>
 						<thead>
 						<tr>
@@ -310,29 +386,10 @@
 				<h2 class="page-heading mt-40">
 					<span class="cat-name">添加共享</span>
 				</h2>
-				<div v-show="newApplyStep==0" class="row">
-					<div class="col-md-8 col-sm-7 col-xs-12">
-						<div >
-							<div id="uploader" class="wu-example">
-								<div class="queueList">
-									<div id="dndArea" class="placeholder">
-										<div id="filePicker"></div>
-										<p>可将图片拽或截图粘贴，只允许上传1张且大小不超过1M的图片</p>
-										<p>支持图片类型：gif,jpg,jpeg,bmp,png</p>
-									</div>
-								</div>
-								<div class="statusBar" style="display:none;">
-									<div class="progress">
-										<span class="text">0%</span>
-										<span class="percentage"></span>
-									</div>
-									<div class="info"></div>
-									<div class="btns">
-										<div id="filePicker2"></div>
-										<div class="uploadBtn">开始上传</div>
-									</div>
-								</div>
-							</div>
+				<div class="row" style="padding: 15px">
+					<div v-show="newApplyStep==0" class="row">
+						<div class="col-md-8 col-sm-7 col-xs-12">
+							<div id="newApply-image-uploader"></div>
 							<div class="buttons-cart" >
 								<a href="javascript:;" @click="changeStepOfNewApply(1)">下一步 <i class="fa fa-chevron-right"></i></a>
 							</div>
@@ -625,6 +682,7 @@
 
 <script src="../../statics/js/plugins/layer/layer.js"></script>
 <script src="../../statics/js/plugins/webuploader-0.1.5/webuploader.min.js"></script>
+<script src="../../statics/js/imageWebUploader/js/imageWebUploader.js"></script>
 <script src="../../statics/js/vue.js"></script>
 <script src="../../statics/js/commons/common.js"></script>
 <!--<script src="../../statics/js/user/header.js"></script>-->
