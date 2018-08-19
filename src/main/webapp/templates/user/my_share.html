@@ -231,9 +231,9 @@
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.lbComment, 100)}}</span></br>
 							</td>
 							<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
-								<a @click="closeShare(item.lbId)"  v-if="item.lbStatus==1" href="javascript:;"><i class="fa fa-pause"></i> 关闭</a>
-								<a @click="openShare(item.lbId)"  v-if="item.lbStatus==0" href="javascript:;"><i class="fa fa-play"></i> 开启</a>
-								<a @click="deleteShare(item.lbId)" href="javascript:;"><i class="fa fa-trash-o"></i> 删除</a>
+								<a @click="closeShare(item.lbId)"  v-if="item.lbStatus==1" href="javascript:;"><i class="fa fa-pause"></i>关闭</a>
+								<a @click="openShare(item.lbId)"  v-if="item.lbStatus==0" href="javascript:;"><i class="fa fa-play"></i>开启</a>
+								<a @click="deleteShare(item.lbId)" href="javascript:;"><i class="fa fa-trash-o"></i>删除</a>
 							</td>
 						</tr>
 						</tbody>
@@ -259,11 +259,16 @@
 					<span class="cat-name">正在审核</span>
 				</h2>
 				<div v-show="applyingPageShow.showEdit" class="row" style="padding: 15px" v-show="editApplyStep==1" >
-
 					<div v-show="applyingPageShow.editApplyStep==0" class="row">
+						<div class="col-md-4 col-sm-5 col-xs-12">
+							<div class="thumbnail">
+								<img :src="'/cover?imagePath='+editApply.imagePath">
+							</div>
+						</div>
 						<div class="col-md-8 col-sm-7 col-xs-12">
 							<div id="editApply-image-uploader"></div>
 							<div class="buttons-cart" >
+								<a href="javascript:;" @click="cancelEditApply">取消</a>
 								<a href="javascript:;" @click="changeStepOfEditApply(1)">下一步 <i class="fa fa-chevron-right"></i></a>
 							</div>
 						</div>
@@ -304,16 +309,16 @@
 							<label>一级分类：</label>
 							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.primaryClassification}}</span>
 							<select @change="loadSecondaryClassifications" v-model="pcId">
-								<option selected value="0" >请选择</option>
-								<option v-for="item in primaryClassifications" :value="item.pcId">{{item.pcName}}</option>
+								<option value="0" >请选择</option>
+								<option v-for="item in primaryClassifications" :value="item.pcId" >{{item.pcName}}</option>
 							</select>
 						</div>
 						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
 							<label>二级分类：</label>
 							<span class="text-danger" style="font-size: 12px">{{editApplyMsg.secondaryClassification}}</span>
-							<select  @change="applyCheck" v-model="editApply.secondaryClassification.scId" >
-								<option value="0" selected>请选择</option>
-								<option v-for="item in secondaryClassifications" :value="item.scId">{{item.scName}}</option>
+							<select @change="applyCheck" v-model="editApply.secondaryClassification.scId" >
+								<option value="0" >请选择</option>
+								<option v-for="item in secondaryClassifications" :value="item.scId" >{{item.scName}}</option>
 							</select>
 						</div>
 						<div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 10px">
@@ -330,11 +335,12 @@
 					<div v-show="applyingPageShow.editApplyStep==1" class="row" style="padding-left: 15px">
 						<div class="buttons-cart">
 							<a href="javascript:;" @click="changeStepOfEditApply(0)"><i class="fa fa-chevron-left"></i> 上一步</a>
-							<input @click="apply" type="button" value="提交" />
+							<input @click="applyUpdate" type="button" value="提交" />
+							<a href="javascript:;" @click="cancelEditApply">取消</a>
 						</div>
 					</div>
 				</div>
-				<div  v-show="!applyingPageShow.showEdit" class="table-content table-responsive">
+				<div v-show="!applyingPageShow.showEdit" class="table-content table-responsive">
 					<table>
 						<thead>
 						<tr>
@@ -353,6 +359,7 @@
 								<span style="font-weight: bold">所属分类：</span><span>{{item.secondaryClassification.primaryClassification.pcName}}&nbsp;<i style="color: #ffae00;" class="fa fa-chevron-right"></i>&nbsp;{{item.secondaryClassification.scName}}</span></br>
 								<span style="font-weight: bold">ISBN：</span><span>{{item.isbn}}</span></br>
 								<span style="font-weight: bold">数量：</span><span>{{item.clbNumber}}</span></br>
+								<span style="font-weight: bold">借阅时长：</span><span>{{item.clbDuration}} 天</span></br>
 								<span style="font-weight: bold">手机号：</span><span>{{item.phone}}</span></br>
 								<span style="font-weight: bold">状态：</span>
 								<span v-if="item.clbStatus==0" class="label label-warning">等待审核</span>
@@ -360,14 +367,14 @@
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.clbComment, 100)}}</span>
 							</td>
 							<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
-                                <a @click="" href="javascript:;"><i class="fa fa-edit"></i> 编辑</a>
-                                <a @click="cancelShare(item.clbId)" href="javascript:;"><i class="fa fa-trash-o"></i> 取消</a>
+                                <a @click="goEditPage(item.clbId)" href="javascript:;"><i class="fa fa-edit"></i>编辑</a>
+                                <a @click="cancelShare(item.clbId)" href="javascript:;"><i class="fa fa-trash-o"></i>取消</a>
                             </td>
 						</tr>
 						</tbody>
 					</table>
 				</div>
-				<div class="row">
+				<div v-show="!applyingPageShow.showEdit" class="row">
 					<div v-show="showPage==1&&applyingPage.totalPage>1" class="content-sortpagibar">
 						<div class="product-count display-inline">当前第{{applyingPage.currPage}} / {{applyingPage.totalPage}}页</div>
 						<ul class="shop-pagi display-inline">

@@ -12,7 +12,7 @@ var initImageUploader = function () {
         fileSingleSizeLimit: 1024*1024,    // 单个文件大小1 M
         showContinueBtn: false, // 显示继续添加文件按钮
         multiple: false,
-        tipText: '可将图片拽或截图粘贴，只允许上传1张图片，且大小不超过1024KB',
+        tipText: '不修改封面请直接点击下一步</br>可将图片拽或截图粘贴，只允许上传1张图片，且大小不超过1024KB',
         accept: { // 指定接受哪些类型的文件。
             title: 'Images',
             extensions: 'gif,jpg,jpeg,bmp,png',
@@ -140,6 +140,96 @@ var loadSecondaryClassifications=function () {
 
 }
 
+var loadEditRecord = function (clbId) {
+    $.ajax({
+        url: '/share/findByClbId',
+        data: {
+            clbId: clbId
+        },
+        success: function (data) {
+            if (data.code == 0) {
+                my_share_app.editApply = data.record;
+                my_share_app.pcId = data.record.secondaryClassification.primaryClassification.pcId;
+                my_share_app.loadSecondaryClassifications();
+            } else if (data.code==401){
+                window.location.href='/login';
+                return;
+            } else if (data.code!=0){
+                alert(data.msg);
+            }
+
+        }
+    })
+}
+
+var applyUpdateCheck = function () {
+    var obj = my_share_app.editApply;
+    var msg = my_share_app.editApplyMsg;
+    var result = true;
+    if (!obj.clbAuthor.trim()) {
+        result = false;
+        msg.author = '不能为空';
+    } else {
+        msg.author = '';
+    }
+    if (!obj.clbComment.trim()) {
+        result = false;
+        msg.comment = '不能为空';
+    } else {
+        msg.comment = '';
+    }
+    if (obj.clbDuration < 7 || obj.clbDuration > 365) {
+        result = false;
+        msg.duration = '不能为空，且大于7小于365';
+    } else {
+        msg.duration = '';
+    }
+    if (!obj.clbName.trim()) {
+        result = false;
+        msg.name = '不能为空';
+    } else {
+        msg.name = '';
+    }
+    if (obj.clbNumber < 1 || obj.clbNumber > 2147483647) {
+        result = false;
+        msg.number = '不能为空，且大于0小于2147483647';
+    } else {
+        msg.number = '';
+    }
+    if (!obj.clbPublishing.trim()) {
+        result = false;
+        msg.publishing = '不能为空';
+    } else {
+        msg.publishing = '';
+    }
+    if (!obj.isbn.trim()) {
+        result = false;
+        msg.isbn = '不能为空';
+    } else {
+        msg.isbn = '';
+    }
+    var e = new RegExp("^[1][3,4,5,6,7,8,9][0-9]{9}$");
+    if (!e.test(obj.phone)) {
+        result = false;
+        msg.phone = '请填写正确的手机号';
+    } else {
+        msg.phone = '';
+    }
+    if (my_share_app.pcId == 0) {
+        result = false;
+        msg.primaryClassification = '请选择一级分类';
+    } else {
+        msg.primaryClassification = '';
+    }
+    if (obj.secondaryClassification.scId == 0) {
+        result = false;
+        msg.secondaryClassification = '请选择二级分类';
+    } else {
+        msg.secondaryClassification = '';
+    }
+    return result;
+}
+
 var applyCheck = function () {
     var obj = my_share_app.newApply;
     var msg = my_share_app.newApplyMsg;
@@ -216,6 +306,9 @@ var apply = function () {
     confirm("提交申请?", function () {
         $.ajax({
             url: '/share/apply',
+            type: 'post',
+            dataType : "JSON",
+            contentType:"application/json",
             data: JSON.stringify(my_share_app.newApply),
             success: function (data) {
                 if(data.code==0){
@@ -223,6 +316,34 @@ var apply = function () {
                 } else if (data.code==1003) { // 封面未上传
                     alert(data.msg);
                     my_share_app.newApplyStep = 0; // 返回封面上传
+                } else if (data.code==401){
+                    window.location.href='/login';
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    })
+}
+
+var applyUpdate = function () {
+    var completed = applyUpdateCheck();
+    if (!completed) {
+        return;
+    }
+    confirm("提交申请?", function () {
+        $.ajax({
+            url: '/share/update',
+            type: 'post',
+            dataType : "JSON",
+            contentType:"application/json",
+            data: JSON.stringify(my_share_app.editApply),
+            success: function (data) {
+                if(data.code==0){
+                    alert("更新成功");
+                    my_share_app.applyingPageShow.showEdit = false;
+                    my_share_app.loadApplyingPage(my_share_app);
                 } else if (data.code==401){
                     window.location.href='/login';
                     return;
@@ -319,10 +440,16 @@ var cancelShare = function (clbId) {
     })
 }
 
+var cancelEditApply = function () {
+    my_share_app.applyingPageShow.showEdit = false;
+    my_share_app.applyingPageShow.editApplyStep = 0;
+}
+
 /**
  * 初始化添加共享页面
  */
 var initNewApplyForm = function () {
+    initImageUploader();
     my_share_app.newApplyStep = 0;
     my_share_app.newApply= {
         clbName: '', // 书名
@@ -346,19 +473,20 @@ var initNewApplyForm = function () {
         phone: '', // 手机号
         primaryClassification: '', // 一级分类
         secondaryClassification: '' // 二级分类
-    }
+    };
+    my_share_app.pcId = 0;
 }
 
 var init = function () {
     loadSharingPage(this);
     loadPrimaryClassifications();
-
+    //loadSecondaryClassifications();
 }
 
 var my_share_app = new Vue({
     el: '#my_share_app',
     data: {
-        showPage: 1, // 0-共享中 1-正在申请 2-添加申请
+        showPage: 0, // 0-共享中 1-正在申请 2-添加申请
         sharingPage: {}, // 页数据
         sharingPageParams: { // 正在共享页面参数
             limit: 3, // 页大小
@@ -405,7 +533,7 @@ var my_share_app = new Vue({
         },
         applyingPageShow: {
             editApplyStep: 0, // 步骤, 0-上传封面, 1-填写表单, 3-提示成功
-            showEdit: true
+            showEdit: false
         },
         editApply: {
             clbName: '', // 书名
@@ -416,7 +544,12 @@ var my_share_app = new Vue({
             clbNumber: '', // 数量（本）
             clbComment: '', // 评价
             phone: '', // 手机号
-            secondaryClassification: {scId: 0} // 二级分类
+            secondaryClassification: {
+                scId: 0,
+                primaryClassification: {
+                    pcId: 0
+                }
+            } // 二级分类
         },
         editApplyMsg: { // 错误提示文本
             name: '', // 书名
@@ -453,12 +586,16 @@ var my_share_app = new Vue({
         closeShare: closeShare,
         deleteShare: deleteShare,
         cancelShare: cancelShare,
+        cancelEditApply: cancelEditApply,
         apply: apply,
-        applyCheck: applyCheck,
+        applyUpdate: applyUpdate,
+        applyCheck: applyCheck, // 添加申请的表单验证
+        applyUpdateCheck: applyUpdateCheck, // 修改申请的表单验证
         loadSharingPage: loadSharingPage,
         loadApplyingPage: loadApplyingPage,
         loadPrimaryClassifications: loadPrimaryClassifications,
         loadSecondaryClassifications: loadSecondaryClassifications,
+        loadEditRecord: loadEditRecord,
         initNewApplyForm: initNewApplyForm,
         goSharingPage: function (currPage) {// 页面跳转
             this.sharingPageParams.pageNumber = currPage;
@@ -467,6 +604,12 @@ var my_share_app = new Vue({
         goApplyingPage: function (currPage) {// 页面跳转
             this.applyingPageParams.pageNumber = currPage;
             this.loadApplyingPage(my_share_app);
+        },
+        goEditPage: function (clbId) {// 跳转到编辑页
+            this.loadEditRecord(clbId);
+            this.applyingPageShow.editApplyStep = 0;
+            this.applyingPageShow.showEdit = true;
+            initImageUploader();
         },
         changeStepOfEditApply: function (step) {
             this.applyingPageShow.editApplyStep = step;

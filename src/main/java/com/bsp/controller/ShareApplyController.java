@@ -70,8 +70,35 @@ public class ShareApplyController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Result.error("由于未知错误，操作失败");
+		} finally {
+			request.getSession().removeAttribute(session_cover);// 删除session中的封面路径
 		}
 		return Result.success();
+	}
+	
+	/**
+	 * 查找申请中的订单
+	 * @param clbId 待审核的书的id
+	 */
+	@RequestMapping("findByClbId")
+	@RequiresUser
+	public Result findByClbId(Integer clbId) {
+		CheckLoanableBook record = null;
+		try {
+			record = shareApplyService.findCheckLoanableBookById(clbId);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，查找记录失败");
+		}
+		Result result = Result.success();
+		result.put("record", record);
+		return result;
 	}
 	
 	/**
@@ -80,7 +107,24 @@ public class ShareApplyController extends BaseController {
 	 */
 	@RequestMapping("update")
 	@RequiresUser
-	public Result update(Integer clbId) {
+	public Result update(@RequestBody CheckLoanableBook checkLoanableBook, HttpServletRequest request) {
+		String fileNameSessionKey = "session_cover_" + ShiroUtils.getToken().getUuid();
+		String session_cover = (String)request.getSession().getAttribute(fileNameSessionKey);
+		if (session_cover != null) { // 如果有重新上传封面
+			checkLoanableBook.setImagePath(session_cover);
+		}
+		checkLoanableBook.setUser(ShiroUtils.getToken()); // 设置用户
+		try {
+			shareApplyService.updateShare(checkLoanableBook);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
+		} finally {
+			request.getSession().removeAttribute(session_cover);// 删除session中的封面路径
+		}
 		return Result.success();
 	}
 	

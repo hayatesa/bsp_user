@@ -31,6 +31,22 @@ public class ShareApplyService implements IShareApplyService {
 	}
 	
 	@Override
+	public void updateShare(CheckLoanableBook checkLoanableBook) {
+		try {
+			checkLoanableBookMapper.updateByPrimaryKeySelective(checkLoanableBook);
+			if (checkLoanableBook.getClbStatus() == (byte)2) {
+				throw new DataUpdateException("更新失败，申请已通过审核");
+			}
+		} catch (DataUpdateException e) {
+			e.printStackTrace();
+			throw new DataUpdateException(e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，更新失败");
+		}
+	}
+	
+	@Override
 	public void cancelApply(Integer clbId) {
 		CheckLoanableBook record = checkLoanableBookMapper.selectByPrimaryKey(clbId);
 		if (record == null) {
@@ -59,6 +75,25 @@ public class ShareApplyService implements IShareApplyService {
 			throw new SystemErrorException("服务器异常，提交申请失败");
 		}
 		return new Page(list, totalCount, queryObject.getLimit(), queryObject.getPageNumber());
+	}
+	
+	@Override
+	public CheckLoanableBook findCheckLoanableBookById(Integer clbId) {
+		
+		CheckLoanableBook record = null;
+		try {
+			record = checkLoanableBookMapper.selectByPrimaryKey(clbId);
+			if (record == null) {
+				throw new NullPointerException("记录不存在");
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			throw new NullPointerException(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("服务器异常，查找记录失败");
+		}
+		return record;
 	}
 
 	public CheckLoanableBookMapper getCheckLoanableBookMapper() {
