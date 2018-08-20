@@ -106,7 +106,7 @@ var msg_app = new Vue({
             endPageIndex: 1, // 未读消息分分页工具条结束页码
         },
         unreadPageParams: {// 未读消息分页查询参数
-            limit: 6, // 页大小
+            limit: 3, // 页大小
             pageNumber: 1 // 当前页
         },
         readPage: {}, // 已读消息分页数据
@@ -116,7 +116,7 @@ var msg_app = new Vue({
             endPageIndex: 1, // 分页工具条结束页码
         },
         readPageParams: {// 已读消息分页查询参数
-            limit: 6, // 页大小
+            limit: 3, // 页大小
             pageNumber: 1 // 当前页
         },
     },
