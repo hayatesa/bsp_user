@@ -574,6 +574,7 @@ var my_share_app = new Vue({
                 this.loadSharingPage(this);
             } else if (page==1) {
                 this.applyingPageParams.pageNumber = 1;
+                this.applyingPageShow.showEdit = false;
                 this.loadApplyingPage(this);
                 initImageUploader();
             } else if (page==2) {
