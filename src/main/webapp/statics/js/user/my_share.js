@@ -471,7 +471,7 @@ var initNewApplyForm = function () {
         number: '', // 数量（本）
         comment: '', // 评价
         phone: '', // 手机号
-        primaryClassification: '', // 一级分类
+        primaryClassification:  '', // 一级分类
         secondaryClassification: '' // 二级分类
     };
     my_share_app.pcId = 0;
