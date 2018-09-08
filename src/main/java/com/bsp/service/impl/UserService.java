@@ -16,6 +16,7 @@ import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IUserService;
 import com.bsp.utils.CommonUtil;
 import com.bsp.utils.Cryptography;
+import com.bsp.vo.UserVO;
 
 @Service
 @Transactional
@@ -106,6 +107,19 @@ public class UserService implements IUserService {
 			e.printStackTrace();
 			throw new SystemErrorException("修改密码失败，系统异常");
 		}
+	}
+
+	@Override
+	public void updateUserInfo(UserVO userVO) {
+		
+		UserInfor userInfor = userVO.getUserInfor();
+		try {
+			userInforMapper.updateByPrimaryKeySelective(userInfor);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("更新失败，系统异常");
+		}
+		
 	}
 
 }

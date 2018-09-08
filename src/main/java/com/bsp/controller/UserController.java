@@ -3,10 +3,12 @@ package com.bsp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bsp.exceptions.DataUpdateException;
 import com.bsp.exceptions.SystemErrorException;
 import com.bsp.service.IUserService;
 import com.bsp.shiro.ShiroUtils;
@@ -35,7 +37,16 @@ public class UserController extends BaseController {
 	 * @param userVo 封装参数
 	 */
 	@RequestMapping("update")
-	public Result update(UserVO userVo) {
+	public Result update(@RequestBody UserVO userVo) {
+		try {
+			userService.updateUserInfo(userVo);
+		} catch (SystemErrorException e) {
+			e.printStackTrace();
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
+		}
 		return Result.success();
 	}
 	
@@ -52,7 +63,12 @@ public class UserController extends BaseController {
 			userService.changePassword(ShiroUtils.getToken(), currentPassword, newPassword, confirmPassword);
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
-			Result.error(e.getMessage());
+			return Result.error(e.getMessage());
+		} catch (DataUpdateException e) {
+			return Result.error(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.error("由于未知错误，操作失败");
 		}
 		return Result.success();
 	}

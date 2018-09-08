@@ -3,6 +3,7 @@ package com.bsp.service;
 import com.bsp.entity.User;
 import com.bsp.entity.UserInfor;
 import com.bsp.exceptions.UserDefinedException;
+import com.bsp.vo.UserVO;
 
 public interface IUserService {
 
@@ -29,4 +30,10 @@ public interface IUserService {
 	 * @param confirmPassword 确认密码
 	 */
 	void changePassword(User user, String currentPassword, String newPassword, String confirmPassword);
+	
+	/**
+	 * 修改用户信息
+	 * @param userVO
+	 */
+	void updateUserInfo(UserVO userVO);
 }
