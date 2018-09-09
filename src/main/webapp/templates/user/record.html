@@ -136,61 +136,111 @@
 							<ul class="sidebar-menu">
 								<li><a @click="switchPage(0)" href="javascript:;">正在进行</a></li>
 								<li><a @click="switchPage(1)" href="javascript:;">异常记录 </a></li>
-								<li><a @click="switchPage(2)" href="javascript:;">已经结束 </a></li>
+								<li><a @click="switchPage(2)" href="javascript:;">已完成 </a></li>
 							</ul>
 						</div>
 
 					</div>
 				</div>
 				<div class="col-md-9 col-sm-8">
-					<h2 class="page-heading mt-40">
+					<h2 class="page-heading">
 						<div v-show="showPage==0" id="row">
-							<div class="col-sm-6 clo-md-6">
+							<div class="col-sm-6 clo-md-6"  style="padding-left: 0px">
 								<span class="cat-name">正在进行</span>
 							</div>
 							<div class="col-sm-6 clo-md-6">
 								<div class="input-group">
-                                	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search0" v-model="ingParams.search"/>
+                                	<input type="text" placeholder="输入图书名称" class="form-control" style="border-radius:0px;height: 38px" id="r_search0" v-model="ingParams.search"/>
                                 	<span class="input-group-btn">
-                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(0)">搜索</button>
+                               			<button type="button" class="btn btn-default" style="height: 38px;margin-bottom: 2px" @click="searchPage(0)">搜索</button>
                                		</span>
                        			 </div>
 							</div>
 						</div>
 						<div v-show="showPage==1" id="row">
-							<div class="col-sm-6 clo-md-6">
+							<div class="col-sm-6 clo-md-6"  style="padding-left: 0px">
 								<span class="cat-name">异常记录</span>
 							</div>
 							<div class="col-sm-6 clo-md-6">
 								<div class="input-group">
                                 	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search1" v-model="bugPageParams.search"/>
                                 	<span class="input-group-btn">
-                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(1)">搜索</button>
+                               			<button type="button" class="btn btn-default" style="height: 38px;margin-bottom: 2px" @click="searchPage(1)">搜索</button>
                                		</span>
                        			 </div>
 							</div>
 						</div>
 						<div v-show="showPage==2" id="row">
-							<div class="col-sm-6 clo-md-6">
-								<span class="cat-name">已经结束</span>
+							<div class="col-sm-6 clo-md-6" style="padding-left: 0px">
+								<span class="cat-name">已完成</span>
 							</div>
 							<div class="col-sm-6 clo-md-6">
 								<div class="input-group">
                                 	<input type="text" placeholder="输入图书名称" class="form-control" style="height: 38px" id="r_search2" v-model="edPageParams.search"/>
                                 	<span class="input-group-btn">
-                               			<button type="button" class="btn btn-default" style="height: 38px" @click="searchPage(2)">搜索</button>
+                               			<button type="button" class="btn btn-default" style="height: 38px;margin-bottom: 2px" @click="searchPage(2)">搜索</button>
                                		</span>
                        			 </div>
 							</div>
 						</div>
 					</h2>
-					<h5 class="page-header"></h5>
 					<div class="shop-page-bar">
 						<!-- Tab panes -->
 						<div class="tab-content">
-							<div v-show="showPage==0">
-								<div role="tabpanel" class="tab-pane" id="profile">
+							<div v-show="showPage==0" style="min-height: 500px;margin-bottom: 30px;">
+								<div role="tabpanel" class="tab-pane" id="profile"  style="padding-left: 15px">
 									<div class="row mb-50" v-for="order in ingPage">
+										<!--<div class="table-content table-responsive">
+											<table>
+												<thead>
+												<tr>
+													<th class="product-thumbnail">封面</th>
+													<th class="product-name">详情</th>
+													<th class="product-remove">操作</th>
+												</tr>
+												</thead>
+												<tbody>
+												<tr>
+													<td class="product-thumbnail"><a :href="'/cover?imagePath='+order.loanableBook.imagePath"  target="_blank"><img :src="'/cover?imagePath='+order.loanableBook.imagePath" alt=""/></a></td>
+													<td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
+														<span >订单号：</span><span>{{order.lrId}}</span></br>
+														<span >订单时间：</span><span>{{millisecondsToDateTime(order.createTime)}}</span></br>
+														<span >出版社：</span><span>{{order.loanableBook.lbPublishing}}</span></br>
+                                                        <span >借出方：</span><span>{{order.loanableBook.user.mail}}</span></br>
+                                                        <span >联系电话：</span><span>{{order.loanableBook.phone}}</span></br>
+														<span >ISBN：</span><span>{{order.loanableBook.isbn}}</span></br>
+                                                        <span >数量：</span><span>{{order.amount}}</span></br>
+                                                        <span v-if="order.lrStruts==0">状态： <span class="label label-success">正常</span> 等待借出方同意<br /></span>
+                                                        <span v-else-if="order.lrStruts==4">状态： <span class="label label-success">正常</span> 借出方已同意申请，等待借出方将图书送至中转站<br /></span>
+                                                        <span v-else-if="order.lrStruts==6">状态： <span class="label label-success">正常</span> 图书已送达中转站，等待借入方取书<br /></span>
+                                                        <span v-else-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+                                                        <span v-else-if="order.lrStruts==8">状态：<span class="label label-success">正常</span> 正在借阅<br /></span>
+                                                        <span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+                                                        <span v-else-if="order.lrStruts==10">状态：<span class="label label-success">正常</span> 等待借出方取回图书<br /></span>
+                                                        <span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+                                                        <span v-else>借出方同意时间：无<br /></span>
+                                                        <span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+                                                        <span v-else>借出方送到中转站时间：无<br /></span>
+                                                        <span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+                                                        <span v-else>取书时间：无<br /></span>
+                                                        <span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+                                                        <span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+                                                        <span v-else>应还时间：无<br /></span>
+                                                        <span v-else>实际还书时间：无<br /></span>
+                                                        <span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无<br /></span>
+                                                        <span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无</span>
+													</td>
+													<td class="product-name product-remove" style="font-size: 12px;width: 10em;">
+                                                        <div v-if="order.lrStruts==0">
+                                                            <a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span><i class="fa fa-remove"></i>取消</span></a>
+                                                        </div>
+													</td>
+												</tr>
+												</tbody>
+											</table>
+										</div>-->
 										<div class="col-xs-5 col-sm-5 col-md-4">
 											<div class="product-wrapper">
 												<div class="product-img">
@@ -214,7 +264,7 @@
 															借出方：{{order.loanableBook.user.mail}}<br />
 															联系电话：{{order.loanableBook.phone}}<br />
 															ISBN:{{order.loanableBook.isbn}}<br />
-															所借数量:{{order.amount}}
+															数量:{{order.amount}}
 														</p>
 													</div>
 													<div class="col-sm-6 clo-md-6">
@@ -250,7 +300,6 @@
 										</div>
 									</div>
 									<ul class="shop-pagi display-inline" v-if="page!=1&&newOrderNum!=0">
-
 										<li><a @click="goIngPage(1)" href="javascript:;"><i class="fa fa-angle-double-left"></i></a></li>
 										<li><a
 											@click="goIngPage(currPage>1?currPage-1:currPage)"
@@ -269,9 +318,60 @@
 									</ul>
 								</div>
 							</div>
-							<div v-show="showPage==1">
-								<div role="tabpanel" class="tab-pane" id="profile">
+							<div v-show="showPage==1" style="min-height: 500px;margin-bottom: 30px;">
+								<div role="tabpanel" class="tab-pane" id="profile" style="padding-left: 15px">
 									<div class="row mb-50" v-for="order in bugPage">
+                                        <!--<div class="table-content table-responsive">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th class="product-thumbnail">封面</th>
+                                                    <th class="product-name">详情</th>
+                                                    <th class="product-remove">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="product-thumbnail"><a :href="'/cover?imagePath='+order.loanableBook.imagePath"  target="_blank"><img :src="'/cover?imagePath='+order.loanableBook.imagePath" alt=""/></a></td>
+                                                    <td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
+                                                        <span >订单号：</span><span>{{order.lrId}}</span></br>
+                                                        <span >订单时间：</span><span>{{millisecondsToDateTime(order.createTime)}}</span></br>
+                                                        <span >出版社：</span><span>{{order.loanableBook.lbPublishing}}</span></br>
+                                                        <span >借出方：</span><span>{{order.loanableBook.user.mail}}</span></br>
+                                                        <span >联系电话：</span><span>{{order.loanableBook.phone}}</span></br>
+                                                        <span >ISBN：</span><span>{{order.loanableBook.isbn}}</span></br>
+                                                        <span >数量：</span><span>{{order.amount}}</span></br>
+                                                        <span v-if="order.lrStruts==0">状态： <span class="label label-success">正常</span> 等待借出方同意<br /></span>
+                                                        <span v-else-if="order.lrStruts==4">状态： <span class="label label-success">正常</span> 借出方已同意申请，等待借出方将图书送至中转站<br /></span>
+                                                        <span v-else-if="order.lrStruts==6">状态： <span class="label label-success">正常</span> 图书已送达中转站，等待借入方取书<br /></span>
+                                                        <span v-else-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+                                                        <span v-else-if="order.lrStruts==8">状态：<span class="label label-success">正常</span> 正在借阅<br /></span>
+                                                        <span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+                                                        <span v-else-if="order.lrStruts==10">状态：<span class="label label-success">正常</span> 等待借出方取回图书<br /></span>
+                                                        <span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+                                                        <span v-else>借出方同意时间：无<br /></span>
+                                                        <span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+                                                        <span v-else>借出方送到中转站时间：无<br /></span>
+                                                        <span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+                                                        <span v-else>取书时间：无<br /></span>
+                                                        <span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+                                                        <span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+                                                        <span v-else>应还时间：无<br /></span>
+                                                        <span v-else>实际还书时间：无<br /></span>
+                                                        <span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无<br /></span>
+                                                        <span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无</span>
+                                                    </td>
+                                                    <td class="product-name product-remove" style="font-size: 12px;width: 10em;">
+                                                        <div v-if="order.lrStruts==0">
+                                                            <a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span><i class="fa fa-remove"></i>取消</span></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>-->
 										<div class="col-xs-5 col-sm-5 col-md-4">
 											<div class="product-wrapper">
 												<div class="product-img">
@@ -345,9 +445,60 @@
 									</ul>
 								</div>
 							</div>
-							<div v-show="showPage==2">
-								<div role="tabpanel" class="tab-pane" id="profile">
+							<div v-show="showPage==2" style="min-height: 500px;margin-bottom: 30px;">
+								<div role="tabpanel" class="tab-pane" id="profile" style="padding-left: 15px">
 									<div class="row mb-50" v-for="order in edPage">
+                                        <!--<div class="table-content table-responsive">
+                                            <table>
+                                                <thead>
+                                                <tr>
+                                                    <th class="product-thumbnail">封面</th>
+                                                    <th class="product-name">详情</th>
+                                                    <th class="product-remove">操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="product-thumbnail"><a :href="'/cover?imagePath='+order.loanableBook.imagePath"  target="_blank"><img :src="'/cover?imagePath='+order.loanableBook.imagePath" alt=""/></a></td>
+                                                    <td class="product-name" style="font-size: 12px;text-align: left;vertical-align: top">
+                                                        <span >订单号：</span><span>{{order.lrId}}</span></br>
+                                                        <span >订单时间：</span><span>{{millisecondsToDateTime(order.createTime)}}</span></br>
+                                                        <span >出版社：</span><span>{{order.loanableBook.lbPublishing}}</span></br>
+                                                        <span >借出方：</span><span>{{order.loanableBook.user.mail}}</span></br>
+                                                        <span >联系电话：</span><span>{{order.loanableBook.phone}}</span></br>
+                                                        <span >ISBN：</span><span>{{order.loanableBook.isbn}}</span></br>
+                                                        <span >数量：</span><span>{{order.amount}}</span></br>
+                                                        <span v-if="order.lrStruts==0">状态： <span class="label label-success">正常</span> 等待借出方同意<br /></span>
+                                                        <span v-else-if="order.lrStruts==4">状态： <span class="label label-success">正常</span> 借出方已同意申请，等待借出方将图书送至中转站<br /></span>
+                                                        <span v-else-if="order.lrStruts==6">状态： <span class="label label-success">正常</span> 图书已送达中转站，等待借入方取书<br /></span>
+                                                        <span v-else-if="order.lrStruts==7">状态： <span class="label label-danger">异常</span> 未按时取走图书，取消订单<br /></span>
+                                                        <span v-else-if="order.lrStruts==8">状态：<span class="label label-success">正常</span> 正在借阅<br /></span>
+                                                        <span v-else-if="order.lrStruts==9">状态： <span class="label label-danger">异常</span> 未按时归还图书<br /></span>
+                                                        <span v-else-if="order.lrStruts==10">状态：<span class="label label-success">正常</span> 等待借出方取回图书<br /></span>
+                                                        <span v-if="order.agreeTime!=null">借出方同意时间：{{millisecondsToDateTime(order.agreeTime)}}<br /></span>
+                                                        <span v-else>借出方同意时间：无<br /></span>
+                                                        <span v-if="order.sendToTime!=null">借出方送到中转站时间：{{millisecondsToDateTime(order.sendToTime)}}<br /></span>
+                                                        <span v-else>借出方送到中转站时间：无<br /></span>
+                                                        <span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
+                                                        <span v-else>取书时间：无<br /></span>
+                                                        <span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
+                                                        <span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
+                                                        <span v-else>应还时间：无<br /></span>
+                                                        <span v-else>实际还书时间：无<br /></span>
+                                                        <span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无<br /></span>
+                                                        <span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
+                                                        <span v-else>图书接收者（借出方->中转站）：无</span>
+                                                    </td>
+                                                    <td class="product-name product-remove" style="font-size: 12px;width: 10em;">
+                                                        <div v-if="order.lrStruts==0">
+                                                            <a class="cart" href="javascript:;" @click="cancel(order.lrId)"><span><i class="fa fa-remove"></i>取消</span></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>-->
 										<div class="col-xs-5 col-sm-5 col-md-4">
 											<div class="product-wrapper">
 												<div class="product-img">
@@ -576,26 +727,26 @@
 
    <!-- jquery latest version -->
 	<script src="../../statics/js/jquery-3.3.1.js"></script>
-	<script src="../../statics/assets/js/vendor/jquery-1.12.0.min.js"></script>
-	<script src="../../statics/js/vue.js"></script>
-	<script src="../../statics/js/commons/common.js"></script>
-	<script src="../../statics/js/user/record.js"></script>
-	<script src="../../statics/js/user/header.js"></script>
-	<!-- Bootstrap framework js -->
-	<script src="../../statics/assets/js/bootstrap.min.js"></script>
-	<!-- ajax-mail js -->
-	<script src="../../statics/assets/js/ajax-mail.js"></script>
-	<!-- owl.carousel js -->
-	<script src="../../statics/assets/js/owl.carousel.min.js"></script>
-	<!-- owl.carousel js -->
-	<script src="../../statics/assets/js/jquery-ui.min.js"></script>
-	<!-- jquery.nivo.slider js -->
-	<script src="../../statics/assets/js/jquery.nivo.slider.pack.js"></script>
-	<!-- All js plugins included in this file. -->
-	<script src="../../statics/assets/js/plugins.js"></script>
-	<!-- Main js file that contents all jQuery plugins activation. -->
-	<script src="../../statics/assets/js/main.js"></script>
-	<script src="../../statics/js/plugins/layer/layer.js"></script>
+        <script src="../../statics/assets/js/vendor/jquery-1.12.0.min.js"></script>
+        <script src="../../statics/js/plugins/layer/layer.js"></script>
+        <script src="../../statics/js/vue.js"></script>
+        <script src="../../statics/js/commons/common.js"></script>
+        <script src="../../statics/js/user/record.js"></script>
+        <script src="../../statics/js/user/header.js"></script>
+        <!-- Bootstrap framework js -->
+        <script src="../../statics/assets/js/bootstrap.min.js"></script>
+        <!-- ajax-mail js -->
+        <script src="../../statics/assets/js/ajax-mail.js"></script>
+        <!-- owl.carousel js -->
+        <script src="../../statics/assets/js/owl.carousel.min.js"></script>
+        <!-- owl.carousel js -->
+        <script src="../../statics/assets/js/jquery-ui.min.js"></script>
+        <!-- jquery.nivo.slider js -->
+        <script src="../../statics/assets/js/jquery.nivo.slider.pack.js"></script>
+        <!-- All js plugins included in this file. -->
+        <script src="../../statics/assets/js/plugins.js"></script>
+        <!-- Main js file that contents all jQuery plugins activation. -->
+        <script src="../../statics/assets/js/main.js"></script>
 
 </body>
 

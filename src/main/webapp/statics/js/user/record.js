@@ -119,7 +119,7 @@ var record_app = new Vue({
         }
     },
     methods: {
-        switchPage: function (page) {//切换页     	
+        switchPage: function (page) {//切换页
         	 if (page==0){
         		 this.ingParams.search = null;
                  this.loadIngOrder(this);
@@ -132,7 +132,7 @@ var record_app = new Vue({
              }
             this.showPage = page;
         },
-        searchPage: function (page) {//切换页     	
+        searchPage: function (page) {//切换页
        	 if (page==0){
        		 	this.ingParams.search = $("#r_search0").val().trim();
                 this.loadIngOrder(this);
@@ -147,22 +147,24 @@ var record_app = new Vue({
         },
         cancel: function(t_lrId){
         	var app = this;
-        	 $.ajax({
-     	        url: '/in_record/cancel',
-     	        data: {
-     	        	lrId : t_lrId
-     	        },
-     	        success: function (data) {
-     	            if (data.code==0) {    	                
-     	            	alert(data.msg);
-     	            	app.switchPage(2);
-     	            } else if (data.code==401) { //未登录
-     	                window.location.href='/login'
-     	            } else {
-     	                alert(data.msg);
-     	            }
-     	        }
-     	    });
+        	confirm("确定取消？", function () {
+                $.ajax({
+                    url: '/in_record/cancel',
+                    data: {
+                        lrId : t_lrId
+                    },
+                    success: function (data) {
+                        if (data.code==0) {
+                            layer.msg("取消成功");
+                            app.switchPage(2);
+                        } else if (data.code==401) { //未登录
+                            window.location.href='/login'
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            });
         },
         loadIngOrder:loadIngOrder,
         loadBugOrder:loadBugOrder,

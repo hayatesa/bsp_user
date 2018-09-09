@@ -155,12 +155,12 @@ var record_app = new Vue({
                     },
                     success: function (data) {
                         if (data.code==0) {
-                            alert('操作成功');
+                            layer.msg("操作成功");
                             app.switchPage(app.showPage);
                         } else if (data.code==401) { //未登录
                             window.location.href='/login'
                         } else {
-                            alert(data.msg);
+                            layer.msg(data.msg);
                         }
                     }
                 });
@@ -177,12 +177,12 @@ var record_app = new Vue({
                     },
                     success: function (data) {
                         if (data.code==0) {
-                            alert('操作成功');
+                            layer.msg("操作成功");
                             app.switchPage(app.showPage);
                         } else if (data.code==401) { //未登录
                             window.location.href='/login'
                         } else {
-                            alert(data.msg);
+                            layer.msg(data.msg);
                         }
                     }
                 });
