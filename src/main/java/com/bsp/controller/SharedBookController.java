@@ -39,7 +39,7 @@ public class SharedBookController extends BaseController {
 		queryObject.setUuid(ShiroUtils.getToken().getUuid());
 		Page page = null;
 		try {
-			page = loanableBookService.getAllListBook(queryObject);
+			page = loanableBookService.getAllListBookByUUID(queryObject);
 		} catch (SystemErrorException e) {
 			e.printStackTrace();
 			return Result.error(e.getMessage());

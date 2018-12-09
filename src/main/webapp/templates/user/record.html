@@ -56,6 +56,7 @@
 									<li v-show="login"><a href="/p/record">借阅记录</a></li>
 									<li v-show="login"><a href="/p/lended">借出记录</a></li>
 									<li v-show="login"><a href="/p/my_share">共享图书</a></li>
+									<li v-show="login"><a href="/p/my_share2">需求图书</a></li>
 									<li v-show="login"><a href="/p/message_center">消息<span v-show="msgNum"  id="msgNum" class="superscript">{{msgNum}}</span></a></li>
 									<li v-show="!login"><a href="/login">登录</a></li>
 									<li v-show="!login"><a href="/p/register">注册账号</a></li>
@@ -101,6 +102,7 @@
 									<li v-show="login"><a href="/p/record">借阅记录</a></li>
 									<li v-show="login"><a href="/p/lended">借出记录</a></li>
 									<li v-show="login"><a href="/p/my_share">共享图书</a></li>
+									<li v-show="login"><a href="/p/my_share2">需求图书</a></li>
 									<li v-show="login"><a href="/p/message_center">消息<span v-show="msgNum" id="msgNum" class="mobile-superscript">{{msgNum}}</span></a></li>
 									<li v-show="!login"><a href="/login">登录</a></li>
 									<li v-show="!login"><a href="/p/register">注册账号</a></li>
@@ -282,14 +284,14 @@
 															<span v-else>借出方送到中转站时间：无<br /></span>
 															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
 															<span v-else>取书时间：无<br /></span>
-															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
 															<span v-else>应还时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-else>实际还书时间：无<br /></span>
-															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
-															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
 															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
 															<span v-else>图书接收者（借出方->中转站）：无</span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（己方->中转站）：无<br /></span>
 														</p>
 													</div>
 												</div>
@@ -408,14 +410,14 @@
 															<span v-else>借出方送到中转站时间：无<br /></span>
 															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
 															<span v-else>取书时间：无<br /></span>
-															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
 															<span v-else>应还时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-else>实际还书时间：无<br /></span>
-															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
-															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
 															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
 															<span v-else>图书接收者（借出方->中转站）：无</span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（己方->中转站）：无<br /></span>
 														</p>
 													</div>
 												</div>
@@ -539,14 +541,14 @@
 															<span v-else>借出方送到中转站时间：无<br /></span>
 															<span v-if="order.takeAwayTime!=null">取书时间：{{millisecondsToDateTime(order.takeAwayTime)}}<br /></span>
 															<span v-else>取书时间：无<br /></span>
-															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-if="order.expectedReturnTime!=null">应还时间：{{millisecondsToDateTime(order.expectedReturnTime)}}<br /></span>
 															<span v-else>应还时间：无<br /></span>
+															<span v-if="order.actualReturnTime!=null">实际还书时间：{{millisecondsToDateTime(order.actualReturnTime)}}<br /></span>
 															<span v-else>实际还书时间：无<br /></span>
-															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
-															<span v-else>图书接收者（借出方->中转站）：无<br /></span>
 															<span v-if="order.receiveAdmin!=null">图书接收者（借出方->中转站）：{{order.receiveAdmin.aName}}<br /></span>
 															<span v-else>图书接收者（借出方->中转站）：无</span>
+															<span v-if="order.backAdmin!=null">图书接收者（己方->中转站）：{{order.backAdmin.aName}}<br /></span>
+															<span v-else>图书接收者（己方->中转站）：无<br /></span>
 														</p>
 													</div>
 												</div>

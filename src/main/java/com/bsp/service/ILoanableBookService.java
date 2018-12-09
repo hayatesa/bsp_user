@@ -1,13 +1,13 @@
 package com.bsp.service;
 
-import java.util.List;
-
 import com.bsp.dto.LoanableBookQueryObject;
 import com.bsp.entity.LoanableBook;
 import com.bsp.entity.PrimaryClassification;
 import com.bsp.entity.SecondaryClassification;
 import com.bsp.entity.User;
 import com.bsp.utils.Page;
+
+import java.util.List;
 
 public interface ILoanableBookService {
 
@@ -22,7 +22,12 @@ public interface ILoanableBookService {
 	 * @param queryObject 封装分页请求中的参数
 	 */
 	Page getAllListBook(LoanableBookQueryObject queryObject);
-	
+
+	/**
+	 * 返回指定用户的所有图书分页查询的结果
+	 * @param queryObject 封装分页请求中的参数
+	 */
+	Page getAllListBookByUUID(LoanableBookQueryObject queryObject);
 	/**
 	 * 返回一级分类的所有结果
 	 */

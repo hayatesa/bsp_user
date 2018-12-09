@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>肇庆学院图书共享平台-我的共享</title>
+	<title>肇庆学院图书共享平台-我的需求</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- favicon
@@ -123,7 +123,7 @@
 	<div class="container">
 		<ol class="breadcrumb">
 			<li><a href="javascript:;"><i class="fa fa-share-alt"></i></a></li>
-			<li><a href="javascript:;">我的共享</a></li>
+			<li><a href="javascript:;">我的需求</a></li>
 		</ol>
 	</div>
 </div>
@@ -134,19 +134,19 @@
 		<div class="row">
 			<div class="col-md-3 col-sm-4">
 				<div class="column">
-					<h2 class="title-block">我的共享</h2>
+					<h2 class="title-block">我的需求</h2>
 					<div class="sidebar-widget">
 						<ul class="sidebar-menu">
-							<li><a @click="switchPage(0)" href="javascript:;">正在共享 </a></li>
+							<li><a @click="switchPage(0)" href="javascript:;">正在需求 </a></li>
 							<li><a @click="switchPage(1)" href="javascript:;">正在审核 </a></li>
-							<li><a @click="switchPage(2)" href="javascript:;">添加共享 </a></li>
+							<li><a @click="switchPage(2)" href="javascript:;">添加需求 </a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div v-show="showPage==0" class="col-md-9 col-sm-8">
 				<h2 class="page-heading mt-40">
-					<span class="cat-name">正在共享</span>
+					<span class="cat-name">正在需求</span>
 				</h2>
 				<div class="table-content table-responsive">
 					<table>
@@ -173,8 +173,8 @@
 								<span style="font-weight: bold">手机号：</span><span>{{item.phone}}</span></br>
 								<span style="font-weight: bold">借阅时长：</span><span>{{item.lbDuratuin}} 天</span></br>
 								<span style="font-weight: bold">状态：</span>
-								<span v-if="item.lbStatus==0" class="label label-warning">暂停共享</span>
-								<span v-if="item.lbStatus==1" class="label label-primary">共享中</span>
+								<span v-if="item.lbStatus==0" class="label label-warning">暂停需求</span>
+								<span v-if="item.lbStatus==1" class="label label-primary">需求中</span>
 								<span v-if="item.lbStatus==2" class="label label-danger">已下架</span></br>
 								<span style="font-weight: bold">评价：</span><span>{{textCut(item.lbComment, 100)}}</span></br>
 							</td>
@@ -339,7 +339,7 @@
 			</div>
 			<div v-show="showPage==2" class="col-md-9 col-sm-8">
 				<h2 class="page-heading mt-40">
-					<span class="cat-name">添加共享</span>
+					<span class="cat-name">添加需求</span>
 				</h2>
 				<div class="row" style="padding: 15px">
 					<div v-show="newApplyStep==0" class="row">

@@ -1,16 +1,5 @@
 package com.bsp.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.authz.annotation.RequiresUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.bsp.dto.CheckLoanableBookQueryObject;
 import com.bsp.entity.CheckLoanableBook;
 import com.bsp.enums.BussCode;
@@ -20,6 +9,16 @@ import com.bsp.service.IShareApplyService;
 import com.bsp.shiro.ShiroUtils;
 import com.bsp.utils.Page;
 import com.bsp.utils.Result;
+import org.apache.shiro.authz.annotation.RequiresUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Scope(value="prototype")
@@ -150,6 +149,7 @@ public class ShareApplyController extends BaseController {
 	@RequestMapping("page")
 	@RequiresUser
 	public Result page(CheckLoanableBookQueryObject queryObject) {
+		queryObject.setUuid(ShiroUtils.getToken().getUuid());
 		Page page;
 		try {
 			page = shareApplyService.pageOfApply(queryObject);

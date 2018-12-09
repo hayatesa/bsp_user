@@ -56,6 +56,26 @@ public class LoanableBookService implements ILoanableBookService{
 	}
 
 	@Override
+	public Page getAllListBookByUUID(LoanableBookQueryObject queryObject) {
+		LoanableBookQueryObject bookQueryObject = new LoanableBookQueryObject();
+		bookQueryObject.setLimit(queryObject.getLimit());
+		bookQueryObject.setOrder(queryObject.getOrder());
+		bookQueryObject.setPageNumber(queryObject.getPageNumber());
+		bookQueryObject.setSort(queryObject.getSort());
+		bookQueryObject.setUuid(queryObject.getUuid());
+		List<LoanableBook> list = null;
+		Integer total = null;
+		try {
+			list = loanableBookMapper.selectByQueryObject(bookQueryObject);
+			total = loanableBookMapper.getTotalCount(bookQueryObject);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemErrorException("系统错误，获取图书列表失败");
+		}
+		return new Page(list,total,queryObject.getLimit(),queryObject.getPageNumber());
+	}
+
+	@Override
 	public List<PrimaryClassification> getAllPrimary() {
 		List<PrimaryClassification> list = null;
 		try {
